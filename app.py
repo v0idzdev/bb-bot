@@ -31,28 +31,41 @@ async def beep(ctx):
     await ctx.send("boop")
 
 
+# @bot.group(pass_context=True, description="For when you feel like living on the edge")
 @bot.command(pass_context=True, description="For when you feel like living on the edge")
 async def russianroulette(ctx):
     """Has a 1/6 chance of kicking the user who used the command"""
 
-    await ctx.send(f"{ctx.author.name}, are you sure you want to play russian roulette?"
-        + "There will be a 1/6 chance that you get kicked. (yes/no)")
+    # await ctx.send(f"{ctx.author.name}, are you sure you want to play russian roulette?"
+    #     + "There will be a 1/6 chance that you get kicked. (yes/no)")
 
-    @bot.command()
-    async def yes(ctx):
-        choice = randint(1, 6)
+    # ! Remove when uncommenting the "!russianroulette subcommands"
+    choice = randint(1, 6)
 
-        if choice != 6:
-            await ctx.send("You were lucky... This time ;)")
-            return
+    if choice != 6:
+          await ctx.send("You were lucky... This time ;)")
+          return
 
-        ctx.send("Oops... You lost")
-        await ctx.send("***Uhhh pretend they actually get kicked this is just for testing lol***")
-        # await ctx.author.kick()
+    ctx.send("Oops... You lost")
+    await ctx.send("***Uhhh pretend they actually get kicked this is just for testing lol***")
 
-    @bot.command()
-    async def no(ctx):
-        await ctx.send("Ok lol, I guess you don't like living on the edge :(")
+# @russianroulette.command(pass_context=True)
+# async def yes(ctx):
+#     """A subcommand for [prefix]russianroulette - run if user types [prefix]yes"""
+#     choice = randint(1, 6)
+
+#     if choice != 6:
+#         await ctx.send("You were lucky... This time ;)")
+#         return
+
+#     ctx.send("Oops... You lost")
+#     await ctx.send("***Uhhh pretend they actually get kicked this is just for testing lol***")
+#     # await ctx.author.kick()
+
+# @russianroulette.command(pass_context=True)
+# async def no(ctx):
+#     """A subcommand for [prefix]russianroulette - run if user types [prefix]no"""
+#     await ctx.send("Ok lol, I guess you don't like living on the edge :(")
 
 
 TOKEN = os.getenv("TOKEN")
