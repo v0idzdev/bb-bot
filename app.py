@@ -32,7 +32,7 @@ async def beep(ctx):
 
 
 # @bot.group(pass_context=True, description="For when you feel like living on the edge")
-@bot.command(pass_context=True, description="For when you feel like living on the edge")
+@bot.command(pass_context=True, description="For when you feel like living on the edge") # ! Remove when uncommenting
 async def russianroulette(ctx):
     """Has a 1/6 chance of kicking the user who used the command"""
 
@@ -43,8 +43,8 @@ async def russianroulette(ctx):
     choice = randint(1, 6)
 
     if choice != 6:
-          await ctx.send("You were lucky... This time ;)")
-          return
+        await ctx.send("You were lucky... This time ;)")
+        return
 
     ctx.send("Oops... You lost")
     await ctx.send("***Uhhh pretend they actually get kicked this is just for testing lol***")
