@@ -10,39 +10,33 @@ Beep Boop Bot is provided under the GNU General Public License 3.0. This means y
 
 ### Pre-requisites
 
-##### Install Python 3.9.7+ 
-**Windows**:
-https://www.python.org/downloads/
+* An installation of Python 3.9.7+ Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows | Linux: https://opensource.com/article/20/4/install-python-linux
+* A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js
 
-**Linux**:
-1. Install development packages
-Debian:
-<pre>$ sudo apt update
-$ sudo apt install build-essential zlib1g-dev \
-libncurses5-dev libgdbm-dev libnss3-dev \
-libssl-dev libreadline-dev libffi-dev curl</pre>
-Fedora:
-<pre>$ sudo dnf groupinstall development</pre>
-2. Download the latest version of Python 3 as a .tar.gz
-https://www.python.org/downloads/release/python-3102/
-3. Extract the tarball using the extractor of your choice
-<pre>$ tar -xf Python-3.?.?.tar.xz</pre>
-4. Configure the script
-<pre>$ cd Python-3.*
-./configure</pre>
-5. Start the build process
-* If you're installing Python for the first time:
-<pre>$ sudo make altinstall</pre>
-* If you're replacing an existing installation:
-Use your package manager to uninstall Python
-<pre>$ sudo make install</pre>
-6. Verify the install
-Try:
+Install dependencies by running:
+<pre>pip install -r requirements.txt</pre>
+
+### Setting Up the Bot For Self-Hosting
+
+1. Run the following to verify your Python installation:
+<pre>python --version</pre> in cmd.exe or a bash terminal to verify the installation.
+Alternatively, run:
 <pre>python3 --version</pre>
-Alternatively, you can run:
-<pre>python --version</pre>
-
-
+2. Ensure you have a copy of your bot's token
+3. Download the repository as a .zip
+4. Unzip the .zip file
+5. Navigate to the root directory: "./beepboop/
+6. Create a file called ".env". Enter:
+<pre>"TOKEN=[your_token]"</pre>
+where [your_token] is your bot's token
+7. Open cmd.exe or a bash terminal. Run:
+<pre>python3 [path/to/root/directory]/app.py</pre>
+Example:
+<pre>python3 C:\\Users\\Username\\Documents\\beepboop\\app.py</pre>
+Or:
+<pre>python3 usr/files/beepboop.py</pre>
+Alternatively, you can use the cd command to use cmd.exe or a bash terminal from within the root directory
+8. Done!
 
 ## Commands List
 
