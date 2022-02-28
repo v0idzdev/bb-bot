@@ -10,7 +10,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="Bans a user from a server. Requires 'Ban members' permission")
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, user: discord.Member, *, reason=None, num_days=None):
+    async def ban(self, ctx, user: discord.Member, *, reason=None):
 
         if reason is None:
             await ctx.guild.ban(user, reason=reason)
@@ -39,6 +39,7 @@ class Admin(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def restrict(self, ctx, member: discord.Member, duration_in_seconds: int):
         """Gives a role 'Restrict' to the user for X seconds"""
+
         role = discord.utils.get(ctx.guild.roles, name="Restricted")
         duration_in_milliseconds = duration_in_seconds * 1000
 
