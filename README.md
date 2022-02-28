@@ -31,9 +31,9 @@ https://www.python.org/downloads/release/python-3102/
 <pre>$ cd Python-3.*
 ./configure</pre>
 5. Start the build process
-If you're installing Python for the first time:
+* If you're installing Python for the first time:
 <pre>$ sudo make altinstall</pre>
-If you're replacing an existing installation:
+* If you're replacing an existing installation:
 Use your package manager to uninstall Python
 <pre>$ sudo make install</pre>
 6. Verify the install
