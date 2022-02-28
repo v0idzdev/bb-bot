@@ -1,6 +1,49 @@
 # Beep Boop Bot
 Beep Boop Bot is provided under the GNU General Public License 3.0. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
+## Contents
+
+1. [Self Hosting] (#Self Hosting)
+2. [Commands List] (#Commands List)
+
+## Self Hosting
+
+### Pre-requisites
+
+##### Install Python 3.9.7+ 
+**Windows**:
+https://www.python.org/downloads/
+
+**Linux**:
+1. Install development packages
+Debian:
+<pre>$ sudo apt update
+$ sudo apt install build-essential zlib1g-dev \
+libncurses5-dev libgdbm-dev libnss3-dev \
+libssl-dev libreadline-dev libffi-dev curl</pre>
+Fedora:
+<pre>$ sudo dnf groupinstall development</pre>
+2. Download the latest version of Python 3 as a .tar.gz
+https://www.python.org/downloads/release/python-3102/
+3. Extract the tarball using the extractor of your choice
+<pre>$ tar -xf Python-3.?.?.tar.xz</pre>
+4. Configure the script
+<pre>$ cd Python-3.*
+./configure</pre>
+5. Start the build process
+If you're installing Python for the first time:
+<pre>$ sudo make altinstall</pre>
+If you're replacing an existing installation:
+Use your package manager to uninstall Python
+<pre>$ sudo make install</pre>
+6. Verify the install
+Try:
+<pre>python3 --version</pre>
+Alternatively, you can run:
+<pre>python --version</pre>
+
+
+
 ## Commands List
 
 ### Help / Docs
@@ -58,3 +101,6 @@ If the user was unlucky and got kicked:
 ##### .beep
 Beep Boop Bot replies with "boop"
 <pre>Usage: .beep</pre>
+
+## Setup - Python
+
