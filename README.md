@@ -45,7 +45,7 @@ Alternatively, you can use the cd command to use cmd.exe or a bash terminal from
 
 ## Commands List
 
-### Help / Docs
+### Help/Docs
 Commands for help and documentation
 
 ##### .docs
