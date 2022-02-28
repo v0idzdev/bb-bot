@@ -11,8 +11,9 @@ intents = discord.Intents.all()
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-bot.load_extension("cogs.greetings")
-bot.load_extension("cogs.miscellaneous")
+bot.load_extension("cogs.greetings")     # Load greetings commands/events
+bot.load_extension("cogs.miscellaneous") # Load misc commands
+bot.load_extension("cogs.admin")         # Load admin commands
 
 
 @bot.event
