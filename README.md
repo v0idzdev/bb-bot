@@ -1,4 +1,5 @@
 # Beep Boop Bot
+Beep Boop Bot is provided under the GNU General Public License 3.0. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
 ## Commands List
 
