@@ -1,9 +1,51 @@
 # Beep Boop Bot
 Beep Boop Bot is provided under the GNU General Public License 3.0. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
+## Contents
+
+1. **[Self Hosting](#SelfHosting)**
+  * [Pre-requisites](#Pre-requisites)
+2. **[Commands List](#CommandsList)**
+  * [Help / Docs](#Help/Docs)
+  * [Admin](#Admin)
+  * [Greetings](#Greetings)
+  * [Miscellaneous](#Miscellaneous)
+
+## Self Hosting
+
+### Pre-requisites
+
+* An installation of Python 3.9.7+ | Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows | Linux: https://opensource.com/article/20/4/install-python-linux        
+* A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js     
+
+Install dependencies by running:
+<pre>pip install -r requirements.txt</pre>
+
+### Setting Up the Bot For Self-Hosting
+
+1. Run the following in cmd.exe or a bash terminal to verify your Python installation:
+<pre>python --version</pre>
+Alternatively, run:
+<pre>python3 --version</pre>
+2. Ensure you have a copy of your bot's token
+3. Download the repository as a .zip
+4. Unzip the .zip file
+5. Navigate to the root directory: "./beepboop/
+6. Create a file called ".env". Enter:
+<pre>"TOKEN=[your_token]"</pre>
+where [your_token] is your bot's token
+7. Open cmd.exe or a bash terminal. Run:
+<pre>python3 [path/to/root/directory]/app.py</pre>
+Example:
+<pre>python3 C:\\Users\\Username\\Documents\\beepboop\\app.py</pre>
+Or:
+<pre>python3 usr/files/beepboop.py</pre>
+Alternatively, you can use the cd command to use cmd.exe or a bash terminal from within the root directory
+8. Done!
+
 ## Commands List
 
-### Help / Docs
+### Help/Docs
 Commands for help and documentation
 
 ##### .docs
