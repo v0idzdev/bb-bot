@@ -10,7 +10,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="Bans a user from a server. Requires 'Ban members' permission")
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, user: discord.Member, *, reason=None):
+    async def ban(self, ctx: commands.Context, user: discord.Member, *, reason=None):
 
         if reason is None:
             await ctx.guild.ban(user, reason=reason)
@@ -23,7 +23,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="Kicks a user from a server. Requires 'Kick members' permission")
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, user: discord.Member, *, reason=None):
+    async def kick(self, ctx: commands.Context, user: discord.Member, *, reason=None):
         """Kicks a user from a server"""
 
         if reason is None:
@@ -37,7 +37,7 @@ class Admin(commands.Cog):
 
     @commands.command(description="Assigns a role 'Restricted' to a user. This role must be added and configured by hand")
     @commands.has_permissions(manage_roles=True)
-    async def restrict(self, ctx, member: discord.Member, duration_in_seconds: int):
+    async def restrict(self, ctx: commands.Context, member: discord.Member, duration_in_seconds: int):
         """Gives a role 'Restrict' to the user for X seconds"""
 
         role = discord.utils.get(ctx.guild.roles, name="Restricted")

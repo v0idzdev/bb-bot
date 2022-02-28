@@ -4,21 +4,21 @@ from discord.ext import commands
 
 class Miscellaneous(commands.Cog):
     """Command category for miscellaneous/dumb commands"""
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command(description="For when you want an expert opinion on a serious matter")
-    async def choose(self, ctx, *choices: str):
+    async def choose(self, ctx: commands.Context, *choices: str):
         """Chooses between multiple choices"""
         await ctx.send(random.choice(choices))
 
     @commands.command(description="Beep boop bot becomes the beep to your boop")
-    async def beep(self, ctx):
+    async def beep(self, ctx: commands.Context):
         """Replies with boop"""
         await ctx.send("boop")
 
     @commands.command(pass_context=True, description="For when you feel like living on the edge")
-    async def russianroulette(self, ctx):
+    async def russianroulette(self, ctx: commands.Context):
         """Has a 1/6 chance of kicking the user who used the command"""
 
         choice = random.randint(1, 6)
