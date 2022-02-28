@@ -3,19 +3,19 @@ Beep Boop Bot is provided under the GNU General Public License 3.0. This means y
 
 ## Contents
 
-1. [Self Hosting] (#Self Hosting)
-2. [Commands List] (#Commands List)
+1. [Self Hosting](#Self Hosting)
+  * [Pre-requisites](#Pre-requisites)
+3. [Commands List](#Commands List)
+  * [Help / Docs](#Help / Docs)
+  * [Admin](#Admin)
+  * [Greetings](#Greetings)
+  * [Miscellaneous](#Miscellaneous)
 
 ## Self Hosting
 
 ### Pre-requisites
 
-* An installation of Python 3.9.7+          
-Tutorials:     
-Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows                 
-Linux: https://opensource.com/article/20/4/install-python-linux 
-Download:                             
-https://www.python.org/downloads
+* An installation of Python 3.9.7+ | Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows | Linux: https://opensource.com/article/20/4/install-python-linux        
 * A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js     
 
 Install dependencies by running:
@@ -100,6 +100,3 @@ If the user was unlucky and got kicked:
 ##### .beep
 Beep Boop Bot replies with "boop"
 <pre>Usage: .beep</pre>
-
-## Setup - Python
-
