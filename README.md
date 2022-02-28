@@ -10,16 +10,21 @@ Beep Boop Bot is provided under the GNU General Public License 3.0. This means y
 
 ### Pre-requisites
 
-* An installation of Python 3.9.7+ Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows | Linux: https://opensource.com/article/20/4/install-python-linux
-* A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js
+* An installation of Python 3.9.7+          
+Tutorials:     
+Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows                 
+Linux: https://opensource.com/article/20/4/install-python-linux 
+Download:                             
+https://www.python.org/downloads
+* A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js     
 
 Install dependencies by running:
 <pre>pip install -r requirements.txt</pre>
 
 ### Setting Up the Bot For Self-Hosting
 
-1. Run the following to verify your Python installation:
-<pre>python --version</pre> in cmd.exe or a bash terminal to verify the installation.
+1. Run the following in cmd.exe or a bash terminal to verify your Python installation:
+<pre>python --version</pre>
 Alternatively, run:
 <pre>python3 --version</pre>
 2. Ensure you have a copy of your bot's token
