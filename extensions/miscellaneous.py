@@ -30,7 +30,7 @@ class Miscellaneous(commands.Cog):
         # ! Currently, the bot doesn't actually kick anyone because the command hasn't been tested
 
         await ctx.send("Oops... You lost")
-        await ctx.send(f"Pretending to kick {ctx.author.name} for debugging purposes")
+        await ctx.send(f"Pretending to kick **{ctx.author.name}** for debugging purposes")
         # await ctx.author.kick()
 
 
