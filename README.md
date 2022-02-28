@@ -34,7 +34,8 @@ Alternatively, run:
 5. Navigate to the root directory: "./beepboop/
 6. Create a file called ".env". Enter:
 <pre>"TOKEN=[your_token]"</pre>
-where [your_token] is your bot's token               
+where [your_token] is your bot's token    
+                                                   
 7. Open cmd.exe or a bash terminal. Run:
 <pre>python3 [path/to/root/directory]/app.py</pre>
 Example:
