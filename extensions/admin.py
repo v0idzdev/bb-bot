@@ -47,6 +47,7 @@ class Admin(commands.Cog):
         await asyncio.sleep(duration_in_milliseconds)
         await member.remove_roles(role)
 
+
 def setup(bot):
     """Adds the 'Admin' cog to the bot"""
     bot.add_cog(Admin(bot))
