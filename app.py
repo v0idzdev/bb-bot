@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 intents = discord.Intents.all()
+
 intents.members = True
 
 bot = commands.Bot(command_prefix=".", intents=intents)
