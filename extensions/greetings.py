@@ -16,6 +16,14 @@ class Greetings(commands.Cog):
         if channel is not None:
             await channel.send(f"Welcome, **{member.mention}**!")
 
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        """Displays a goodbye message when a member leaves"""
+        channel = member.guild.system_channel
+
+        if channel is not None:
+            await channel.send(f"Goodbye, **{member.name}**")
+
     @commands.command(description="Says hello to a user, and hello again if they already used the command")
     async def hello(self, ctx, *, member: discord.Member=None):
         """Says hello to a user when a user uses [prefix]hello"""
