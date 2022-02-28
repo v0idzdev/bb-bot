@@ -5,9 +5,9 @@ Beep Boop Bot is provided under the GNU General Public License 3.0. This means y
 
 1. **[Self Hosting](#SelfHosting)**
   * [Pre-requisites](#Pre-requisites)
-  * [Setting Up the Bot](#Setting Up the Bot For Self-Hosting)
+  * [Setting Up the Bot](#SettingUptheBotForSelf-Hosting)
 2. **[Commands List](#CommandsList)**
-  * [Help / Docs](#Help/Docs)
+  * [Help/Docs](#Help/Docs)
   * [Admin](#Admin)
   * [Greetings](#Greetings)
   * [Miscellaneous](#Miscellaneous)
