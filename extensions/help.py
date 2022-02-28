@@ -25,6 +25,6 @@ class Help(commands.Cog):
         await ctx.send(embed=embed)
 
 
-def setup(bot):
+def setup(bot: commands.Bot):
     """Adds the 'Help' cog to the bot"""
     bot.add_cog(Help(bot))

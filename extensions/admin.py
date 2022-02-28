@@ -12,7 +12,8 @@ class Admin(commands.Cog):
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx: commands.Context, user: discord.Member, *, reason=None):
         """Bans a user from a server.
-        Requires the 'Ban members' permission"""
+        Requires the 'Ban members' permission
+        """
 
         if reason is None:
             await ctx.guild.ban(user, reason=reason)
@@ -27,7 +28,8 @@ class Admin(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx: commands.Context, user: discord.Member, *, reason=None):
         """Kicks a user from a server,
-        Requires the 'Kick members' permission"""
+        Requires the 'Kick members' permission
+        """
 
         if reason is None:
             await user.kick()
@@ -54,6 +56,6 @@ class Admin(commands.Cog):
         await member.remove_roles(role)
 
 
-def setup(bot):
+def setup(bot: commands.Bot):
     """Adds the 'Admin' cog to the bot"""
     bot.add_cog(Admin(bot))
