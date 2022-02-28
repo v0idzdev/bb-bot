@@ -43,12 +43,18 @@ The greetings category also contains an event listener that mentions a user with
 ### Miscellaneous
 Misc. commands for doing dumb stuff
 
+##### .choose
+Chooses a random option from a list.
+<pre>Usage: .choose a b c -> Beep Boop Bot: "a"</pre>
+If you're using more than one word as an option, use "" so the bot knows where one option starts and another ends
+<pre>Usage: .choose "option a" "option b" "option c" -> Beep Boop Bot: option c</pre>
+
 ##### .russianroulette
 Has a 1 in 6 chance of kicking the user
 <pre>Usage: .russianroulette -> (NO KICK) Beep Boop Bot: "You were lucky... This time ;)"</pre>
 If the user was unlucky and got kicked:
 <pre>-> (KICK) Beep Boop Bot: "Oops... You lost"</pre>
 
-#### .beep
+##### .beep
 Beep Boop Bot replies with "boop"
 <pre>Usage: .beep</pre>
