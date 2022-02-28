@@ -5,8 +5,9 @@ Beep Boop Bot is provided under the GNU General Public License 3.0. This means y
 
 1. **[Self Hosting](#SelfHosting)**
   * [Pre-requisites](#Pre-requisites)
+  * [Setting Up the Bot](#SettingUptheBotForSelf-Hosting)
 2. **[Commands List](#CommandsList)**
-  * [Help / Docs](#Help/Docs)
+  * [Help/Docs](#Help/Docs)
   * [Admin](#Admin)
   * [Greetings](#Greetings)
   * [Miscellaneous](#Miscellaneous)
@@ -33,7 +34,7 @@ Alternatively, run:
 5. Navigate to the root directory: "./beepboop/
 6. Create a file called ".env". Enter:
 <pre>"TOKEN=[your_token]"</pre>
-where [your_token] is your bot's token
+where [your_token] is your bot's token               
 7. Open cmd.exe or a bash terminal. Run:
 <pre>python3 [path/to/root/directory]/app.py</pre>
 Example:
