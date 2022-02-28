@@ -11,8 +11,7 @@ Sends an embed linking to this page
 <pre>Usage: .docs</pre>
 
 ##### .help
-Displays the default help message, showing all the commands
-The official documentation (this page) is recommended, however, as it's a lot more helpful
+Displays the default help message, showing all the commands. The official documentation (this page) is recommended, however, as it's a lot more helpful
 <pre>Usage: .help</pre>
 
 ### Admin
