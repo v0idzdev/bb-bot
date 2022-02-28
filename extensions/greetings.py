@@ -26,7 +26,7 @@ class Greetings(commands.Cog):
 
     @commands.command(description="Says hello to a user, and hello again if they already used the command")
     async def hello(self, ctx, *, member: discord.Member=None):
-        """Says hello to a user when a user uses [prefix]hello"""
+        """Says hello to a user when a user uses .hello"""
         member = member or ctx.author
 
         if self._last_member is None or self._last_member.id != member.id:

@@ -55,6 +55,10 @@ Has a 1 in 6 chance of kicking the user
 If the user was unlucky and got kicked:
 <pre>-> (KICK) Beep Boop Bot: "Oops... You lost"</pre>
 
+##### .meme
+Gets a random meme from Reddit
+<pre>Usage: .meme</pre>
+
 ##### .beep
 Beep Boop Bot replies with "boop"
 <pre>Usage: .beep</pre>

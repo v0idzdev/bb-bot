@@ -1,4 +1,7 @@
 import random
+import discord
+import json
+from requests import get
 from discord.ext import commands
 
 
@@ -32,6 +35,20 @@ class Miscellaneous(commands.Cog):
         await ctx.send("Oops... You lost")
         await ctx.send(f"Pretending to kick **{ctx.author.name}** for debugging purposes")
         # await ctx.author.kick()
+
+    @commands.command(description="Gets a random meme from Reddit")
+    async def meme(self, ctx: commands.Context):
+        """Sends a HerokuApp API request to get a meme from Reddit"""
+
+        content = get("https://meme-api.herokuapp.com/gimme").text
+        data = json.loads(content,)
+
+        meme = discord.Embed()
+        meme.title = f"{data['title']}"
+        meme.color = discord.Color(0x486572)
+        meme.set_image(url=f"{data['url']}")
+
+        await ctx.reply(embed=meme)
 
 
 def setup(bot):

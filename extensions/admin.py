@@ -11,6 +11,8 @@ class Admin(commands.Cog):
     @commands.command(description="Bans a user from a server. Requires 'Ban members' permission")
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx: commands.Context, user: discord.Member, *, reason=None):
+        """Bans a user from a server.
+        Requires the 'Ban members' permission"""
 
         if reason is None:
             await ctx.guild.ban(user, reason=reason)
@@ -24,7 +26,8 @@ class Admin(commands.Cog):
     @commands.command(description="Kicks a user from a server. Requires 'Kick members' permission")
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx: commands.Context, user: discord.Member, *, reason=None):
-        """Kicks a user from a server"""
+        """Kicks a user from a server,
+        Requires the 'Kick members' permission"""
 
         if reason is None:
             await user.kick()
@@ -38,7 +41,10 @@ class Admin(commands.Cog):
     @commands.command(description="Assigns a role 'Restricted' to a user. This role must be added and configured by hand")
     @commands.has_permissions(manage_roles=True)
     async def restrict(self, ctx: commands.Context, member: discord.Member, duration_in_seconds: int):
-        """Gives a role 'Restrict' to the user for X seconds"""
+        """Gives a role 'Restrict' to the user for X seconds.
+        1. The role MUST already exist on the server it's used on.
+        2. The role permissions must be configured by hand
+        """
 
         role = discord.utils.get(ctx.guild.roles, name="Restricted")
         duration_in_milliseconds = duration_in_seconds * 1000
