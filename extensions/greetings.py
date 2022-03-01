@@ -24,8 +24,8 @@ class Greetings(commands.Cog):
         if channel is not None:
             await channel.send(f"Goodbye, **{member.name}**")
 
-    @commands.command(description="Says hello to a user, and hello again if they already used the command")
-    async def hello(self, ctx: commands.Context, *, member: discord.Member=None):
+    @commands.command(name="hello", description="Says hello to a user, and hello again if they already used the command")
+    async def hello_(self, ctx: commands.Context, *, member: discord.Member=None):
         """Says hello to a user when a user uses .hello.
         Says hello again if the user uses the command more
         than once in a row.
