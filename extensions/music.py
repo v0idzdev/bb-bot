@@ -318,7 +318,7 @@ class Music(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="now_playing", aliases=["np", "current"])
+    @commands.command(name="nowplaying", aliases=["np", "current"])
     async def now_playing_(self, ctx: commands.Context):
         """Displays information about a song that's playing"""
 
@@ -360,7 +360,7 @@ class Music(commands.Cog):
         player.volume = vol / 100
         await ctx.send(f"**`{ctx.author}`**: Set the volume to **{vol}%**")
 
-    @commands.command(name='stop')
+    @commands.command(name="stop", aliases=["clear"])
     async def stop_(self, ctx: commands.Context):
         """Stop the currently playing song and destroy the player"""
 
