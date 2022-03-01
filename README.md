@@ -3,16 +3,31 @@ Welcome to the official documentation for Beep Boop Bot.
 
 Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
+Beep Boop Bot is hosted with [Glitch](www.glitch.com/).             
+
 ## 📒 Contents
 
 1. [Getting Started](#🚀GettingStarted)
-2. [Commands List](#📕CommandsList)
+2. [Self Hosting](#🚀SelfHosting)
+3. [Commands List](#📕CommandsList)
 
-## 🚀 Getting Started
+## 🖥️ Getting Started
+
+### 🏷️ Inviting Beep Boop Bot    
+Click [here](shorturl.at/sEOX6) to invite the bot to your server.     
+
+Alternatively, you can visit this link:        
+https://shorturl.at/sEOX6
+
+##### Troubleshooting
+If Beep Boop Bot goes offline, click [here](https://gratis-striped-whippoorwill.glitch.me) to start him up again.                   
+When you click the link, there's no need to do anything, Beep Boop Bot will start up automatically
+
+## 🚀 Self Hosting
 
 ### ✔️ Pre-requisites
 These steps need to be completed to set up the bot.
-See [Resources](#✔️Resources) for more information.
+See [resources](#✔️Resources) for more information.
 
 * An installation of **Python 3.9.7+**
 * A **Discord API application with a bot added**
