@@ -77,9 +77,10 @@ Or, on **Linux**, run:
 ### 📄 Help/Docs
 Commands for help and documentation
 
-##### .docs
+##### .docs | .d
 Sends an embed linking to this page
 <pre>Usage: .docs</pre>
+<pre>.d</pre>
 
 ##### .help
 Displays the default help message, showing all the commands. The official documentation (this page) is recommended, however, as it's a lot more helpful
@@ -139,21 +140,24 @@ Clears all music from the queue, stops the current song, and disconnects from th
 ### 📢 Admin
 Commands for administrators, mods, etc.
 
-##### .ban
+##### .ban | .b
 Bans a user from a server. Requires the 'Ban members' permission
 <pre>Usage: .ban [discord user to ban] [reason (optional)]</pre>
+<pre>.b [discord user to kick] [reason (optional)]</pre>
 
-##### .kick
+##### .kick | .k
 Kicks a user from a server. Requires the 'Kick members' permission
 <pre>Usage: .kick [discord user to kick] [reason (optional)]</pre>
+<pre>.k [discord user to kick] [reason (optional)]</pre>
 
-##### .restrict
+##### .restrict | .rs
 Assigns a role called 'Restrict' to a user. This role must exist on the server already - you can configure the restrictions however you'd like. Requires 'Manage roles' permission    
 
 To use this command, make sure you:                  
 * have a role called "Restrict" on your server     
 * Give the "Restrict" role with whatever permissions you'd like       
 <pre>Usage: .restrict [discord user to restrict] [duration in seconds]</pre>
+<pre>.rs [discord user to restrict] [duration in seconds]</pre>
 
 ### 👋 Greetings
 Greeting related commands
@@ -169,21 +173,27 @@ The greetings category also contains an event listener that mentions a user with
 ### ❓ Miscellaneous
 Misc. commands for doing dumb stuff
 
-##### .choose
+##### .choose | .ch
 Chooses a random option from a list.
 <pre>Usage: .choose a b c -> Beep Boop Bot: "a"</pre>
 If you're using more than one word as an option, use "" so the bot knows where one option starts and another ends
-<pre>Usage: .choose "option a" "option b" "option c" -> Beep Boop Bot: option c</pre>
+<pre>.choose "option a" "option b" "option c" -> Beep Boop Bot: option c</pre>
+You can also use:
+<pre>.ch a b c</pre>
+<pre>.ch "option a" "option b" "option c"</pre>
 
-##### .russianroulette
+##### .russianroulette | .rr
 Has a 1 in 6 chance of kicking the user
 <pre>Usage: .russianroulette -> (NO KICK) Beep Boop Bot: "You were lucky... This time ;)"</pre>
 If the user was unlucky and got kicked:
 <pre>-> (KICK) Beep Boop Bot: "Oops... You lost"</pre>
+You can also use:
+<pre>.rr</pre>
 
-##### .meme
+##### .meme | .m
 Gets a random meme from Reddit
 <pre>Usage: .meme</pre>
+<pre>.m</pre>
 
 ##### .beep
 Beep Boop Bot replies with "boop"
