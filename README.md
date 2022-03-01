@@ -97,8 +97,8 @@ Connects the bot to VC. The bot will do this automatically using the .play comma
 
 ##### .play | .p
 Plays a song. If there are songs alreay in the queue, it adds the song to it
-<pre>Usage: .play</pre>
-<pre>.p</pre>
+<pre>Usage: .play [song to search for]</pre>
+<pre>.p [song to search for]</pre>
 
 ##### .pause | .ps
 Pauses the song that's currently playing
