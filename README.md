@@ -47,7 +47,7 @@ Run:
 Depending on where the repository is on your machine, this may look different
 <pre>cd beepboop</pre>
 4. Install the bot's dependencies
-<pre>pip install -r dependencires.txt</pre>
+<pre>pip install -r requirements.txt</pre>
 5. Create a .env file      
 
 On **Windows**:     
