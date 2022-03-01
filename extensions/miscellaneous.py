@@ -55,6 +55,41 @@ class Miscellaneous(commands.Cog):
 
         await ctx.reply(embed=meme)
 
+    @commands.command(pass_context=True, description="For when you want to get opinions")
+    async def poll(self, ctx: commands.Context, *poll):
+        """Sends an embed that lets users vote on a topic via reactions.
+        Currently, there are only two reactions: yes/no or for/against etc.
+        """
+
+        user_name = ctx.message.author.name # Get the sender's username
+
+        embed = discord.Embed()
+        embed.title = f"Poll by **{user_name}**"
+        embed.description = " ".join(poll)
+        embed.color=discord.Color(0x486572)
+
+        msg = await ctx.channel.send(embed=embed)
+
+        # Add the reactions for yes/no
+        await msg.add_reaction("✔️")
+        await msg.add_reaction("❌")
+
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
+        """Checks reactions to polls.
+        Updates the embed message with the number of 'yes' votes and the
+        number of 'no' votes."""
+
+        if user.id != self.bot.user.id: # If the user isn't a bot
+            cached_messages = discord.utils.get(self.bot.cached_messages, id=reaction.message.id)
+
+            # Loop over all the reactions in the bot's cache
+            # Check if the user is an author, if the user's not a bot, and if the reaction emoji isn't one they used
+            for react in cached_messages.reactions:
+                if user in await react.users().flatten() and not user.bot and str(react) != str(reaction.emoji):
+                    await cached_messages.remove_reaction(react.emoji, user)
+
+
 
 def setup(bot: commands.Bot):
     """Adds the 'Miscellaneous' cog to the bot"""
