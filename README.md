@@ -32,10 +32,11 @@ When selecting permissions, Administrator guarantees that the bot will work prop
 
 ### ✔️ Setting Up the Bot For Self-Hosting
 
-1. Verify your Python installation
-On Windows, run:
+1. Verify your Python installation            
+
+On **Windows**, run:
 <pre>python --version</pre>
-Or, if you're on Linux, run:
+Or, if you're on **Linux**, run:
 <pre>python3 --version</pre>
 2. Clone the Git Repository           
 
@@ -47,14 +48,18 @@ Depending on where the repository is on your machine, this may look different
 <pre>cd beepboop</pre>
 4. Install the bot's dependencies
 <pre>pip install -r dependencires.txt</pre>
-5. Create a .env file
-On Windows:
+5. Create a .env file      
+
+On **Windows**:     
+
+Run:
 <pre>notepad .env</pre>
 If a window pops up and says "Cannot find the .env file. Do you want to create a new file?", click yes           
 Write the following into the file, replace the [your_token] with your bot's token:
 <pre>TOKEN=[your_token]</pre> 
-On Linux:
-Use the text editor of your choice:
+On **Linux**:          
+    
+Use the text editor of your choice, run:
 <pre>vim .env</pre>
 Press I to enter write mode, type:
 <pre>TOKEN=[your_token]</pre>
@@ -62,9 +67,9 @@ Then press ESC, and type the following to save and exit:
 <pre>:x ! sudo tee %</pre>
 6. Run the bot         
 
-On Windows, run:
+On **Windows**, run:
 <pre>python app.py</pre>
-Or, on Linux, run:
+Or, on **Linux**, run:
 <pre>python3 app.py</pre>
 
 ## 📕 Commands List
@@ -92,7 +97,11 @@ Kicks a user from a server. Requires the 'Kick members' permission
 <pre>Usage: .kick [discord user to kick] [reason (optional)]</pre>
 
 ##### .restrict
-Assigns a role called 'Restrict' to a user. This role must exist on the server already - you can configure the restrictions however you'd like. Requires 'Manage roles' permission
+Assigns a role called 'Restrict' to a user. This role must exist on the server already - you can configure the restrictions however you'd like. Requires 'Manage roles' permission    
+
+To use this command, make sure you:                  
+* have a role called "Restrict" on your server     
+* Give the "Restrict" role with whatever permissions you'd like       
 <pre>Usage: .restrict [discord user to restrict] [duration in seconds]</pre>
 
 ### 👋 Greetings
