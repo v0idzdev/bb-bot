@@ -85,6 +85,57 @@ Sends an embed linking to this page
 Displays the default help message, showing all the commands. The official documentation (this page) is recommended, however, as it's a lot more helpful
 <pre>Usage: .help</pre>
 
+### 🎵 Music
+Commands for music
+
+##### .connect | .c | .join
+Connects the bot to VC. The bot will do this automatically using the .play command
+<pre>Usage: .connect</pre>
+<pre>.c</pre>
+<pre>.join</pre>
+
+##### .play | .p
+Plays a song. If there are songs alreay in the queue, it adds the song to it
+<pre>Usage: .play</pre>
+<pre>.p</pre>
+
+##### .pause | .ps
+Pauses the song that's currently playing
+<pre>Usage: .pause</pre>
+<pre>.ps</pre>
+
+##### .resume | .r
+Resumes the song that's currently paused
+<pre>Usage: .resume</pre>
+<pre>.r</pre>
+
+##### .skip | .s
+Skips the song that's currently playing         
+<pre>Usage: .skip</pre>
+<pre>.s</pre>
+
+##### .queue | .q | .playlist
+Shows the current music queue
+<pre>Usage: .queue</pre>
+<pre>.q</pre>
+<pre>.playlist</pre>
+
+##### .nowplaying | .np | .current
+Displays the song that's currently playing
+<pre>Usage: .nowplaying</pre>
+<pre>.np</pre>
+<pre>.current</pre>
+
+##### .volume | .vol 
+Changes the volume of the music player. Must be between 1 and 100
+<pre>Usage: .volume</pre>
+<pre>.vol</pre>
+
+##### .stop | .clear
+Clears all music from the queue, stops the current song, and disconnects from the VC channel
+<pre>Usage: .stop</pre>
+<pre>.clear</pre>
+
 ### 📢 Admin
 Commands for administrators, mods, etc.
 
