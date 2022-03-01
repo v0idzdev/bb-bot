@@ -78,7 +78,8 @@ class Miscellaneous(commands.Cog):
     async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
         """Checks reactions to polls.
         Updates the embed message with the number of 'yes' votes and the
-        number of 'no' votes."""
+        number of 'no' votes.
+        """
 
         if user.id != self.bot.user.id: # If the user isn't a bot
             cached_messages = discord.utils.get(self.bot.cached_messages, id=reaction.message.id)
@@ -88,7 +89,6 @@ class Miscellaneous(commands.Cog):
             for react in cached_messages.reactions:
                 if user in await react.users().flatten() and not user.bot and str(react) != str(reaction.emoji):
                     await cached_messages.remove_reaction(react.emoji, user)
-
 
 
 def setup(bot: commands.Bot):

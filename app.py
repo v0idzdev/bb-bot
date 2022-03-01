@@ -20,7 +20,8 @@ bot.load_extension("extensions.help")          # Load help commands
 @bot.event
 async def on_ready():
     """Displays a series of logs to the screen when the bot has loaded.
-    Used for debugging purposes."""
+    Used for debugging purposes.
+    """
 
     log.info(f"Username: {bot.user.name}")
     log.info(f"Bot ID: {bot.user.id}")

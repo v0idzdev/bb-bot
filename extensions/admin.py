@@ -48,12 +48,16 @@ class Admin(commands.Cog):
         2. The role permissions must be configured by hand
         """
 
-        role = discord.utils.get(ctx.guild.roles, name="Restricted")
-        duration_in_milliseconds = duration_in_seconds * 1000
+        try:
+            role = discord.utils.get(ctx.guild.roles, name="Restricted")
+            duration_in_milliseconds = duration_in_seconds * 1000
 
-        await member.add_roles(role)
-        await asyncio.sleep(duration_in_milliseconds)
-        await member.remove_roles(role)
+            await member.add_roles(role)
+            await asyncio.sleep(duration_in_milliseconds)
+            await member.remove_roles(role)
+        except:
+            await ctx.send("Hmm, looks like you don't have a 'Restricted' role...")
+            return
 
 
 def setup(bot: commands.Bot):
