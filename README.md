@@ -14,7 +14,7 @@ Beep Boop Bot is hosted with [Glitch](www.glitch.com/).
 ## 🖥️ Getting Started
 
 ### 🏷️ Inviting Beep Boop Bot    
-Click [here](shorturl.at/sEOX6) to invite the bot to your server.     
+Click [here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot) to invite the bot to your server.     
 
 Alternatively, you can visit this link:        
 https://shorturl.at/sEOX6
