@@ -7,8 +7,8 @@ class Help(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(description="Generates an embed that links to the Beep Boop Bot documentation")
-    async def docs(self, ctx: commands.Context):
+    @commands.command(name="docs", aliases=["d"], description="Generates an embed that links to the Beep Boop Bot documentation")
+    async def docs_(self, ctx: commands.Context):
         """Creates an embed that links to the docs page"""
 
         embed = discord.Embed()

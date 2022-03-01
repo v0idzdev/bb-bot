@@ -10,8 +10,8 @@ class Miscellaneous(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(description="For when you want an expert opinion on a serious matter")
-    async def choose(self, ctx: commands.Context, *choices: str):
+    @commands.command(name="choose", aliases=["ch"], description="For when you want an expert opinion on a serious matter")
+    async def choose_(self, ctx: commands.Context, *choices: str):
         """Chooses between multiple choices.
         Used in format: .choose a b c OR .choose "option a" "option b" "option c".
         """
@@ -19,13 +19,14 @@ class Miscellaneous(commands.Cog):
         # Randomly choose one of the parameters
         await ctx.send(random.choice(choices))
 
-    @commands.command(description="Beep boop bot becomes the beep to your boop")
-    async def beep(self, ctx: commands.Context):
+    @commands.command(name="beep", description="Beep boop bot becomes the beep to your boop")
+    async def beep_(self, ctx: commands.Context):
         """Replies with boop"""
         await ctx.send("boop")
 
-    @commands.command(pass_context=True, description="For when you feel like living on the edge")
-    async def russianroulette(self, ctx: commands.Context):
+    @commands.command(name="russianroulette", aliases=["rr"],
+        pass_context=True, description="For when you feel like living on the edge")
+    async def russianroulette_(self, ctx: commands.Context):
         """Has a 1/6 chance of kicking the user who used the command"""
 
         choice = random.randint(1, 6)
@@ -39,8 +40,8 @@ class Miscellaneous(commands.Cog):
         await ctx.send("Oops... You lost")
         await ctx.author.kick()
 
-    @commands.command(description="Gets a random meme from Reddit")
-    async def meme(self, ctx: commands.Context):
+    @commands.command(name="meme", aliases=["m"], description="Gets a random meme from Reddit")
+    async def meme_(self, ctx: commands.Context):
         """Sends a HerokuApp API request to get a meme from Reddit"""
 
         # Get a random meme
@@ -55,8 +56,8 @@ class Miscellaneous(commands.Cog):
 
         await ctx.reply(embed=meme)
 
-    @commands.command(pass_context=True, description="For when you want to get opinions")
-    async def poll(self, ctx: commands.Context, *poll):
+    @commands.command(name="poll", pass_context=True, description="For when you want to get opinions")
+    async def poll_(self, ctx: commands.Context, *poll):
         """Sends an embed that lets users vote on a topic via reactions.
         Currently, there are only two reactions: yes/no or for/against etc.
         """

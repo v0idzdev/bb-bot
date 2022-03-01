@@ -8,9 +8,9 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(description="Bans a user from a server. Requires 'Ban members' permission")
+    @commands.command(name="ban", aliases=["b"], description="Bans a user from a server")
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx: commands.Context, user: discord.Member, *, reason=None):
+    async def ban_(self, ctx: commands.Context, user: discord.Member, *, reason=None):
         """Bans a user from a server.
         Requires the 'Ban members' permission
         """
@@ -24,9 +24,9 @@ class Admin(commands.Cog):
 
         await ctx.send(f"**{user.name}** has successfully been banned")
 
-    @commands.command(description="Kicks a user from a server. Requires 'Kick members' permission")
+    @commands.command(name="kick", aliases=["k"], description="Kicks a user from a server")
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx: commands.Context, user: discord.Member, *, reason=None):
+    async def kick_(self, ctx: commands.Context, user: discord.Member, *, reason=None):
         """Kicks a user from a server,
         Requires the 'Kick members' permission
         """
@@ -40,9 +40,10 @@ class Admin(commands.Cog):
 
         await ctx.send(f"{user.name} has successfully been kicked")
 
-    @commands.command(description="Assigns a role 'Restricted' to a user. This role must be added and configured by hand")
+    @commands.command(name="restrict", aliases=["rs"],
+        description="Assigns a role 'Restricted' to a user. This role must be added and configured by hand")
     @commands.has_permissions(manage_roles=True)
-    async def restrict(self, ctx: commands.Context, member: discord.Member, duration_in_seconds: int):
+    async def restrict_(self, ctx: commands.Context, member: discord.Member, duration_in_seconds: int):
         """Gives a role 'Restrict' to the user for X seconds.
         1. The role MUST already exist on the server it's used on.
         2. The role permissions must be configured by hand
