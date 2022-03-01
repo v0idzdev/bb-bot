@@ -1,53 +1,62 @@
-# Beep Boop Bot
-Beep Boop Bot is provided under the GNU General Public License 3.0. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
+# 🤖 Beep Boop Bot Documentation
+Welcome to the official documentation for Beep Boop Bot.
 
-## Contents
+Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
-1. **[Self Hosting](#SelfHosting)**
-  * [Pre-requisites](#Pre-requisites)
-  * [Setting Up the Bot](#SettingUptheBotForSelf-Hosting)
-2. **[Commands List](#CommandsList)**
-  * [Help/Docs](#Help/Docs)
-  * [Admin](#Admin)
-  * [Greetings](#Greetings)
-  * [Miscellaneous](#Miscellaneous)
+## 📒 Contents
 
-## Self Hosting
+1. [Getting Started](#🚀GettingStarted)
+2. [Commands List](#📕CommandsList)
 
-### Pre-requisites
+## 🚀 Getting Started
 
-* An installation of Python 3.9.7+ | Windows: https://phoenixnap.com/kb/how-to-install-python-3-windows | Linux: https://opensource.com/article/20/4/install-python-linux        
-* A bot token, using the Discord Developer Portal - Follow **step 1** only: https://www.digitalocean.com/community/tutorials/how-to-build-a-discord-bot-with-node-js     
+### ✔️ Pre-requisites
+These steps need to be completed to set up the bot.
+See [Resources](#Resources) for more information.
 
-Install dependencies by running:
-<pre>pip install -r requirements.txt</pre>
+* An installation of **Python 3.9.7+**
+* A **Discord API application with a bot added**
 
-### Setting Up the Bot For Self-Hosting
+### ✔️ Setting Up the Bot For Self-Hosting
 
-1. Run the following in cmd.exe or a bash terminal to verify your Python installation:
+1. Verify your Python installation
+On Windows, run:
 <pre>python --version</pre>
-Alternatively, run:
+Or, if you're on Linux, run:
 <pre>python3 --version</pre>
-2. Ensure you have a copy of your bot's token
-3. Download the repository as a .zip
-4. Unzip the .zip file
-5. Navigate to the root directory: "./beepboop/
-6. Create a file called ".env". Enter:
-<pre>"TOKEN=[your_token]"</pre>
-where [your_token] is your bot's token    
-                                                   
-7. Open cmd.exe or a bash terminal. Run:
-<pre>python3 [path/to/root/directory]/app.py</pre>
-Example:
-<pre>python3 C:\\Users\\Username\\Documents\\beepboop\\app.py</pre>
-Or:
-<pre>python3 usr/files/beepboop.py</pre>
-Alternatively, you can use the cd command to use cmd.exe or a bash terminal from within the root directory
-8. Done!
+2. Clone the Git Repository           
 
-## Commands List
+Run:
+<pre>gh repo clone matthewflegg/beepboop</pre>
+3. Navigate to the root directory, "./beepboop/".         
 
-### Help/Docs
+Depending on where the repository is on your machine, this may look different
+<pre>cd beepboop</pre>
+4. Install the bot's dependencies
+<pre>pip install -r dependencires.txt</pre>
+5. Create a .env file
+On Windows:
+<pre>notepad .env</pre>
+If a window pops up and says "Cannot find the .env file. Do you want to create a new file?", click yes           
+Write the following into the file, replace the [your_token] with your bot's token:
+<pre>TOKEN=[your_token]</pre> 
+On Linux:
+Use the text editor of your choice:
+<pre>vim .env</pre>
+Press I to enter write mode, type:
+<pre>TOKEN=[your_token]</pre>
+Then press ESC, and type the following to save and exit:
+<pre>:x ! sudo tee %</pre>
+6. Run the bot         
+
+On Windows, run:
+<pre>python app.py</pre>
+Or, on Linux, run:
+<pre>python3 app.py</pre>
+
+## 📕 Commands List
+
+### 📄 Help/Docs
 Commands for help and documentation
 
 ##### .docs
@@ -58,7 +67,7 @@ Sends an embed linking to this page
 Displays the default help message, showing all the commands. The official documentation (this page) is recommended, however, as it's a lot more helpful
 <pre>Usage: .help</pre>
 
-### Admin
+### 📢 Admin
 Commands for administrators, mods, etc.
 
 ##### .ban
@@ -73,7 +82,7 @@ Kicks a user from a server. Requires the 'Kick members' permission
 Assigns a role called 'Restrict' to a user. This role must exist on the server already - you can configure the restrictions however you'd like. Requires 'Manage roles' permission
 <pre>Usage: .restrict [discord user to restrict] [duration in seconds]</pre>
 
-### Greetings
+### 👋 Greetings
 Greeting related commands
 
 ##### .hello
@@ -84,7 +93,7 @@ Alternatively, if you use it twice in a row:
 
 The greetings category also contains an event listener that mentions a user with a welcome message when they join a server. Currently, the welcome message is not customisable. However, this feature will be added
 
-### Miscellaneous
+### ❓ Miscellaneous
 Misc. commands for doing dumb stuff
 
 ##### .choose
