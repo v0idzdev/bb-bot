@@ -128,3 +128,8 @@ Gets a random meme from Reddit
 ##### .beep
 Beep Boop Bot replies with "boop"
 <pre>Usage: .beep</pre>
+
+##### .poll
+Beep boop bot will let users vote on a topic (currently, it's only available in a yes/no format).             
+On poll messages, users will only be able to vote for yes/no, not both
+<pre>Usage: .poll [the question you'd like to ask]</pre>
