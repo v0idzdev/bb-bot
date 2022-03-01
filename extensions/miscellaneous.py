@@ -66,7 +66,7 @@ class Miscellaneous(commands.Cog):
         embed = discord.Embed()
         embed.title = f"Poll by **{user_name}**"
         embed.description = " ".join(poll)
-        embed.color=discord.Color(0x486572)
+        embed.color = discord.Color(0x486572)
 
         msg = await ctx.channel.send(embed=embed)
 
