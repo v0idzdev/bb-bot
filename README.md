@@ -12,10 +12,23 @@ Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means
 
 ### ✔️ Pre-requisites
 These steps need to be completed to set up the bot.
-See [Resources](#Resources) for more information.
+See [Resources](#✔️Resources) for more information.
 
 * An installation of **Python 3.9.7+**
 * A **Discord API application with a bot added**
+
+### ✔️ Resources
+
+##### How to install Python         
+Follow this guide, on Windows 10:       
+https://phoenixnap.com/kb/how-to-install-python-3-windows       
+
+Or, if you're on Linux:     
+https://opensource.com/article/20/4/install-python-linux            
+
+##### How to set up a bot using the Discord Developer Portal
+https://discordpy.readthedocs.io/en/stable/discord.html         
+When selecting permissions, Administrator guarantees that the bot will work properly. However, **use at your own risk**
 
 ### ✔️ Setting Up the Bot For Self-Hosting
 
