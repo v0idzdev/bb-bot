@@ -20,7 +20,7 @@ Alternatively, you can visit this link:
 https://shorturl.at/sEOX6
 
 ##### Troubleshooting
-If Beep Boop Bot goes offline, click [here](https://gratis-striped-whippoorwill.glitch.me) to start him up again.                   
+If Beep Boop Bot goes offline, click [here](https://beepboopbot-discord.glitch.me) to start him up again.                   
 When you click the link, there's no need to do anything, Beep Boop Bot will start up automatically
 
 ## 🚀 Self Hosting
