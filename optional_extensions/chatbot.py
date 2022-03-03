@@ -1,4 +1,6 @@
+from email.message import Message
 import discord
+import asyncio
 import _chatbot
 from discord.ext import commands
 
@@ -18,6 +20,13 @@ class ChatBot(commands.Cog):
         if message.author.bot or message.channel not in self.enabled_channels:
             return # Do nothing if the bot sent the message or if this isn't an enabled channel
 
+        # Show 'bot is typing' for 3 seconds
+        ctx = await self.bot.get_context(message)
+
+        async with ctx.typing():
+            await asyncio.sleep(2)
+
+        # Get and send an AI response
         response_ = self.chatbot.get_response(message.content)
         await message.channel.send(f"{message.author.mention}: {response_}")
 
@@ -31,7 +40,7 @@ class ChatBot(commands.Cog):
         # Add the channel to the list. Check in on_message if this is an enabled channel
         self.enabled_channels.append(ctx.channel)
         await ctx.send("✅ Done! I will now use AI to respond to all messages in this channel\n" +
-                       "You can use ```.aidisable``` or ```.disableaichat``` to disable chatbot responses")
+                       "You can use .aidisable or .disableaichat to disable chatbot responses")
 
     @enable_ai_chat.error
     async def enable_ai_chat_error(self, ctx: commands.Context, error):
@@ -40,7 +49,23 @@ class ChatBot(commands.Cog):
         if isinstance(error, commands.MissingPermissions):
             await ctx.send("❌ You don't have permission to enable AI chat in this channel")
 
-    @commands.command(name="aidisable", aliases=["disableaichat"])
+    @commands.command(name="aidisable", aliases=["disableaichat"],
+                      description="Disables AI chatbot responses to all messages within a channel."
+                                + "Requires 'Manage channels' permissions")
+    @commands.has_permissions(manage_channels=True)
+    async def disable_ai_chat(self, ctx: commands.Context):
+        """Disables AI chatbot responses in a text channel"""
+
+        self.enabled_channels.remove(ctx.channel)
+        await ctx.send("✅ Done! I will no longer use AI to respond to all messages in this channel\n" +
+                       "You can use .aienable, .ai, or .enableaichat to enable chatbot responses")
+
+    @disable_ai_chat.error
+    async def disable_ai_chat_error(self, ctx: commands.Context, error):
+        """Called when the disable AI chat command throws an error"""
+
+        if isinstance(error, commands.MissingPermissions):
+            await ctx.send("❌ You don't have permission to disable AI chat in this channel")
 
 
 def setup(bot: commands.Bot):
