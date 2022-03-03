@@ -5,6 +5,7 @@
         "dotenv",
         "Flegg",
         "logtostderr",
+        "mshedb",
         "nocheckcertificate",
         "noplaylist",
         "nostdin",
@@ -13,6 +14,7 @@
         "qsize",
         "Uhhh",
         "unloop",
+        "yarsaw",
         "YTDL",
         "ytsearch"
     ]
