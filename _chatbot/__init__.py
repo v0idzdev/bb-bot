@@ -1,0 +1,1 @@
+from ._model import init_chatbot

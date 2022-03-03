@@ -14,6 +14,8 @@ bot = commands.Bot(command_prefix=".", intents=intents)
 
 extensions = ["greetings", "miscellaneous", "admin", "music", "help"]
 _ = [bot.load_extension(f"extensions.{ext}") for ext in extensions]
+optional_extensions = ["chatbot"]
+_ = [bot.load_extension(f"optional_extensions.{opt_ext}") for opt_ext in optional_extensions]
 
 
 @bot.event
