@@ -19,7 +19,7 @@ class ChatBot(commands.Cog):
         if message.author.bot or message.channel not in self.enabled_channels:
             return # Do nothing if the bot sent the message or if this isn't an enabled channel
 
-        # Show 'bot is typing' for 3 seconds
+        # Show 'bot is typing' for 2 seconds
         ctx = await self.bot.get_context(message)
 
         async with ctx.typing():
