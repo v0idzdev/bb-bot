@@ -17,12 +17,3 @@ def init_chatbot():
     trainer.train("chatterbot.corpus.english")
 
     return chatbot
-
-
-async def get_response(chatbot_object: ChatBot_, input_: str):
-    """Gets a response from a chatbot.
-    This function exists because the default ChatBot.get_response method is
-    not an async function
-    """
-
-    return chatbot_object.get_response(input_)
