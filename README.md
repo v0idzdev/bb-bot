@@ -152,6 +152,21 @@ Clears all music from the queue, stops the current song, and disconnects from th
 <pre>Usage: .stop</pre>
 <pre>.clear</pre>
 
+### 💬 AI
+Commands relating to the AI chatbot
+
+##### .aienable | .ai | .enableaichat
+Enables the AI chatbot in a text channel. Requires the 'Manage channels' permission.        
+By default, the AI chatbot is disabled
+<pre>Usage: .aienable</pre>
+<pre>.ai</pre>
+<pre>.enableaichat</pre>
+
+##### .aidisable | .disableaichat
+Disables the AI chatbot in a text channel. Requires the 'Manage channels' permission.        
+<pre>Usage: .aidisable</pre>
+<pre>.disableaichat</pre>
+
 ### 📢 Admin
 Commands for administrators, mods, etc.
 
