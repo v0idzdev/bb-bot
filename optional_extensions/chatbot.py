@@ -13,11 +13,13 @@ class ChatBot(commands.Cog):
     async def on_message(self, message: discord.Message):
         """Gets a response from the AI chatbot when someone sends a message"""
 
-        if message.author == self.bot:
+        if message.author.bot:
             return # Do nothing if the bot sent the message
 
-        chatbot_ = self.chatbot # I have to do it this way because I can't use an object statement in an "await"
-        response_ = await chatbot_.get_response(message.content)
+        # This is the equivalent of response_ = await self.chatbot.get_response, but
+        # asyncio throws an exception when attempting to use a method within an
+        # await statement
+        response_ = self.chatbot.get_response(message.content)
         await message.channel.send(f"{message.author.mention}: {response_}")
 
 
