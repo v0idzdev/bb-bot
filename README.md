@@ -3,7 +3,7 @@ Welcome to the official documentation for Beep Boop Bot.
 
 Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means you can run, share, study and modify the software as you wish. While you don't technically have to, if you use the souce code for this bot credit would be appreciated.
 
-Beep Boop Bot is hosted with [Glitch](www.glitch.com/).             
+Beep Boop Bot is hosted with [Glitch](https://www.glitch.com/).             
 
 ## 📒 Contents
 
