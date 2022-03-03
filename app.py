@@ -21,9 +21,7 @@ _ = [bot.load_extension(f"optional_extensions.{opt_ext}") for opt_ext in optiona
 
 @bot.event
 async def on_ready():
-    """Displays a series of logs to the screen when the bot has loaded.
-    Used for debugging purposes.
-    """
+    """Displays a series of logs to the screen when the bot has loaded"""
 
     log.info(f"Username: {bot.user.name}")
     log.info(f"Bot ID: {bot.user.id}")
