@@ -3,13 +3,14 @@ from discord.ext import commands
 
 
 class Help(commands.Cog):
-    """Command category for help commands"""
+    """Command category for help commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="docs", aliases=["d"], description="Generates an embed that links to the Beep Boop Bot documentation")
+    @commands.command(name="docs", aliases=["d"],
+                      description="Generates an embed that links to the Beep Boop Bot documentation.")
     async def docs_(self, ctx: commands.Context):
-        """Creates an embed that links to the docs page"""
+        """Creates an embed that links to the docs page."""
 
         embed = discord.Embed()
         embed.title = "Beep Boop Bot Documentation"
@@ -26,5 +27,5 @@ class Help(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    """Adds the 'Help' cog to the bot"""
+    """Adds the Help cog to the bot."""
     bot.add_cog(Help(bot))

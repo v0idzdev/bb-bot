@@ -6,11 +6,11 @@ from discord.ext import commands
 
 
 class Miscellaneous(commands.Cog):
-    """Command category for miscellaneous/dumb commands"""
+    """Command category for miscellaneous/dumb commands."""
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="choose", aliases=["ch"], description="For when you want an expert opinion on a serious matter")
+    @commands.command(name="choose", aliases=["ch"], description="For when you want an expert opinion on a serious matter.")
     async def choose_(self, ctx: commands.Context, *choices: str):
         """Chooses between multiple choices.
         Used in format: .choose a b c OR .choose "option a" "option b" "option c".
@@ -19,30 +19,30 @@ class Miscellaneous(commands.Cog):
         # Randomly choose one of the parameters
         await ctx.send(random.choice(choices))
 
-    @commands.command(name="beep", description="Beep boop bot becomes the beep to your boop")
+    @commands.command(name="beep", description="Beep boop bot becomes the beep to your boop.")
     async def beep_(self, ctx: commands.Context):
         """Replies with boop"""
         await ctx.send("boop")
 
     @commands.command(name="russianroulette", aliases=["rr"],
-        pass_context=True, description="For when you feel like living on the edge")
+        pass_context=True, description="For when you feel like living on the edge.")
     async def russianroulette_(self, ctx: commands.Context):
-        """Has a 1/6 chance of kicking the user who used the command"""
+        """Has a 1/6 chance of kicking the user who used the command."""
 
         choice = random.randint(1, 6)
 
         # 5/6 chance, user wins
         if choice != 6:
-            await ctx.send("You were lucky... This time ;)")
+            await ctx.send("You were lucky... This time.")
             return
 
         # 1/6 chance, user loses + gets kicked
-        await ctx.send("Oops... You lost")
+        await ctx.send("Oops... You lost.")
         await ctx.author.kick()
 
-    @commands.command(name="meme", aliases=["m"], description="Gets a random meme from Reddit")
+    @commands.command(name="meme", aliases=["m"], description="Gets a random meme from Reddit.")
     async def meme_(self, ctx: commands.Context):
-        """Sends a HerokuApp API request to get a meme from Reddit"""
+        """Gets a random meme from Reddit."""
 
         # Get a random meme
         content = get("https://meme-api.herokuapp.com/gimme").text
@@ -56,7 +56,7 @@ class Miscellaneous(commands.Cog):
 
         await ctx.reply(embed=meme)
 
-    @commands.command(name="poll", pass_context=True, description="For when you want to get opinions")
+    @commands.command(name="poll", pass_context=True, description="For when you want to get opinions.")
     async def poll_(self, ctx: commands.Context, *poll):
         """Sends an embed that lets users vote on a topic via reactions.
         Currently, there are only two reactions: yes/no or for/against etc.
@@ -65,7 +65,7 @@ class Miscellaneous(commands.Cog):
         user_name = ctx.message.author.name # Get the sender's username
 
         embed = discord.Embed()
-        embed.title = f"Poll by **{user_name}**"
+        embed.title = f"📢 Poll by **{user_name}**:"
         embed.description = " ".join(poll)
         embed.color = discord.Color(0x486572)
 
@@ -93,5 +93,5 @@ class Miscellaneous(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    """Adds the 'Miscellaneous' cog to the bot"""
+    """Adds the Miscellaneous cog to the bot."""
     bot.add_cog(Miscellaneous(bot))
