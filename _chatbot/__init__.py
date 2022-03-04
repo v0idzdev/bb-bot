@@ -1,1 +1,1 @@
-from ._model import init_chatbot, get_response
+from ._model import init_chatbot

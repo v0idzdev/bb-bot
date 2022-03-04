@@ -1,3 +1,4 @@
+from datetime import datetime
 import discord
 import asyncio
 import _chatbot
@@ -11,6 +12,7 @@ class ChatBot(commands.Cog):
         self.bot = bot
 
         self.enabled_channels = [] # A list of all the channels AI chat is enabled in (!!! THIS MIGHT BE DODGY !!!)
+        self.time_enabled = None
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
@@ -18,8 +20,10 @@ class ChatBot(commands.Cog):
 
         if message.author.bot or message.channel not in self.enabled_channels:
             return # Do nothing if the bot sent the message or if this isn't an enabled channel
+        if message.created_at < self.time_enabled:
+            return # Ignore all messages before the chatbot was enabled
 
-        # Show 'bot is typing' for 3 seconds
+        # Show 'bot is typing' for 2 seconds
         ctx = await self.bot.get_context(message)
 
         async with ctx.typing():
@@ -38,6 +42,7 @@ class ChatBot(commands.Cog):
 
         # Add the channel to the list. Check in on_message if this is an enabled channel
         self.enabled_channels.append(ctx.channel)
+        self.time_enabled = datetime.now()
         await ctx.send("✅ Done! I will now use AI to respond to all messages in this channel\n" +
                        "You can use .aidisable or .disableaichat to disable chatbot responses")
 
