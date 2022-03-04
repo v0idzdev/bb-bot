@@ -1,14 +1,14 @@
 from datetime import datetime
 import discord
 import asyncio
-import _chatbot
+import chatbot
 from discord.ext import commands
 
 
 class ChatBot(commands.Cog):
     """Command/event category for the AI chatbot"""
     def __init__(self, bot: commands.Bot):
-        self.chatbot = _chatbot.init_chatbot() # Initialise the chatbot model from the _chatbot module
+        self.chatbot = chatbot.init_chatbot() # Initialise the chatbot model from the _chatbot module
         self.bot = bot
         self.enabled_channels = [] # A list of all the channels AI chat is enabled in (!!! THIS MIGHT BE DODGY !!!)
         self.time_enabled = None

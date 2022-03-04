@@ -10,11 +10,11 @@ intents = discord.Intents.all()
 intents.members = True
 
 bot = commands.Bot(command_prefix=".", intents=intents)
-extensions = ["greetings", "miscellaneous", "admin", "music", "help", "chatbot"]
+extensions = ["greetings", "miscellaneous", "admin", "music",
+              "help", "chatbot", "error_handler"]
 
 for ext in extensions:
     bot.load_extension(f"extensions.{ext}")
-
 
 @bot.event
 async def on_ready():
