@@ -7,17 +7,15 @@ Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means
 
 Beep Boop Bot is hosted with Google Cloud Platform. If there are issues with Beep Boop Bot's online status, feel free to submit an issue or contact matthewflegg@outlook.com. 
 
-![Icon](https://cdn.dribbble.com/users/722835/screenshots/4082720/bot_icon_still_2x.gif?compress=1&resize=400x300)
-
-##### What's new in v0.1.0?
-* An AI chatbot that you can enable/disable with .ai and .aidisable
-* General bug fixes and performance enhancements
+##### What's new in v0.1.1?
+* Beep Boop Bot now runs 24/7!
+* Fixed issues with music commands when running the bot on GCP compute engine.
 
 ## 📒 Contents
 
-1. [Getting Started](#🚀GettingStarted)
-2. [Self Hosting](#🚀SelfHosting)
-3. [Commands List](#📕CommandsList)
+1. [Getting Started](-getting-started)
+2. [Self Hosting](#-self-hosting)
+3. [Commands List](#-commands-list)
 
 ## 🖥️ Getting Started
 
@@ -27,14 +25,12 @@ Click [here](https://discord.com/api/oauth2/authorize?client_id=9475938568394589
 Alternatively, you can visit this link:        
 https://shorturl.at/sEOX6
 
-##### Troubleshooting
-If Beep Boop Bot goes offline, click [here](https://beepboopbot-discord.glitch.me) to start him up again.                   
-When you click the link, there's no need to do anything, Beep Boop Bot will start up automatically
+That's it! All done.
 
 ## 🚀 Self Hosting
 
 ### ✔️ Pre-requisites
-These steps need to be completed to set up the bot.
+These steps need to be completed to set up the bot for self-hosting.
 See [resources](#✔️Resources) for more information.
 
 * An installation of **Python 3.9.7+**
