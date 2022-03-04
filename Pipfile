@@ -77,6 +77,7 @@ pyyaml = "==3.13"
 youtube-dl = "*"
 
 [dev-packages]
+ipykernel = "*"
 
 [requires]
 python_version = "3.9"

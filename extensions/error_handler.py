@@ -31,16 +31,16 @@ class GenericErrorHandler(commands.Cog):
             else:
                 format_ = " and ".join(missing)
 
-            message_ = f"I need the **{format_}** permission(s) to use this command."
+            message_ = f"❌ I need the **{format_}** permission(s) to use this command."
             await ctx.send(message_)
             return
 
         if isinstance(error, commands.DisabledCommand): # Command is disabled
-            await ctx.send("This command has been disabled.")
+            await ctx.send("❌ This command has been disabled.")
             return
 
         if isinstance(error, commands.CommandOnCooldown): # Command is currently on cooldown
-            await ctx.send(f"This command is currently on cooldown. Try again in {math.ceil(error.retry_after)}s")
+            await ctx.send(f"❌ This command is currently on cooldown. Try again in {math.ceil(error.retry_after)}s")
             return
 
         if isinstance(error, commands.MissingPermissions): # Error handling for missing user perms
@@ -51,17 +51,17 @@ class GenericErrorHandler(commands.Cog):
             else:
                 format_ = " and ".join(missing)
 
-            message_ = f"You need the **{format_}** permission(s) to use this command."
+            message_ = f"❌ You need the **{format_}** permission(s) to use this command."
             await ctx.send(message_)
             return
 
         if isinstance(error, commands.UserInputError): # If the bot receives bad input
-            await ctx.send("Sorry, that input is invalid.")
+            await ctx.send("❌ Sorry, that input is invalid.")
             return
 
         if isinstance(error, commands.NoPrivateMessage): # If the user can't use the command in a DM
             try:
-                await ctx.author.send("You can't use this command in private messages.")
+                await ctx.author.send("❌ You can't use this command in private messages.")
             except discord.Forbidden:
                 pass
             return
@@ -71,5 +71,5 @@ class GenericErrorHandler(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    """Adds the 'GenericErrorHandler' cog to the bot."""
+    """Adds the GenericErrorHandler cog to the bot."""
     bot.add_cog(GenericErrorHandler(bot))
