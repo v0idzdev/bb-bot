@@ -1,3 +1,6 @@
+![Latest version](https://img.shields.io/github/v/tag/matthewflegg/beepboop?label=Latest%20Version&logo=git&style=for-the-badge) ![Latest stable version](https://img.shields.io/github/v/release/matthewflegg/beepboop?label=Latest%20Stable%20Version&logo=git&style=for-the-badge)         
+![License](https://img.shields.io/github/license/matthewflegg/beepboop?logo=Github&style=for-the-badge) ![Size](https://img.shields.io/github/repo-size/matthewflegg/beepboop?color=green&label=size&logo=github&style=for-the-badge)
+
 # 🤖 Beep Boop Bot Documentation
 Welcome to the official documentation for Beep Boop Bot.
 
