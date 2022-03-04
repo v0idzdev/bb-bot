@@ -1,5 +1,4 @@
-![Latest version](https://img.shields.io/github/v/tag/matthewflegg/beepboop?label=Latest%20Version&logo=git&style=for-the-badge) ![Latest stable version](https://img.shields.io/github/v/release/matthewflegg/beepboop?label=Latest%20Stable%20Version&logo=git&style=for-the-badge)         
-![License](https://img.shields.io/github/license/matthewflegg/beepboop?logo=Github&style=for-the-badge) ![Size](https://img.shields.io/github/repo-size/matthewflegg/beepboop?color=green&label=size&logo=github&style=for-the-badge)
+![Latest release](https://img.shields.io/github/v/tag/matthewflegg/beepboop?color=red&include_prereleases&label=Latest%20Release&logo=git&style=for-the-badge) ![Latest stable release](https://img.shields.io/github/v/tag/matthewflegg/beepboop?color=red&label=Latest%20Stable%20Release&logo=git&style=for-the-badge) ![Python version](https://img.shields.io/github/pipenv/locked/python-version/matthewflegg/beepboop?label=python%20version&logo=python&style=for-the-badge) ![Discord.py version](https://img.shields.io/github/pipenv/locked/dependency-version/matthewflegg/beepboop/discord?label=Discord.Py%20Version&logo=discord&logoColor=blue&style=for-the-badge)
 
 # 🤖 Beep Boop Bot Documentation
 Welcome to the official documentation for Beep Boop Bot.
@@ -10,27 +9,9 @@ Beep Boop Bot is hosted with [Glitch](https://www.glitch.com/).
 
 ![Icon](https://cdn.dribbble.com/users/722835/screenshots/4082720/bot_icon_still_2x.gif?compress=1&resize=400x300)
 
-##### What's new in v0.1.0-beta.1?
-* **Patched chatbot errors**
-  - The chatbot will no longer generate and send an AI response to messages sent before enabling the chatbot
-  - The chatbot will no longer generate and send an AI response to commands
-  - The user can no longer enable or disable the chatbot more than once. It shows an error message if they attempt this
-  - The list of enabled channels can no longer contain duplicate values
-* **Added a generic command error handler**
-  - Does not override local error handling (i.e., within cogs)
-  - Handling of CommandNotFound, BotMissingPermissions, DisabledCommand, CommandOnCooldown, MissingPermissions, UserInputError and NoPrivateMessage errors.
-* **Moved the chatbot database folder into the chatbot folder**
-* **Moved the chatbot cog into the extensions folder**
-* **Removed optional extensions folder**
-  - Moved its contents (chatbot.py) i.e., the ChatBot cog, into the extensions folder
-  - Removed the additional loop in app.py that loads optional extensions
-
-Since this is a beta version, the new features are only available for self-hosting and have not yet been pushed to the host server. To check out the new features, follow the self hosting guide which can be found below. Use this version at your own risk, as it's potentially unstable.
-
-##### What's planned for the next version?
-* Testing and bug-fixing chatbot errors
-* General testing and bug fixing
-* Improved error handling with custom exceptions and command errors
+##### What's new in v0.1.0?
+* An AI chatbot that you can enable/disable with .ai and .aidisable
+* General bug fixes and performance enhancements
 
 ## 📒 Contents
 
