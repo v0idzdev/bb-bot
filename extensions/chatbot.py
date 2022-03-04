@@ -19,8 +19,10 @@ class ChatBot(commands.Cog):
 
         if message.author.bot or message.channel not in self.enabled_channels:
             return # Do nothing if the bot sent the message or if this isn't an enabled channel
-        if message.created_at < self.time_enabled:
-            return # Ignore all messages before the chatbot was enabled
+        if message.created_at < self.time_enabled: # Ignore all messages before the chatbot was enabled
+            return
+        if message.content.startswith("."): # If the message is a command, ignore it
+            return
 
         # Show 'bot is typing' for 2 seconds
         ctx = await self.bot.get_context(message)
@@ -40,10 +42,14 @@ class ChatBot(commands.Cog):
         """Enables AI chatbot responses in a text channel"""
 
         # Add the channel to the list. Check in on_message if this is an enabled channel
-        self.enabled_channels.append(ctx.channel)
-        self.time_enabled = datetime.now()
-        await ctx.send("✅ Done! I will now use AI to respond to all messages in this channel\n" +
-                       "You can use .aidisable or .disableaichat to disable chatbot responses")
+        if ctx.channel not in self.enabled_channels: # Check if not already enabled
+            self.enabled_channels.append(ctx.channel)
+            self.time_enabled = datetime.now()
+
+            await ctx.send("✅ Done! I will now use AI to respond to all messages in this channel\n" +
+                        "You can use .aidisable or .disableaichat to disable chatbot responses")
+        else:
+            await ctx.send("❌ You've already enabled AI chat in this channel.")
 
     @enable_ai_chat.error
     async def enable_ai_chat_error(self, ctx: commands.Context, error):
@@ -59,9 +65,13 @@ class ChatBot(commands.Cog):
     async def disable_ai_chat(self, ctx: commands.Context):
         """Disables AI chatbot responses in a text channel"""
 
-        self.enabled_channels.remove(ctx.channel)
-        await ctx.send("✅ Done! I will no longer use AI to respond to all messages in this channel\n" +
-                       "You can use .aienable, .ai, or .enableaichat to enable chatbot responses")
+        if ctx.channel in self.enabled_channels: # If the channel is enabled, disable it
+            self.enabled_channels.remove(ctx.channel)
+
+            await ctx.send("✅ Done! I will no longer use AI to respond to all messages in this channel\n" +
+                        "You can use .aienable, .ai, or .enableaichat to enable chatbot responses")
+        else:
+            await ctx.send("❌ You've already disabled AI chat in this channel.")
 
     @disable_ai_chat.error
     async def disable_ai_chat_error(self, ctx: commands.Context, error):
