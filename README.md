@@ -10,11 +10,22 @@ Beep Boop Bot is hosted with [Glitch](https://www.glitch.com/).
 
 ![Icon](https://cdn.dribbble.com/users/722835/screenshots/4082720/bot_icon_still_2x.gif?compress=1&resize=400x300)
 
-##### What's new in v0.1.0-alpha.3?
-* Added an AI chatbot with enable/disable commands
-* Refactored code
+##### What's new in v0.1.0-beta.1?
+* **Patched chatbot errors**
+  - The chatbot will no longer generate and send an AI response to messages sent before enabling the chatbot
+  - The chatbot will no longer generate and send an AI response to commands
+  - The user can no longer enable or disable the chatbot more than once. It shows an error message if they attempt this
+  - The list of enabled channels can no longer contain duplicate values
+* **Added a generic command error handler**
+  - Does not override local error handling (i.e., within cogs)
+  - Handling of CommandNotFound, BotMissingPermissions, DisabledCommand, CommandOnCooldown, MissingPermissions, UserInputError and NoPrivateMessage errors.
+* **Moved the chatbot database folder into the chatbot folder**
+* **Moved the chatbot cog into the extensions folder**
+* **Removed optional extensions folder**
+  - Moved its contents (chatbot.py) i.e., the ChatBot cog, into the extensions folder
+  - Removed the additional loop in app.py that loads optional extensions
 
-Since this is an alpha version, the new features are only available for self-hosting and have not yet been pushed to the host server. To check out the new features, follow the self hosting guide which can be found below. Use this version at your own risk, as it's potentially unstable.
+Since this is a beta version, the new features are only available for self-hosting and have not yet been pushed to the host server. To check out the new features, follow the self hosting guide which can be found below. Use this version at your own risk, as it's potentially unstable.
 
 ##### What's planned for the next version?
 * Testing and bug-fixing chatbot errors
