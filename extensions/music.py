@@ -136,8 +136,8 @@ class MusicPlayer:
             self.current = source
 
             self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
-            self.np = await self._channel.send(f"🔊 **Now Playing:** `{source.title}` requested by "
-                                             + f"`{source.requester}`.")
+            self.np = await self._channel.send(f"🔊 **Now Playing:** *{source.title}* requested by "
+                                             + f"**{source.requester}**.")
 
             await self.next.wait()
 
@@ -225,12 +225,12 @@ class Music(commands.Cog):
             try:
                 await vc.move_to(channel)
             except asyncio.TimeoutError:
-                raise VCError(f"❌ Moving to channel {channel} timed out.")
+                raise VCError(f"❌ Moving to channel **{channel}** timed out.")
         else:
             try:
                 await channel.connect()
             except asyncio.TimeoutError:
-                raise VCError(f"❌ Connecting to channel {channel} timed out.")
+                raise VCError(f"❌ Connecting to channel **{channel}** timed out.")
 
         await ctx.send(f"Connected to: **{channel}**", delete_after=20)
 
@@ -265,7 +265,7 @@ class Music(commands.Cog):
             return
 
         vc.pause()
-        await ctx.send(f'**`{ctx.author}`**: Paused the song')
+        await ctx.send(f'**{ctx.author}**: Paused the song')
 
     @commands.command(name="resume", aliases=["r"], description="Resumes the song currently paused.")
     async def resume_(self, ctx: commands.Context):
@@ -314,7 +314,7 @@ class Music(commands.Cog):
         # Grab up to 5 entries from the queue...
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
-        fmt = "\n".join(f"🌟 **{_['title']}**" for _ in upcoming)
+        fmt = "\n".join(f"🎧 **{i + 1}**: *{_['title']}*" for i, _ in enumerate(upcoming))
         embed = discord.Embed(title=f"Upcoming - Next {len(upcoming)}", description=fmt)
 
         await ctx.send(embed=embed)
@@ -338,8 +338,8 @@ class Music(commands.Cog):
         except discord.HTTPException:
             pass
 
-        player.np = await ctx.send(f"🎵 **Now Playing:** {vc.source.title} "
-            f"requested by `{vc.source.requester}`")
+        player.np = await ctx.send(f"🎵 **Now Playing:** *{vc.source.title}* "
+            f"requested by **{vc.source.requester}**")
 
     @commands.command(name="volume", aliases=["vol"], description="Changes the volume of the music player.")
     async def change_volume(self, ctx: commands.Context, *, vol: float):
@@ -359,7 +359,7 @@ class Music(commands.Cog):
             vc.source.volume = vol / 100
 
         player.volume = vol / 100
-        await ctx.send(f"🔊 **`{ctx.author}`**: Set the volume to **{vol}%**")
+        await ctx.send(f"🔊 **{ctx.author}**: Set the volume to *{vol}%*")
 
     @commands.command(name="stop", aliases=["clear"], description="Clears the music player.")
     async def stop_(self, ctx: commands.Context):
