@@ -10,7 +10,6 @@ class ChatBot(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.chatbot = _chatbot.init_chatbot() # Initialise the chatbot model from the _chatbot module
         self.bot = bot
-
         self.enabled_channels = [] # A list of all the channels AI chat is enabled in (!!! THIS MIGHT BE DODGY !!!)
         self.time_enabled = None
 
