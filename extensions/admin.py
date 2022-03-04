@@ -3,6 +3,10 @@ import asyncio
 from discord.ext import commands
 
 
+class AdminCommandError(commands.CommandError):
+    """Exception class for admin commands"""
+
+
 class Admin(commands.Cog):
     """Command category for administrator only commands"""
     def __init__(self, bot):
@@ -24,10 +28,10 @@ class Admin(commands.Cog):
 
         await ctx.send(f"**{user.name}** has successfully been banned")
 
-    @commands.command(name="kick", aliases=["k"], description="Kicks a user from a server")
+    @commands.command(name="kick", aliases=["k"], description="Kicks a user from a server.")
     @commands.has_permissions(kick_members=True)
     async def kick_(self, ctx: commands.Context, user: discord.Member, *, reason=None):
-        """Kicks a user from a server,
+        """Kicks a user from a server.
         Requires the 'Kick members' permission
         """
 

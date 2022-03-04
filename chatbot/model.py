@@ -10,7 +10,7 @@ def init_chatbot():
     chatbot = ChatBot_(
         "Beep Boop Bot",
         storage_adapter="chatterbot.storage.SQLStorageAdapter",
-        database_uri="sqlite:///_chatbot_db/db.sqlite3"
+        database_uri="sqlite:///chatbot\chatbot_db\db.sqlite3"
     )
 
     trainer = ChatterBotCorpusTrainer(chatbot)
