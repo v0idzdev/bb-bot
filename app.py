@@ -19,7 +19,7 @@ for ext in extensions:
 @bot.event
 async def on_ready():
     """Displays a series of logs to the screen when the bot has loaded"""
-    await bot.change_presence(activity=discord.Game(name="❓ .help | 🎶 .play", url="shorturl.at/jGLRW"))
+    await bot.change_presence(activity=discord.Game(name="❓ .help | 🎶 .play"))
 
     print(f"Username: {bot.user.name}")
     print(f"Bot ID: {bot.user.id}")
