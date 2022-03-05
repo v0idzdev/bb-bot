@@ -7,7 +7,7 @@ Beep Boop Bot is provided under the *GNU General Public License 3.0*. This means
 
 Beep Boop Bot is hosted with Google Cloud Platform. If there are issues with Beep Boop Bot's online status, feel free to submit an issue or contact matthewflegg@outlook.com. 
 
-##### What's new in v0.1.1?
+##### What's new?
 * Beep Boop Bot now runs 24/7!
 * Fixed issues with music commands when running the bot on GCP compute engine.
 
