@@ -1,11 +1,8 @@
 import discord
-import asyncio
 import os
 import discord.ext.commands as commands
 import discord.ext.tasks as tasks
-
-from discord.utils import get
-from itertools import cycle
+import itertools
 
 # |---------- CONFIG ----------|
 
@@ -13,7 +10,7 @@ intents = discord.Intents.all()
 intents.members = True
 
 prefix = '~'
-status = cycle(['~help', '~ai', '~play'])
+status = itertools.cycle(['~help', '~ai', '~play'])
 client = commands.Bot(prefix, intents=intents)
 
 modules = ['admin']
