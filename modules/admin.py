@@ -68,6 +68,20 @@ async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
     """
     sanction(ctx, 'ban', member, reason=reason)
 
+
+@commands.command()
+@commands.has_permissions(ban_members=True)
+async def unban(ctx: commands.Context, user: discord.User):
+    """Unbans a specified user from a server.
+
+    :param: ctx (Context): Command invocation context.
+    :param: user (User): The user to unban from the server.
+    """
+    message = f':tools: {ctx.author.mention}: {user.name} was unbanned.'
+
+    await ctx.guild.unban(user)
+    await ctx.send(message)
+
 # |----- REGISTERING MODULE -----|
 
 def setup(client: commands.Bot):

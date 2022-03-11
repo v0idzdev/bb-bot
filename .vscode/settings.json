@@ -6,6 +6,8 @@
         "cmds",
         "dotenv",
         "Flegg",
-        "matthewflegg"
+        "matthewflegg",
+        "unban",
+        "Unbans"
     ]
 }
