@@ -2,6 +2,7 @@
 Contains commands relating to administrator tasks.
 """
 
+import asyncio
 import discord.ext.commands as commands
 import discord
 import helpers
@@ -15,13 +16,19 @@ async def sanction(ctx: commands.Context, punishment: str, member: discord.Membe
     :param: punishment (str): Either 'kick'/'ban' depending on the sanction.
     :param: reason (str | None): The reason for the kick/ban.
     """
-    if punishment == 'kick':
-        await member.kick()
-        action = 'kicked'
+    match punishment:
 
-    if punishment == 'ban':
-        await member.ban()
-        action = 'banned'
+        case 'kick':
+            await member.kick()
+            action = 'kicked'
+
+        case 'ban':
+            await member.ban()
+            action = 'banned'
+
+        case 'softban':
+            await member.ban()
+            action = 'softban'
 
     message_server = f':tools: **{ctx.author.name}** was {action}'
     message_member = f':x: You were {action} from **{ctx.guild.name}**'
@@ -31,6 +38,22 @@ async def sanction(ctx: commands.Context, punishment: str, member: discord.Membe
 
     await ctx.send(message_server)
     await member.send(message_member)
+
+
+async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
+    """Utility function that unbans a member.
+
+    Outputs an appropriate message depending on whether the ban
+    was permanent or temporary.
+
+    :param: ctx (Context): Command invocation context.
+    :param: ban_type (str): The type of ban that the user had - either 'temporary' or 'permanent'
+    :param: reason (str | None): The reason for the kick/ban.
+    """
+    message = f':tools: {ctx.author.mention}: {user.name}\'s {ban_type} ban was lifted.'
+
+    await ctx.guild.unban(user)
+    await ctx.send(message)
 
 # |---------- COMMANDS ----------|
 
@@ -60,13 +83,29 @@ async def kick(ctx: commands.Context, member: discord.Member, *, reason=None):
 @commands.command()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
-    """Kicks a specified member from a server.
+    """Bans a specified member from a server.
 
     :param: ctx (Context): Command invocation context.
     :param: member (Member): The member to ban from the server.
     :param: reason (str, optional): The reason for the ban.
     """
-    sanction(ctx, 'ban', member, reason=reason)
+    await sanction(ctx, 'ban', member, reason=reason)
+
+
+@commands.command()
+@commands.has_permissions(ban_members=True)
+async def softban(ctx: commands.Context, member: discord.Member, days=3, reason=None):
+    """Temporarily bans a specified member from a server.
+
+    The default number of days for a temporary ban is 3.
+
+    :param: ctx (Context): Command invocation context.
+    :param: member (Member): The member to ban from the server.
+    :param: reason (str, optional): The reason for the ban.
+    """
+    await sanction(ctx, 'softban', member, reason=reason)
+    await asyncio.sleep(days * 86400) # Convert to seconds
+    await lift_ban(ctx, 'temporary', member)
 
 
 @commands.command()
@@ -77,10 +116,7 @@ async def unban(ctx: commands.Context, user: discord.User):
     :param: ctx (Context): Command invocation context.
     :param: user (User): The user to unban from the server.
     """
-    message = f':tools: {ctx.author.mention}: {user.name} was unbanned.'
-
-    await ctx.guild.unban(user)
-    await ctx.send(message)
+    await lift_ban(ctx, 'permanent', user)
 
 # |----- REGISTERING MODULE -----|
 
