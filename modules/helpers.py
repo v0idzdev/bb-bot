@@ -6,7 +6,7 @@ import discord.ext.commands as commands
 
 # |-------- UTILITY FUNCTIONS --------|
 
-def add_commands(*cmds: function, client: commands.Bot):
+def add_commands(client: commands.Bot, *cmds):
     """Loops through each command passed in and adds them to a bot.
 
     :param: *cmds (tuple(function)): The functions to add to the bot.

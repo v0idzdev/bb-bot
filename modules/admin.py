@@ -2,11 +2,12 @@
 Contains commands relating to administrator tasks.
 """
 
-import asyncio
 import black
 import discord.ext.commands as commands
+import modules.helpers as helpers
+import asyncio
+import start
 import discord
-import helpers
 import json
 
 # |------ USEFUL FUNCTIONS ------|
@@ -20,17 +21,17 @@ async def sanction(ctx: commands.Context, punishment: str, member: discord.Membe
     """
     match punishment:
 
-        case 'kick':
-            await member.kick()
-            action = 'kicked'
-
         case 'ban':
             await member.ban()
-            action = 'banned'
+            action = 'permanently banned'
 
         case 'softban':
             await member.ban()
-            action = 'softban'
+            action = 'temporarily banned'
+
+        case 'kick':
+            await member.kick()
+            action = 'kicked'
 
     message_server = f':tools: **{ctx.author.name}** was {action}'
     message_member = f':x: You were {action} from **{ctx.guild.name}**'
@@ -96,10 +97,10 @@ async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
 
 @commands.command()
 @commands.has_permissions(ban_members=True)
-async def softban(ctx: commands.Context, member: discord.Member, days=3, reason=None):
+async def softban(ctx: commands.Context, member: discord.Member, days=1, reason=None):
     """Temporarily bans a specified member from a server.
 
-    The default number of days for a temporary ban is 3.
+    The default number of days for a temporary ban is 1.
 
     :param: ctx (Context): Command invocation context.
     :param: member (Member): The member to ban from the server.
@@ -122,6 +123,7 @@ async def unban(ctx: commands.Context, user: discord.User):
 
 
 @commands.command()
+@commands.has_permissions(manage_messages=True)
 async def blacklist(ctx: commands.Context, *, word: str):
     """
     Adds a word to a list of disallowed words in a server.
@@ -129,15 +131,49 @@ async def blacklist(ctx: commands.Context, *, word: str):
     :param: ctx (Context): Command invocation context.
     :param: word (str): The word to add to the blacklist.
     """
+    filepath = 'files/blacklist.json'
+    id = str(ctx.guild.id)
+
+    with open(filepath, 'r') as file:
+        blacklist: dict = json.load(file)
+
+    if id not in blacklist.keys():
+        blacklist[id] = []
+
+    if word in blacklist[id]:
+        return await ctx.send(f':x: The word \'{word}\' has already been blacklisted.')
+
+    blacklist[id].append(word)
+    print(blacklist)
+
+    with open(filepath, 'w') as file:
+        json.dump(blacklist, file, indent=4)
+        await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
+
+# |----------- EVENTS -----------|
+
+async def on_message(message: discord.Message):
+    """
+    Called when a message is sent.
+
+    :param: message (Message): The message that was sent.
+    """
     with open('files/blacklist.json', 'r') as file:
         blacklist = json.load(file)
-        id = ctx.guild.id
 
-        if id not in blacklist:
-            blacklist[id] = []
+    id = str(message.guild.id)
 
-        blacklist[id].append(word)
-        json.dump(blacklist, file, indent=4)
+    if start.prefix in message.content or id not in blacklist:
+        return
+
+    words_msg = {word for word in message.content.split(' ')}
+    words_ban = {word for word in blacklist[id]}
+
+    for wordlist in (words_msg, words_ban): # Convert words in both lists
+        wordlist = {word.strip().lower() for word in wordlist}
+
+    if (words_msg & words_ban): # If any banned words are in the message
+        await message.delete()
 
 # |----- REGISTERING MODULE -----|
 
@@ -146,4 +182,5 @@ def setup(client: commands.Bot):
 
     :param: client (Bot): Client instance, to add the commands to.
     """
-    helpers.add_commands(clear, kick, ban, softban, unban, client)
+    helpers.add_commands(client, clear, kick, ban, softban, unban, blacklist)
+    client.add_listener(on_message, 'on_message')

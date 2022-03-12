@@ -6,6 +6,7 @@
         "cmds",
         "dotenv",
         "Flegg",
+        "infile",
         "matthewflegg",
         "unban",
         "Unbans"
