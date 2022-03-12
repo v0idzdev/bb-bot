@@ -3,9 +3,11 @@ Contains commands relating to administrator tasks.
 """
 
 import asyncio
+import black
 import discord.ext.commands as commands
 import discord
 import helpers
+import json
 
 # |------ USEFUL FUNCTIONS ------|
 
@@ -118,6 +120,25 @@ async def unban(ctx: commands.Context, user: discord.User):
     """
     await lift_ban(ctx, 'permanent', user)
 
+
+@commands.command()
+async def blacklist(ctx: commands.Context, *, word: str):
+    """
+    Adds a word to a list of disallowed words in a server.
+
+    :param: ctx (Context): Command invocation context.
+    :param: word (str): The word to add to the blacklist.
+    """
+    with open('files/blacklist.json', 'r') as file:
+        blacklist = json.load(file)
+        id = ctx.guild.id
+
+        if id not in blacklist:
+            blacklist[id] = []
+
+        blacklist[id].append(word)
+        json.dump(blacklist, file, indent=4)
+
 # |----- REGISTERING MODULE -----|
 
 def setup(client: commands.Bot):
@@ -125,5 +146,4 @@ def setup(client: commands.Bot):
 
     :param: client (Bot): Client instance, to add the commands to.
     """
-    helpers.add_commands(clear, kick, ban, client)
-
+    helpers.add_commands(clear, kick, ban, softban, unban, client)

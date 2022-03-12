@@ -1,3 +1,9 @@
+"""
+Main entry point for the application.
+
+This is where the bot is configured and launched.
+"""
+
 import discord
 import os
 import discord.ext.commands as commands
