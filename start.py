@@ -19,7 +19,7 @@ prefix = '~'
 status = itertools.cycle(['~help', '~ai', '~play'])
 client = commands.Bot(prefix, intents=intents)
 
-modules = ['admin']
+modules = ['admin', 'greetings']
 for module in modules:
     client.load_extension(f'modules.{module}')
 
@@ -38,30 +38,6 @@ async def on_ready():
     """Executes when the bot has loaded."""
     print(f'Loaded {client.user.name} successfully.')
     await change_presence.start()
-
-
-@client.event
-async def on_member_join(member: discord.Member):
-    """Sends a welcome message when a member joins a server.
-
-    :param: member (Member): The member that joined the server.
-    """
-    channel = member.guild.system_channel
-
-    if channel is not None:
-        await channel.send(f':wave: Welcome, {member.mention}.')
-
-
-@client.event
-async def on_member_remove(member: discord.Member):
-    """Sends a welcome message when a member leaves a server.
-
-    :param: member (Member): The member that left the server.
-    """
-    channel = member.guild.system_channel
-
-    if channel is None:
-        await channel.send(f':wave: Goodbye, {member.mention}.')
 
 # |---------- LAUNCH ----------|
 

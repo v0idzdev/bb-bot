@@ -183,4 +183,7 @@ def setup(client: commands.Bot):
     :param: client (Bot): Client instance, to add the commands to.
     """
     helpers.add_commands(client, clear, kick, ban, softban, unban, blacklist)
-    client.add_listener(on_message, 'on_message')
+    helpers.add_listeners(
+        client,
+        (on_message, on_message.__name__)
+    )
