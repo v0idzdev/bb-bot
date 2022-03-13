@@ -3,7 +3,7 @@ Contains commands relating to administrator tasks.
 """
 
 import discord.ext.commands as commands
-import modules.utilities.helpers as helpers
+import helpers
 import asyncio
 import discord
 import json
@@ -130,7 +130,7 @@ async def blacklist(ctx: commands.Context, *, word: str):
     word (str):
         The word to add to the blacklist.
     """
-    filepath = "files/blacklist.json"
+    filepath = 'files/blacklist.json'
     id = str(ctx.guild.id)
 
     with open(filepath, "r") as file:
@@ -140,14 +140,14 @@ async def blacklist(ctx: commands.Context, *, word: str):
         blacklist[id] = []
 
     if word in blacklist[id]:
-        return await ctx.send(f":x: The word '{word}' has already been blacklisted.")
+        return await ctx.send(f':x: The word \'{word}\' has already been blacklisted.')
 
     blacklist[id].append(word)
     print(blacklist)
 
-    with open(filepath, "w") as file:
+    with open(filepath, 'w') as file:
         json.dump(blacklist, file, indent=4)
-        await ctx.send(f":tools: '{word}' has been added to the blacklist.")
+        await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
 
 
 # |----- REGISTERING MODULE -----|

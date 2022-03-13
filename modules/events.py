@@ -3,7 +3,7 @@ Contains all of the events that the client will listen to.
 """
 
 import discord.ext.commands as commands
-import modules.utilities.helpers as helpers
+import helpers
 import discord
 import start
 import json

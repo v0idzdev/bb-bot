@@ -6,7 +6,8 @@ error handlers.
 """
 
 import discord.ext.commands as commands
-import modules.utilities.helpers as helpers
+import discord.ui as UI
+import helpers
 import discord
 import traceback
 import math
@@ -35,30 +36,30 @@ async def on_command_error(ctx: commands.Context, error):
         return
 
     error = getattr(error, 'original', error)
-    message = ':x: '
+    message = f':x: {ctx.author.mention}'
 
-    match True:
+    match error.__class__:
 
-        case isinstance(error, commands.CommandNotFound):
-            return
+        case commands.CommandNotFound:
+            message += 'That command does not exist.'
 
-        case isinstance(error, commands.BotMissingPermissions):
+        case commands.BotMissingPermissions:
             message += await helpers.handle_missing_perms(ctx, error)
 
-        case isinstance(error, commands.MissingPermissions):
+        case commands.MissingPermissions:
             message += await helpers.handle_missing_perms(ctx, error)
 
-        case isinstance(error, commands.DisabledCommand):
+        case commands.DisabledCommand:
             message += 'This command has been disabled.'
 
-        case isinstance(error, commands.CommandOnCooldown):
+        case commands.CommandOnCooldown:
             message += 'This command is on cooldown. Try again after' \
                 + f'{math.ceil(error.retry_after)}s.'
 
-        case isinstance(error, commands.UserInputError):
+        case commands.UserInputError:
             message += 'Sorry, that input is invalid.'
 
-        case isinstance(error, commands.UserInputError):
+        case commands.NoPrivateMessage:
             try:
                 message += 'You can\'t use this command in private messages.'
 
@@ -66,9 +67,37 @@ async def on_command_error(ctx: commands.Context, error):
                 return
 
         case _:
-            print(f'Ignoring exceptions in command {ctx.command}', file=sys.stderr)
+            print(f'Ignoring exceptions in command {ctx.command}.', file=sys.stderr)
             traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
             return
 
-    await ctx.send(message)
+    button_continue = UI.Button(label='OK', style=discord.ButtonStyle.green)
+    button_docspage = UI.Button(label='Help',
+        url='https://github.com/matthewflegg/beepboop/blob/main/README.md',
+    )
+
+    button_continue.callback = lambda interaction: \
+        (await interaction.message.delete(delay=3) for _ in '_').__anext__()
+
+    view = UI.View()
+    view.add_item(button_continue)
+    view.add_item(button_docspage)
+
+    return await ctx.send(message, view=view)
+
+
+# |----- REGISTERING MODULE -----|
+
+
+def setup(client: commands.Bot):
+    """
+    Registers the functions in this module with the client.
+
+    Parameters
+    ----------
+
+    client (Bot):
+        Client instance, to add the commands to.
+    """
+    client.add_listener(on_command_error, on_command_error.__name__)

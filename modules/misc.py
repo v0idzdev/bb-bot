@@ -3,7 +3,7 @@ Contains miscellaneous commands to be used for fun.
 """
 
 import discord.ext.commands as commands
-import modules.utilities.helpers as helpers
+import helpers
 import random
 import discord
 import json
@@ -72,8 +72,8 @@ async def poll(ctx: commands.Context, *poll: str):
 
     message = await ctx.send(embed=embed)
 
-    await message.add_reaction(':heavy_check_mark:')
-    await message.add_reaction(':x:')
+    await message.add_reaction('✔️')
+    await message.add_reaction('❌')
 
 
 # |----- REGISTERING MODULE -----|
