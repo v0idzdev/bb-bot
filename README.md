@@ -30,7 +30,7 @@ Kicks a specified user from the server.<br>
 Bans a specified user from the server.<br>
 **Requires**: `Ban Members`
 
-> **~softban `member` `reason?`**
+> **~softban `member` `number of days` `reason?`**
 
 Temporarily bans a specified user from the server.<br>
 **Requires**: `Ban Members`
