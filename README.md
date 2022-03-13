@@ -8,6 +8,12 @@ This page refers to the **pre-release** version of Beep Boop Bot `V1.X.X`. If yo
 
 ## Commands List
 
+### Help Commands
+
+> **~help**
+
+Sends an embed linking to **this page**.<br>
+
 ### Admin/Moderator Commands
 
 > **~clear `number of messages`**
