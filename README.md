@@ -2,9 +2,9 @@
 ![Latest Stable Version](https://img.shields.io/github/v/release/matthewflegg/beepboop?label=Latest%20Stable%20Version&style=social)
 
 # Beep Boop Bot Documentation
-Welcome to the official documentation for Beep Boop Bot.
+**Welcome to the official documentation for Beep Boop Bot.**
 
-This page refers to the pre-release version of Beep Boop Bot V1.X.X. If you're looking for the documentation for the version that is currently online (v0.1.3), you'll find it in README.md in the main branch. 
+This page refers to the **pre-release** version of Beep Boop Bot `V1.X.X`. If you're looking for the documentation for the version that is **currently online** `v0.1.3`, you'll find it in the **README.md** on the **main** branch. 
 
 ## Commands List
 
