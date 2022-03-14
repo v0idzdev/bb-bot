@@ -2,6 +2,7 @@ import discord
 import discord.ext.commands as commands
 import asyncio
 import itertools
+import start
 
 from async_timeout import timeout
 from functools import partial
@@ -94,7 +95,12 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if 'entries' in data: # Get the first item in a playlist
             data = data["entries"][0]
 
-        await ctx.send(f':white_check_mark: [Added {data["title"]} to the Queue.]\n', delete_after=15)
+        embed = discord.Embed(
+            title=f'✅ Added {data["title"]} to the Queue.',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed, delete_after=15)
 
         if download:
             source = ytdl.prepare_filename(data)
@@ -179,8 +185,14 @@ class MusicPlayer:
             self.current = source
 
             self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
-            self.np = await self._channel.send(f'🔊 **Now Playing:** *{source.title}* requested by '
-                + f'**{source.requester}**.')
+
+            embed = discord.Embed(
+                title=f'🎵 **Now Playing:** *{source.title}*',
+                description=f'Requested by: **{source.requester}**',
+                color=start.colour
+            )
+
+            self.np = await self._channel.send(embed=embed)
 
             await self.next.wait()
 
@@ -326,7 +338,13 @@ class Music(commands.Cog):
             except asyncio.TimeoutError:
                 raise VCError(f':x: {ctx.author.mention}: Connecting to channel **{channel}** timed out.')
 
-        await ctx.send(f'Connected to: **{channel}**', delete_after=20)
+        embed = discord.Embed(
+            title=f'🔥 Connected to:',
+            description=f'**{channel}**',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed, delete_after=20)
 
     @commands.command(aliases=['p'])
     async def play(self, ctx: commands.Context, *, search: str):
@@ -378,7 +396,13 @@ class Music(commands.Cog):
             return
 
         vc.pause()
-        await ctx.send(f'**{ctx.author}**: Paused the song')
+
+        embed = discord.Embed(
+            title=f'⏸️ **{ctx.author}**: Paused the song.',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['r'])
     async def resume(self, ctx: commands.Context):
@@ -401,7 +425,13 @@ class Music(commands.Cog):
             return
 
         vc.resume()
-        await ctx.send(f':track_next: **{ctx.author}**: Resumed the song.')
+
+        embed = discord.Embed(
+            title=f'▶️ **{ctx.author}**: Resumed the song.',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['s'])
     async def skip(self, ctx: commands.Context):
@@ -427,7 +457,13 @@ class Music(commands.Cog):
             return
 
         vc.stop()
-        await ctx.send(f':track_next: **{ctx.author}**: Skipped the song.')
+
+        embed = discord.Embed(
+            title=f'⏭️ **{ctx.author}**: Skipped the song.',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['q', 'songs'])
     async def queue(self, ctx: commands.Context):
@@ -452,8 +488,12 @@ class Music(commands.Cog):
         # Grab up to 5 entries from the queue...
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
-        fmt = '\n'.join(f':headphones: **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming))
-        embed = discord.Embed(title=f'Upcoming - Next {len(upcoming)}', description=fmt)
+        fmt = '\n\n'.join(f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming))
+        embed = discord.Embed(
+            title=f'Upcoming: {len(upcoming)} songs.',
+            description=fmt,
+            color=start.colour
+        )
 
         await ctx.send(embed=embed)
 
@@ -485,10 +525,15 @@ class Music(commands.Cog):
         except discord.HTTPException:
             pass
 
-        player.np = await ctx.send(f':musical_note: **Now Playing:** *{vc.source.title}* '
-            f'requested by **{vc.source.requester}**')
+        embed = discord.Embed(
+            title=f'🎵 **Now Playing:** *{vc.source.title}*',
+            description=f'Requested by: **{vc.source.requester}**',
+            color=start.colour
+        )
 
-    @commands.command(aliases=["vol"])
+        player.np = await ctx.send(embed=embed)
+
+    @commands.command(aliases=['vol'])
     async def volume(self, ctx: commands.Context, *, vol: float):
         """
         Changes the music player's volume.
@@ -516,7 +561,13 @@ class Music(commands.Cog):
             vc.source.volume = vol / 100
 
         player.volume = vol / 100
-        await ctx.send(f":sound: **{ctx.author}**: Set the volume to *{vol}%*")
+
+        embed = discord.Embed(
+            title=f'🔊 **{ctx.author}**: Set the volume to *{vol}%*',
+            color=start.colour
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["del"])
     async def stop(self, ctx: commands.Context):

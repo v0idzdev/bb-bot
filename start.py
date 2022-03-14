@@ -19,6 +19,7 @@ intents = discord.Intents.all()
 intents.members = True
 
 prefix = "~"
+colour = 0x486572
 status = itertools.cycle(["~help", "~ai", "~play"])
 client = commands.Bot(prefix, intents=intents, help_command=None) # Help command = none so we can override it
 
