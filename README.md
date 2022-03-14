@@ -14,7 +14,8 @@
 
 **BB.Bot** is a Discord bot powered by **Python** and GCP's **Compute Engine**. Featuring **24/7 uptime**, **HQ music streaming**, **admin commands**, and more, **BB.Bot** is the bot for you. **Available for free** and **regularly maintained**, our bot comes with **no additional costs** and **long-term support**.
 
-Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to Invite BB.Bot to Your Server.
+* Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to Invite BB.Bot to Your Server.
+* Click **[Here](https://discord.gg/Dacy34eM)** to join our Discord server.
 <br><br>
 
 ## 📢 **Commands List**
