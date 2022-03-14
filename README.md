@@ -6,7 +6,12 @@
 
 This page refers to the **pre-release** version of Beep Boop Bot `V1.X.X`. If you're looking for the documentation for the version that is **currently online** `v0.1.3`, you'll find it in the **README.md** on the **main** branch. 
 
-## Commands List
+### Contents
+
+* [Help Commands](#help-commands)
+* [Admin Commands](#admin-commands)
+* [Music Commands](#music-commands)
+* [Misc Commands](#misc-commands)
 
 ### Help Commands
 
@@ -14,7 +19,7 @@ This page refers to the **pre-release** version of Beep Boop Bot `V1.X.X`. If yo
 
 Sends an embed linking to **this page**.<br>
 
-### Admin/Moderator Commands
+### Admin Commands
 
 > **~clear `number of messages`**
 
