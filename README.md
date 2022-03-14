@@ -2,7 +2,7 @@
   <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
 </p>
 <h1 align="center">🤖 BB.Bot</h1>
-<h3 align="center">🎵 HQ Music Streaming | 🔒 Moderation | 📖 Memes | ❓ Polls</h3>
+<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ❓ Polls</h3>
 <h4 align="center">Powered by Discord.py and GCP, BB.Bot is the bot for you.</h4>
 <br>
 
