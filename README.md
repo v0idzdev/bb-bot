@@ -45,3 +45,55 @@ Temporarily bans a specified user from the server.<br>
 
 Unbans a specified user from the server.<br>
 **Requires**: `Ban Members`
+
+### Music Commands
+
+> **~connect** | **~join**
+
+Joins the VC you're currently in. When you use `play`, the bot will join automatically before playing.
+
+> **~play | ~p `song to search for`**
+
+Searches YouTube for a song and then plays the top result.
+
+> **~pause | ~ps**
+
+Pauses the song currently playing if there is one.
+
+> **~resume | ~r**
+
+Resumes the song currently playing if there's one currently paused.
+
+> **~skip | ~s**
+
+Skips the song currently playing if there is one.
+
+> **~queue | ~q | ~songs**
+
+Shows a list of songs that are queued.
+
+> **~nowplaying | ~np**
+
+Shows the song currently playing if there is one.
+
+> **~volume | ~vol `volume as a percentage`**
+
+Adjust the volume of the music player.
+
+> **~stop | ~del**
+
+Stops the music player and clears all existing songs from the queue.
+
+### Misc Commands
+
+> **~choose `option a` `option b` `option c?` `...`**
+
+Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
+
+> **~meme**
+
+Sends a random meme from Reddit.
+
+> **~poll `yes/no question`**
+
+Creates a poll that users can react with yes or no to. 
