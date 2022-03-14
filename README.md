@@ -1,25 +1,40 @@
-![Latest Version](https://img.shields.io/github/v/release/matthewflegg/beepboop?include_prereleases&label=Latest%20Version&style=social)
-![Latest Stable Version](https://img.shields.io/github/v/release/matthewflegg/beepboop?label=Latest%20Stable%20Version&style=social)
+<p align="center">
+  <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
+</p>
+<h1 align="center">🤖 BB.Bot</h1>
+<h3 align="center">🎵 HQ Music Streaming | 🔒 Moderation | 📖 Memes | ❓ Polls</h3>
+<h4 align="center">Powered by Discord.py and GCP, BB.Bot is the bot for you.</h4>
+<br>
 
-# Beep Boop Bot Documentation
-**Welcome to the official documentation for Beep Boop Bot.**
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/matthewflegg/beepboop?include_prereleases&label=Latest%20Version&style=social">
+  <img src="https://img.shields.io/github/v/release/matthewflegg/beepboop?label=Latest%20Stable%20Version&style=social">
+</p>
+<br>
 
-This page refers to the **pre-release** version of Beep Boop Bot `V1.X.X`. If you're looking for the documentation for the version that is **currently online** `v0.1.3`, you'll find it in the **README.md** on the **main** branch. 
+**BB.Bot** is a Discord bot powered by **Python** and GCP's **Compute Engine**. Featuring **24/7 uptime**, **HQ music streaming**, **admin commands**, and more, **BB.Bot** is the bot for you. **Available for free** and **regularly maintained**, our bot comes with **no additional costs** and **long-term support**.
 
-### Contents
+Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to Invite BB.Bot to Your Server.
+<br><br>
 
-* [Help Commands](#help-commands)
-* [Admin Commands](#admin-commands)
-* [Music Commands](#music-commands)
-* [Misc Commands](#misc-commands)
+## 📢 **Commands List**
 
-### Help Commands
+### 🧭 Contents
+
+* **[Help Commands](#-help-commands)**
+* **[Admin Commands](#-admin-commands)**
+* **[Music Commands](#-music-commands)**
+* **[Misc Commands](#-misc-commands)**
+<br>
+
+### 🔖 Help Commands
 
 > **~help**
 
 Sends an embed linking to **this page**.<br>
+<br>              
 
-### Admin Commands
+### 🔑 Admin Commands
 
 > **~clear `number of messages`**
 
@@ -50,8 +65,9 @@ Temporarily bans a specified user from the server.<br>
 
 Unbans a specified user from the server.<br>
 **Requires**: `Ban Members`
+<br>         
 
-### Music Commands
+### 🔊 Music Commands
 
 > **~connect** | **~join**
 
@@ -88,8 +104,9 @@ Adjust the volume of the music player.
 > **~stop | ~del**
 
 Stops the music player and clears all existing songs from the queue.
+<br>              
 
-### Misc Commands
+### 📒 Misc Commands
 
 > **~choose `option a` `option b` `option c?` `...`**
 
