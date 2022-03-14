@@ -26,14 +26,14 @@
 * **[Admin Commands](#-admin-commands)**
 * **[Music Commands](#-music-commands)**
 * **[Misc Commands](#-misc-commands)**
-<br>
+<br><br>  
 
 ### 🔖 Help Commands
 
 > **~help**
 
-Sends an embed linking to **this page**.<br>
-<br>              
+Sends an embed linking to **this page**.
+<br><br>             
 
 ### 🔑 Admin Commands
 
@@ -66,7 +66,7 @@ Temporarily bans a specified user from the server.<br>
 
 Unbans a specified user from the server.<br>
 **Requires**: `Ban Members`
-<br>         
+<br><br>        
 
 ### 🔊 Music Commands
 
@@ -105,7 +105,7 @@ Adjust the volume of the music player.
 > **~stop | ~del**
 
 Stops the music player and clears all existing songs from the queue.
-<br>              
+<br><br>              
 
 ### 📒 Misc Commands
 
