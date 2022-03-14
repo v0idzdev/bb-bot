@@ -7,8 +7,15 @@
         "dotenv",
         "Flegg",
         "infile",
+        "logtostderr",
         "matthewflegg",
+        "nocheckcertificate",
+        "noplaylist",
+        "nostdin",
+        "outtmpl",
         "unban",
-        "Unbans"
+        "Unbans",
+        "YOUTUBEDL",
+        "YTDL"
     ]
 }
