@@ -1,3 +1,7 @@
+"""
+Contains music player commands.
+"""
+
 import discord
 import discord.ext.commands as commands
 import asyncio
@@ -12,7 +16,7 @@ from youtube_dl import YoutubeDL
 # |---------- CONFIG ----------|
 
 
-COLOR = discord.Color(0x486572)
+COLOR = start.colour
 
 ytdl_options = {
     'format': 'bestaudio/best',

@@ -3,9 +3,11 @@ Contains commands relating to administrator tasks.
 """
 
 import discord.ext.commands as commands
+import discord.ui as UI
 import helpers
 import asyncio
 import discord
+import start
 import json
 
 
@@ -14,7 +16,8 @@ import json
 
 @commands.command()
 @commands.has_permissions(manage_messages=True)
-async def clear(ctx: commands.Context, amount: int):
+@commands.cooldown(1, 15, commands.BucketType.user)
+async def clear(ctx: commands.Context, amount: int | None):
     """
     Clears messages from a text channel.
 
@@ -27,11 +30,35 @@ async def clear(ctx: commands.Context, amount: int):
     amount (int):
         The number of messages to clear.
     """
-    await ctx.channel.purge(limit=amount)
+    if amount is not None: # If the user selected an amount, clear that amount of messages
+        await ctx.send(embed=discord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
+        return await ctx.channel.purge(limit=amount)
+
+    # Else, create two buttons
+    # Then ask the user if they would like to clear all messages in the channel
+    yes_button = UI.Button(label='Yes', style=discord.ButtonStyle.green)
+    no_button = UI.Button(label='No', style=discord.ButtonStyle.red)
+
+    yes_button.callback = lambda interaction: \
+        (await interaction.channel.purge(limit=None) for _ in '_').__anext__()
+    no_button.callback = lambda interaction: \
+        (await interaction.message.delete() for _ in '_').__anext__()
+
+    view = UI.View()
+    view.add_item(yes_button)
+    view.add_item(no_button)
+
+    return await ctx.send(
+        f':warning: {ctx.author.mention}: You have not selected a number of messages to clear.\n'
+        + 'Would you like to clear all messages in this channel?',
+        view=view
+    )
+
 
 
 @commands.command()
 @commands.has_permissions(kick_members=True)
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def kick(ctx: commands.Context, member: discord.Member, *, reason=None):
     """
     Kicks a specified member from a server.
@@ -53,6 +80,7 @@ async def kick(ctx: commands.Context, member: discord.Member, *, reason=None):
 
 @commands.command()
 @commands.has_permissions(ban_members=True)
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
     """
     Bans a specified member from a server.
@@ -74,6 +102,7 @@ async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
 
 @commands.command()
 @commands.has_permissions(ban_members=True)
+@commands.cooldown(1, 30, commands.BucketType.user)
 async def softban(ctx: commands.Context, member: discord.Member, days=1, reason=None):
     """
     Temporarily bans a specified member from a server.
@@ -99,6 +128,7 @@ async def softban(ctx: commands.Context, member: discord.Member, days=1, reason=
 
 @commands.command()
 @commands.has_permissions(ban_members=True)
+@commands.cooldown(1, 2, commands.BucketType.user)
 async def unban(ctx: commands.Context, user: discord.User):
     """
     Unbans a specified user from a server.
@@ -117,6 +147,7 @@ async def unban(ctx: commands.Context, user: discord.User):
 
 @commands.command()
 @commands.has_permissions(manage_messages=True)
+@commands.cooldown(1, 2, commands.BucketType.user)
 async def blacklist(ctx: commands.Context, *, word: str):
     """
     Adds a word to a list of disallowed words in a server.
@@ -133,7 +164,7 @@ async def blacklist(ctx: commands.Context, *, word: str):
     filepath = 'files/blacklist.json'
     id = str(ctx.guild.id)
 
-    with open(filepath, "r") as file:
+    with open(filepath, 'r') as file:
         blacklist: dict = json.load(file)
 
     if id not in blacklist.keys():
@@ -147,7 +178,8 @@ async def blacklist(ctx: commands.Context, *, word: str):
 
     with open(filepath, 'w') as file:
         json.dump(blacklist, file, indent=4)
-        await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
+
+    await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
 
 
 # |----- REGISTERING MODULE -----|

@@ -4,6 +4,7 @@ Contains the help command.
 
 import discord.ext.commands as commands
 import discord
+import start
 
 
 # |---------- COMMANDS ----------|
@@ -22,7 +23,7 @@ async def help(ctx: commands.Context):
     """
     embed = discord.Embed(
         title="Beep Boop Bot Documentation",
-        color=0x486572,
+        color=start.colour,
         url="https://github.com/matthewflegg/beepboop/blob/main/README.md",
         description="View the official commands list for Beep Boop Bot on GitHub.",
     )

@@ -7,6 +7,7 @@ import helpers
 import random
 import discord
 import json
+import start
 import requests
 
 
@@ -46,7 +47,7 @@ async def meme(ctx: commands.Context):
 
     meme = discord.Embed(
         title=str(data["title"]),
-        color=0x486572
+        color=start.colour
     )
 
     meme.set_image(url=str(data['url']))
@@ -66,7 +67,7 @@ async def poll(ctx: commands.Context, *poll: str):
     """
     embed = discord.Embed(
         title=f'Poll by **{ctx.author.name}**:',
-        color=0x486572,
+        color=start.colour,
         description=' '.join(poll)
     )
 
