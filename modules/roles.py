@@ -4,6 +4,7 @@ Contains a cog that handles reaction roles/self roles.
 
 import discord.ext.commands as commands
 import discord
+import start
 import json
 
 
@@ -102,7 +103,9 @@ class ReactionEventHandler(commands.Cog):
 
 @commands.command()
 @commands.has_permissions(manage_roles=True)
-async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message: str):
+async def reactrole(
+    ctx: commands.Context, emoji, role: discord.Role, *, message: str
+):
     """
     Creates and sends an embed that gives users a role when they react to it.
 
@@ -123,7 +126,6 @@ async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message
     """
     embed = discord.Embed(description=message)
     msg = await ctx.channel.send(embed=embed)
-
     await msg.add_reaction(emoji)
 
     with open(FILEPATH) as file:
@@ -140,6 +142,52 @@ async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message
 
     with open(FILEPATH, 'w') as file:
         json.dump(data, file, indent=4)
+
+
+# |-------------- ERRORS --------------|
+
+
+@reactrole.error
+async def reactrole_error(ctx: commands.Context, error):
+    """
+    Error handler for the reactrole command.
+
+    Parameters
+    ----------
+
+    ctx (Context):
+        Command invocation context.
+
+    error:
+        The error that was raised when the command was invoked.
+    """
+    error = getattr(error, 'original', error)
+    message = f':x: {ctx.author.mention}: '
+
+    match error.__class__:
+
+        case commands.RoleNotFound:
+            message += 'That role does not exist. Please create the role first.'
+
+        case commands.MissingPermissions:
+            message += 'You need the **manage roles** permission to create a reaction role.'
+
+        case commands.BotMissingPermissions:
+            message += 'I need the **manage roles** permission to create a reaction role.'
+
+        case commands.EmojiNotFound:
+            message += 'That emoji does not exist. Please use a valid emoji.'
+
+        case commands.MissingRequiredArgument:
+            message += 'Please enter all the required arguments.\n' \
+                + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
+
+        case _:
+            message += 'An unknown error occurred while creating your reaction role.\n' \
+                + f'Please try again later.'
+
+    await ctx.send(message)
+
 
 
 # |-------- REGISTERING MODULE --------|
