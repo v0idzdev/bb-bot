@@ -53,7 +53,7 @@ async def on_command_error(ctx: commands.Context, error):
             message += 'This command has been disabled.'
 
         case commands.CommandOnCooldown:
-            message += 'This command is on cooldown. Try again after' \
+            message += 'This command is on cooldown. Try again after ' \
                 + f'{math.ceil(error.retry_after)}s.'
 
         case commands.UserInputError:
