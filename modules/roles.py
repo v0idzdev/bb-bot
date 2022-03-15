@@ -7,13 +7,67 @@ import discord
 import helpers
 import json
 
+
+# |-------------- CONFIG --------------|
+
+
 FILEPATH = 'files/reactionroles.json' # JSON file containing reaction role data
+
+
+# |--------- USEFUL FUNCTIONS ---------|
+
+
+async def add_or_remove_role(
+    payload: discord.RawReactionActionEvent, client: commands.Bot, type: str
+):
+    """
+    Adds or removes a role from a user.
+
+    Parameters
+    ----------
+
+    payload (RawReactionActionEvent):
+        The object containing the raw data about the reaction event.
+
+    client (Bot):
+        The bot that is listening to the reaction add or reaction remove event.
+
+    type (str):
+        Whether to add or remove a role. Accepted values are: 'add' and 'remove'.
+    """
+    guild: discord.Guild = client.get_guild(payload.guild_id)
+    roles = guild.roles
+
+    match type:
+
+        case 'add':
+            member = payload.member
+            action = member.add_roles # Add the role
+
+        case 'remove':
+            member: discord.Member = guild.get_member(payload.user_id) # on_raw_reaction_remove doesn't pass in the member
+            action = member.remove_roles # Remove the role
+
+    if member.bot:
+        return
+
+    with open(FILEPATH) as file:
+        data: list = json.load(file)
+        is_react_role = lambda item: item['emoji'] == payload.emoji.name and item['msg_id'] == payload.message_id
+
+        for item in list(filter(is_react_role, data)): # Loop through all reactions that are react roles for the server
+            role = discord.utils.get(roles, id=item['role_id'])
+
+            await action(role)
 
 
 # |--- REACTION ROLES EVENT HANDLER ---|
 
 
 class ReactionEventHandler(commands.Cog):
+    """
+    Handles raw reaction add and raw reaction remove events.
+    """
     def __init__(self, client: discord.Client):
         self.client = client
 
@@ -22,48 +76,17 @@ class ReactionEventHandler(commands.Cog):
         """
         Runs when a reaction is added, regardless of the internal message cache.
         """
-        guild: discord.Guild = self.client.get_guild(payload.guild_id)
-
-        if payload.member.bot: # If the user who added the reaction is the bot
-            return
-
-        with open(FILEPATH) as file:
-            data: list = json.load(file)
-
-            for item in data:
-                if item['emoji'] != payload.emoji.name or item['msg_id'] != payload.message_id:
-                    continue
-
-                roles = guild.roles
-                role = discord.utils.get(roles, id=item['role_id'])
-
-                await payload.member.add_roles(role)
+        await add_or_remove_role(payload, self.client, 'add')
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
         """
-        guild: discord.Guild = self.client.get_guild(payload.guild_id)
-        member: discord.Member = guild.get_member(payload.user_id)
-
-        if member.bot: # If the user who added the reaction is the bot
-            return
-
-        with open(FILEPATH) as file:
-            data: list = json.load(file)
-
-            for item in data:
-                if item['emoji'] != payload.emoji.name or item['msg_id'] != payload.message_id:
-                    continue
-
-                roles = guild.roles
-                role = discord.utils.get(roles, id=item['role_id'])
-
-                await member.remove_roles(role)
+        await add_or_remove_role(payload, self.client, 'remove')
 
 
-# |---------- REACTION ROLES ----------|
+# |------------- COMMANDS -------------|
 
 
 @commands.command()
@@ -93,7 +116,7 @@ async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message
         json.dump(data, file, indent=4)
 
 
-# |---- REGISTERING MODULE ----|
+# |-------- REGISTERING MODULE --------|
 
 
 def setup(client: commands.Bot):
@@ -106,5 +129,5 @@ def setup(client: commands.Bot):
     client (Bot):
         The bot to add the commands to.
     """
-    helpers.add_commands(client, reactrole)
+    client.add_command(reactrole)
     client.add_cog(ReactionEventHandler(client))
