@@ -2,7 +2,7 @@
   <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
 </p>
 <h1 align="center">🤖 BB.Bot</h1>
-<h3 align="center">🎵 HQ Music Streaming | 🔒 Moderation | 📖 Memes | ❓ Polls</h3>
+<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ❓ Polls</h3>
 <h4 align="center">Powered by Discord.py and GCP, BB.Bot is the bot for you.</h4>
 <br>
 
@@ -14,7 +14,8 @@
 
 **BB.Bot** is a Discord bot powered by **Python** and GCP's **Compute Engine**. Featuring **24/7 uptime**, **HQ music streaming**, **admin commands**, and more, **BB.Bot** is the bot for you. **Available for free** and **regularly maintained**, our bot comes with **no additional costs** and **long-term support**.
 
-Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to Invite BB.Bot to Your Server.
+* Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
+* Click **[Here](https://discord.gg/Dacy34eM)** to join our Discord server.
 <br><br>
 
 ## 📢 **Commands List**
@@ -25,14 +26,14 @@ Click **[Here](https://discord.com/api/oauth2/authorize?client_id=94759385683945
 * **[Admin Commands](#-admin-commands)**
 * **[Music Commands](#-music-commands)**
 * **[Misc Commands](#-misc-commands)**
-<br>
+<br><br>  
 
 ### 🔖 Help Commands
 
 > **~help**
 
-Sends an embed linking to **this page**.<br>
-<br>              
+Sends an embed linking to **this page**.
+<br><br>             
 
 ### 🔑 Admin Commands
 
@@ -65,7 +66,7 @@ Temporarily bans a specified user from the server.<br>
 
 Unbans a specified user from the server.<br>
 **Requires**: `Ban Members`
-<br>         
+<br><br>        
 
 ### 🔊 Music Commands
 
@@ -104,7 +105,7 @@ Adjust the volume of the music player.
 > **~stop | ~del**
 
 Stops the music player and clears all existing songs from the queue.
-<br>              
+<br><br>              
 
 ### 📒 Misc Commands
 
