@@ -1,20 +1,9 @@
 [
     {
+        "guild_id": 953054451999072276,
         "name": "Python \ud83d\udc0d",
         "role_id": 953074155681624074,
         "emoji": "\ud83d\udc0d",
-        "msg_id": 953260011218419722
-    },
-    {
-        "name": "JavaScript \ud83d\udcdc",
-        "role_id": 953260218421243915,
-        "emoji": "\ud83d\udcdc",
-        "msg_id": 953260434146856990
-    },
-    {
-        "name": "C# \ud83d\udda5\ufe0f",
-        "role_id": 953260564535181352,
-        "emoji": "\ud83d\udda5\ufe0f",
-        "msg_id": 953260682332221440
+        "msg_id": 953333862614847548
     }
 ]

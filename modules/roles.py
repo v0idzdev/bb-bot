@@ -3,6 +3,7 @@ Contains a cog that handles reaction roles/self roles.
 """
 
 import discord.ext.commands as commands
+import discord.ext.tasks as tasks
 import discord
 import start
 import json
@@ -12,6 +13,41 @@ import json
 
 
 FILEPATH = 'files/reactionroles.json' # JSON file containing reaction role data
+
+
+# |--------- BACKGROUND TASKS ---------|
+
+
+class JSONFileCleaner(commands.Cog):
+    """
+    Clears deleted roles from the reaction roles JSON file.
+    """
+    def __init__(self, client: commands.Bot):
+        self.client = client
+        self.clean_json_file.start() # Start the loop
+
+    @tasks.loop(seconds=60)
+    async def clean_json_file(self):
+        """
+        Automatically removes deleted roles from the JSON file containing reaction roles.
+
+        For each guild:
+            Generate a list of reaction roles that were created for that guild.
+            Generate a list of reaction roles in that guild that were deleted.
+
+            For each deleted role:
+                Delete the role.
+        """
+        with open(FILEPATH) as file:
+            data: list = json.load(file)
+
+        for guild in self.client.guilds:
+            for item in data:
+                if item['role_id'] not in [role.id for role in guild.roles] and item['guild_id'] == guild.id:
+                    data.remove(item)
+
+        with open(FILEPATH, 'w') as file:
+            json.dump(data, file, indent=4)
 
 
 # |--------- USEFUL FUNCTIONS ---------|
@@ -35,51 +71,35 @@ async def add_or_remove_role(
     type (str):
         Whether to add or remove a role. Accepted values are: 'add' and 'remove'.
     """
-    guild: discord.Guild = client.get_guild(payload.guild_id) # The server the reaction was used in
-    roles = guild.roles # A list of all of the roles in the server
+    guild: discord.Guild = client.get_guild(payload.guild_id)
+    roles = guild.roles
 
     match type:
 
         case 'add':
-            member = payload.member # Defining the member seemingly unnecessarily so we can check if it's a bot below
-            action = member.add_roles # Add the role
+            member = payload.member
+            action = member.add_roles
 
         case 'remove':
-            member: discord.Member = guild.get_member(payload.user_id) # on_raw_reaction_remove doesn't pass in the member
-            action = member.remove_roles # Remove the role
+            member: discord.Member = guild.get_member(payload.user_id)
+            action = member.remove_roles
 
     if member.bot:
         return
 
     with open(FILEPATH) as file:
-        data = filter(lambda item: item['emoji'] == payload.emoji.name \
-            and item['msg_id'] == payload.message_id, json.load(file))
+        data = json.load(file)
 
-    await delete_reaction_roles((deleted := [item for item in data if item['role_id'] not in roles])) # Remove deleted roles
+    for item in data:
+        # Check if the reaction emoji and message are the ones used to give a user
+        # a specific role, or if the role has been deleted
+        if item['emoji'] != payload.emoji.name or item['msg_id'] != payload.message_id \
+        or item['role_id'] not in [role.id for role in guild.roles]:
+            continue
 
-    for item in [
-        i for i in data if data not in deleted
-    ]:
+        # If not, either add/remove the role
         role = discord.utils.get(roles, id=item['role_id'])
-        action(role)
-
-
-async def delete_reaction_roles(roles: list):
-    """
-    Deletes reaction roles from the JSON file.
-
-    Parameters
-    ----------
-
-    roles (set):
-        The list of roles to delete.
-    """
-
-    with open(FILEPATH) as file:
-        data = [i for i in json.load(file) if i not in roles]
-
-    with open(FILEPATH, 'w') as file:
-        json.dump(data, file, indent=4)
+        await action(role)
 
 
 # |--- REACTION ROLES EVENT HANDLER ---|
@@ -153,6 +173,7 @@ async def reactrole(
         data: list = json.load(file) # Contains a dictionary for each reaction role
 
         react_role = { # Create a dictionary to store in the JSON file
+            'guild_id': ctx.guild.id,
             'name': role.name,
             'role_id': role.id,
             'emoji': emoji,
@@ -240,3 +261,4 @@ def setup(client: commands.Bot):
     """
     client.add_command(reactrole)
     client.add_cog(ReactionEventHandler(client))
+    client.add_cog(JSONFileCleaner(client))
