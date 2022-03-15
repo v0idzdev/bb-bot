@@ -74,6 +74,12 @@ class ReactionEventHandler(commands.Cog):
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
+
+        Parameters
+        ----------
+
+        payload (RawReactionActionEvent):
+            The object containing the raw data about the reaction event.
         """
         await add_or_remove_role(payload, self.client, 'add')
 
@@ -81,6 +87,12 @@ class ReactionEventHandler(commands.Cog):
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
+
+        Parameters
+        ----------
+
+        payload (RawReactionActionEvent):
+            The object containing the raw data about the reaction event.
         """
         await add_or_remove_role(payload, self.client, 'remove')
 
@@ -93,6 +105,21 @@ class ReactionEventHandler(commands.Cog):
 async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message: str):
     """
     Creates and sends an embed that gives users a role when they react to it.
+
+    Parameters
+    ----------
+
+    ctx (Context):
+        Command invocation context.
+
+    emoji (Emoji | PartialEmoji):
+        The emoji to use that gives the user the role, for the embed the bot will create.
+
+    role (Role):
+        The role to add to the user. This role must exist in the server already.
+
+    message (str):
+        The message to use for the embed the bot will create.
     """
     embed = discord.Embed(description=message)
     msg = await ctx.channel.send(embed=embed)
