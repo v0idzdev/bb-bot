@@ -34,13 +34,13 @@ async def add_or_remove_role(
     type (str):
         Whether to add or remove a role. Accepted values are: 'add' and 'remove'.
     """
-    guild: discord.Guild = client.get_guild(payload.guild_id)
-    roles = guild.roles
+    guild: discord.Guild = client.get_guild(payload.guild_id) # The server the reaction was used in
+    roles = guild.roles # A list of all of the roles in the server
 
     match type:
 
         case 'add':
-            member = payload.member
+            member = payload.member # Defining the member seemingly unnecessarily so we can check if it's a bot below
             action = member.add_roles # Add the role
 
         case 'remove':
@@ -127,9 +127,9 @@ async def reactrole(ctx: commands.Context, emoji, role: discord.Role, *, message
     await msg.add_reaction(emoji)
 
     with open(FILEPATH) as file:
-        data: list = json.load(file)
+        data: list = json.load(file) # Contains a dictionary for each reaction role
 
-        react_role = {
+        react_role = { # Create a dictionary to store in the JSON file
             'name': role.name,
             'role_id': role.id,
             'emoji': emoji,
