@@ -36,7 +36,7 @@ async def on_command_error(ctx: commands.Context, error):
         return
 
     error = getattr(error, 'original', error)
-    message = f':x: {ctx.author.mention}'
+    message = f':x: {ctx.author.mention}: '
 
     match error.__class__:
 
