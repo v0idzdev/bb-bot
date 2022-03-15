@@ -5,6 +5,7 @@ Contains a cog that handles reaction roles/self roles.
 import discord.ext.commands as commands
 import discord.ext.tasks as tasks
 import discord
+import helpers
 import start
 import json
 
@@ -42,9 +43,33 @@ class JSONFileCleaner(commands.Cog):
             data: list = json.load(file)
 
         for guild in self.client.guilds:
-            for item in data:
-                if item['role_id'] not in [role.id for role in guild.roles] and item['guild_id'] == guild.id:
+            for item in list(filter(lambda item: item['guild_id'] == guild.id, data)):
+                if item['role_id'] not in [role.id for role in guild.roles]:
                     data.remove(item)
+
+        with open(FILEPATH, 'w') as file:
+            json.dump(data, file, indent=4)
+
+    @commands.Cog.listener()
+    async def on_message_delete(message: discord.Message):
+        """
+        Deletes reaction role messages that correspond to a deleted role. Removes the
+        entry for that reaction role in the JSON file.
+
+        Parameters
+        ----------
+
+        message (Message):
+            The message that was sent.
+        """
+
+        with open(FILEPATH) as file:
+            data: list = json.load(file)
+
+        for item in data:
+            if item['msg_id'] == message.id:
+                message.delete()
+                data.remove(item)
 
         with open(FILEPATH, 'w') as file:
             json.dump(data, file, indent=4)
@@ -142,7 +167,7 @@ class ReactionEventHandler(commands.Cog):
 # |------------- COMMANDS -------------|
 
 
-@commands.command()
+@commands.command(aliases=['crr'])
 @commands.has_permissions(manage_roles=True)
 async def reactrole(
     ctx: commands.Context, emoji, role: discord.Role, *, message: str
@@ -186,6 +211,44 @@ async def reactrole(
         json.dump(data, file, indent=4)
 
 
+@commands.command(aliases=['rrr'])
+@commands.has_permissions(manage_roles=True)
+async def removereactrole(ctx: commands.Context, role: discord.Role):
+    """
+    Removes all messages containing a reaction role from the JSON file.
+
+    Also removes all messages containing the reaction role from the server.
+
+    Parameters
+    ----------
+
+    ctx (Context):
+        Command invocation context:
+
+    role (Role):
+        The role on the server to remove.
+    """
+
+    with open(FILEPATH) as file:
+        data: list = json.load(file) # Contains a dictionary for each reaction role
+
+    instances = [item for item in data if item['role_id'] == role.id]
+
+    if len(instances) == 0:
+        raise commands.RoleNotFound(role.__str__())
+
+    for instance in instances:
+        msg = await ctx.fetch_message(instance['msg_id'])
+        await msg.delete()
+        data.remove(instance)
+
+    with open(FILEPATH, 'w') as file:
+        json.dump(data, file, indent=4)
+
+    embed = discord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
+    await ctx.send(embed=embed)
+
+
 # |-------------- ERRORS --------------|
 
 
@@ -202,9 +265,6 @@ async def reactrole_error(ctx: commands.Context, error):
 
     error:
         The error that was raised when the command was invoked.
-
-    msg (discord.Message | None):
-        The embed message that was sent. This is only passed in if the emoji is invalid.
     """
     error = getattr(error, 'original', error)
     message = f':x: {ctx.author.mention}: '
@@ -213,12 +273,6 @@ async def reactrole_error(ctx: commands.Context, error):
 
         case commands.RoleNotFound:
             message += 'That role does not exist. Please create the role first.'
-
-        case commands.MissingPermissions:
-            message += 'You need the **manage roles** permission to create a reaction role.'
-
-        case commands.BotMissingPermissions:
-            message += 'I need the **manage roles** permission to create a reaction role.'
 
         case commands.EmojiNotFound:
             message += 'Sorry, that emoji was not found. Please try again.'
@@ -237,13 +291,48 @@ async def reactrole_error(ctx: commands.Context, error):
                 message += 'Sorry, that emoji is invalid. Please use a valid emoji.'
 
         case _:
-            print(error.__class__.__name__)
-            print(error)
             message += 'An unknown error occurred while creating your reaction role.\n' \
                 + f'Please try again later.'
 
     await ctx.send(message)
 
+
+@removereactrole.error
+async def removeractrole_error(ctx: commands.Context, error):
+    """
+    Error handler for the removeractrole command.
+
+    Parameters
+    ----------
+
+    ctx (Context):
+        Command invocation context.
+
+    error:
+        The error that was raised when the command was invoked.
+    """
+    error = getattr(error, 'original', error)
+    message = f':x: {ctx.author.mention}: '
+
+    match error.__class__:
+
+        case commands.RoleNotFound:
+            role = error.__str__().removeprefix('Role "').removesuffix('" not found.') # Role "Test" not found, => Test
+            message += f'**{role}** either doesn\'t exist, or isn\'t a reaction role on this server.'
+
+        case commands.UserInputError:
+            message += 'Invalid input, please try again.\n' \
+                + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
+
+        case commands.MissingRequiredArgument:
+            message += 'Please enter all the required arguments.\n' \
+                + f'Use **{start.prefix}removereactrole `@role`**.'
+
+        case _:
+            message += 'An unknown error occurred while creating your reaction role.\n' \
+                + f'Please try again later.'
+
+    await ctx.send(message)
 
 
 # |-------- REGISTERING MODULE --------|
@@ -259,6 +348,6 @@ def setup(client: commands.Bot):
     client (Bot):
         The bot to add the commands to.
     """
-    client.add_command(reactrole)
+    helpers.add_commands(client, reactrole, removereactrole)
     client.add_cog(ReactionEventHandler(client))
     client.add_cog(JSONFileCleaner(client))
