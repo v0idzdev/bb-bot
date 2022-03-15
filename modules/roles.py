@@ -52,13 +52,34 @@ async def add_or_remove_role(
         return
 
     with open(FILEPATH) as file:
-        data: list = json.load(file)
-        is_react_role = lambda item: item['emoji'] == payload.emoji.name and item['msg_id'] == payload.message_id
+        data = filter(lambda item: item['emoji'] == payload.emoji.name \
+            and item['msg_id'] == payload.message_id, json.load(file))
 
-        for item in list(filter(is_react_role, data)): # Loop through all reactions that are react roles for the server
-            role = discord.utils.get(roles, id=item['role_id'])
+    await delete_reaction_roles((deleted := [item for item in data if item['role_id'] not in roles])) # Remove deleted roles
 
-            await action(role)
+    for item in [
+        i for i in data if data not in deleted
+    ]:
+        role = discord.utils.get(roles, id=item['role_id'])
+        action(role)
+
+
+async def delete_reaction_roles(roles: list):
+    """
+    Deletes reaction roles from the JSON file.
+
+    Parameters
+    ----------
+
+    roles (set):
+        The list of roles to delete.
+    """
+
+    with open(FILEPATH) as file:
+        data = [i for i in json.load(file) if i not in roles]
+
+    with open(FILEPATH, 'w') as file:
+        json.dump(data, file, indent=4)
 
 
 # |--- REACTION ROLES EVENT HANDLER ---|
@@ -160,6 +181,9 @@ async def reactrole_error(ctx: commands.Context, error):
 
     error:
         The error that was raised when the command was invoked.
+
+    msg (discord.Message | None):
+        The embed message that was sent. This is only passed in if the emoji is invalid.
     """
     error = getattr(error, 'original', error)
     message = f':x: {ctx.author.mention}: '
@@ -176,13 +200,24 @@ async def reactrole_error(ctx: commands.Context, error):
             message += 'I need the **manage roles** permission to create a reaction role.'
 
         case commands.EmojiNotFound:
-            message += 'That emoji does not exist. Please use a valid emoji.'
+            message += 'Sorry, that emoji was not found. Please try again.'
+
+        case commands.UserInputError:
+            message += 'Invalid input, please try again.\n' \
+                + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
 
         case commands.MissingRequiredArgument:
             message += 'Please enter all the required arguments.\n' \
                 + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
 
+        case discord.HTTPException: # An invalid emoji raises a HTTP exception
+            if 'Unknown Emoji' in error.__str__(): # Prevents this handler from catching unrelated errors
+                await ctx.channel.purge(limit=1)
+                message += 'Sorry, that emoji is invalid. Please use a valid emoji.'
+
         case _:
+            print(error.__class__.__name__)
+            print(error)
             message += 'An unknown error occurred while creating your reaction role.\n' \
                 + f'Please try again later.'
 
