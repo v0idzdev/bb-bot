@@ -4,7 +4,6 @@ Contains a cog that handles reaction roles/self roles.
 
 import discord.ext.commands as commands
 import discord
-import helpers
 import json
 
 
