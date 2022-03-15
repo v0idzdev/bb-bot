@@ -7,7 +7,6 @@ import discord.ui as UI
 import helpers
 import asyncio
 import discord
-import start
 import json
 
 
@@ -53,7 +52,6 @@ async def clear(ctx: commands.Context, amount: int | None):
         + 'Would you like to clear all messages in this channel?',
         view=view
     )
-
 
 
 @commands.command()
