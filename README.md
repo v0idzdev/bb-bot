@@ -2,7 +2,7 @@
   <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
 </p>
 <h1 align="center">🤖 BB.Bot</h1>
-<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ❓ Polls</h3>
+<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ⭐ Reaction Roles | ❓ Polls</h3>
 <h4 align="center">Powered by Discord.py and GCP, BB.Bot is the bot for you.</h4>
 <br>
 
@@ -25,6 +25,7 @@
 * **[Help Commands](#-help-commands)**
 * **[Admin Commands](#-admin-commands)**
 * **[Music Commands](#-music-commands)**
+* **[Role Commands](#-role-commands)**
 * **[Misc Commands](#-misc-commands)**
 <br><br>  
 
@@ -105,7 +106,20 @@ Adjust the volume of the music player.
 > **~stop | ~del**
 
 Stops the music player and clears all existing songs from the queue.
-<br><br>              
+<br><br>    
+
+### 🌟 Role Commands
+
+> **~reactrole | ~crr `emoji` `@role` `message`**
+
+Creates an embed that users can react to for a role.
+**Requires**: `Manage Roles`
+
+> **~removereactrole | ~rrr `@role`**
+
+Deletes all reaction role messages for a particular role.
+**Requires**: `Manage Roles`
+<br><br>     
 
 ### 📒 Misc Commands
 
