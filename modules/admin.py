@@ -2,6 +2,7 @@
 Contains commands relating to administrator tasks.
 """
 
+import black
 import discord.ext.commands as commands
 import discord.ui as UI
 import helpers
@@ -143,7 +144,7 @@ async def unban(ctx: commands.Context, user: discord.User):
     await helpers.lift_ban(ctx, "permanent", user)
 
 
-@commands.command()
+@commands.command(aliases=['bladd'])
 @commands.has_permissions(manage_messages=True)
 @commands.cooldown(1, 2, commands.BucketType.user)
 async def blacklist(ctx: commands.Context, *, word: str):
@@ -161,6 +162,7 @@ async def blacklist(ctx: commands.Context, *, word: str):
     """
     filepath = 'files/blacklist.json'
     id = str(ctx.guild.id)
+    word = word.lower()
 
     with open(filepath, 'r') as file:
         blacklist: dict = json.load(file)
@@ -180,6 +182,61 @@ async def blacklist(ctx: commands.Context, *, word: str):
     await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
 
 
+@commands.command(aliases=['blclear'])
+@commands.has_permissions(manage_messages=True)
+async def clearblacklist(ctx: commands.Context):
+    """
+    Clears the blacklist for a server.
+
+    Parameters
+    ----------
+
+    ctx (Context):
+        Command invocation context.
+    """
+    filepath = 'files/blacklist.json'
+    id = str(ctx.guild.id)
+
+    with open(filepath) as file:
+        blacklist: dict = json.load(file)
+
+    mention = ctx.author.mention
+
+    if id not in blacklist.keys():
+        return await ctx.send(f':x: {mention}: This server does not have any words blacklisted.')
+
+    yes_button = UI.Button(label='Yes', style=discord.ButtonStyle.green, emoji='👍🏻')
+    no_button = UI.Button(label='No', style=discord.ButtonStyle.red, emoji='👎🏻')
+
+    async def yes(interaction: discord.Interaction):
+        for server_id in blacklist.keys():
+            if server_id == id:
+                del blacklist[server_id]
+
+                with open(filepath, 'w') as file:
+                    json.dump(blacklist, file, indent=4)
+
+                return await interaction.message.channel.send(f':thumbsup: {mention}: The blacklist for this server'
+                    + f'has successfully been deleted.')
+
+    yes_button.callback = yes
+
+    async def no(interaction: discord.Interaction):
+        return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
+
+    no_button.callback = no
+
+    view = UI.View()
+    view.add_item(yes_button)
+    view.add_item(no_button)
+
+    await ctx.send(
+        f':warning: {mention}: Are you sure you\'d like to clear your server\'s blacklist?\n'
+        + f'This action cannot be undone.',
+        view=view
+    )
+
+
 # |----- REGISTERING MODULE -----|
 
 
@@ -193,4 +250,13 @@ def setup(client: commands.Bot):
     client (Bot):
         Client instance, to add the commands to.
     """
-    helpers.add_commands(client, clear, kick, ban, softban, unban, blacklist)
+    helpers.add_commands(
+        client,
+        clear,
+        kick,
+        ban,
+        softban,
+        unban,
+        blacklist,
+        clearblacklist
+    )

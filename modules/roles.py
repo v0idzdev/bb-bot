@@ -62,7 +62,6 @@ class JSONFileCleaner(commands.Cog):
         message (Message):
             The message that was sent.
         """
-
         with open(FILEPATH) as file:
             data: list = json.load(file)
 
