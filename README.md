@@ -43,9 +43,14 @@ Sends an embed linking to **this page**.
 Clears a specified number of messages from a text channel.<br>
 **Requires**: `Manage Messages`
 
-> **~blacklist `word`**
+> **~blacklist | ~bladd `word`**
 
 Adds the word to a list of words that are disallowed. Any messages containing these words will be deleted.<br>
+**Requires**: `Manage Messages`
+
+> **~clearblacklist | ~blclear**
+
+Clears the blacklist for the server.<br>
 **Requires**: `Manage Messages`
 
 > **~kick `member` `reason?`**
