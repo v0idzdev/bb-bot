@@ -51,7 +51,7 @@ class JSONFileCleaner(commands.Cog):
             json.dump(data, file, indent=4)
 
     @commands.Cog.listener()
-    async def on_message_delete(message: discord.Message):
+    async def on_message_delete(self, message: discord.Message):
         """
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
