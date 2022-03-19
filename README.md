@@ -16,6 +16,9 @@
 
 * Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
 * Click **[Here](https://discord.gg/Dacy34eM)** to join our Discord server.
+
+Currently, self-hosting BB.Bot causes various errors to occur and is **NOT** recommended.
+This version of BB.Bot is a **pre-release** version and is **NOT** currently online. If you're looking for the commands list for the current active version, please switch to the `legacy` branch.
 <br><br>
 
 ## 📢 **Commands List**
