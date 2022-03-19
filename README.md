@@ -16,6 +16,7 @@
 
 * Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
 * Click **[Here](https://discord.gg/Dacy34eM)** to join our Discord server.
+* Click **[Here]** for self-hosting instructions.
 <br><br>
 
 ## 📢 **Commands List**
@@ -139,3 +140,27 @@ Sends a random meme from Reddit.
 > **~poll `yes/no question`**
 
 Creates a poll that users can react with yes or no to. 
+<br><br>
+
+## 🚀 Self Hosting
+How to set up **BB.Bot** for self-hosting, step by step.<br>
+
+* Click **[here](https://realpython.com/installing-python/)** for more information on **installing Python**.
+* Click **[here](https://discordpy.readthedocs.io/en/stable/discord.html)** for more information on **setting up a Discord bot** using the **Discord Developer Portal**.
+<br><br>
+
+### 🔖 Prerequisites
+
+* **Python** 3.10+<br>
+* A **Discord bot** with:<br>
+    * **All** priveleged gateway intents
+    * `Administrator` permissions<br><br>
+
+### ⏳ How to Install
+
+1. Install a **.ZIP** from the **[releases](https://github.com/matthewflegg/bb-bot/releases)** page.<br>
+3. **Extract it** to your preferred file location.<br>
+4. **Create a file** in the **root directory** called `.env`.
+    * **Edit** the file. Enter `TOKEN={Your Token Here}`, with your bot's token.
+    * **Save** the file and **exit**.<br>
+5. Run `start.cmd` if you're using **Windows**, or `start.sh` if you're using **Linux**.
