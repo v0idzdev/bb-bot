@@ -18,7 +18,7 @@
 * Click **[here](https://discord.gg/Dacy34eM)** to join our Discord server.<br>
 
 Currently, self-hosting BB.Bot causes various errors to occur and is **NOT** recommended.
-This version of BB.Bot is a **pre-release** version and is **NOT** currently online. If you're looking for the commands list for the current active version, please switch to the `legacy` branch. Nevertheless, you can follow **[this link]((#-self-hosting))** for instructions.
+This version of BB.Bot is a **pre-release** version and is **NOT** currently online. If you're looking for the commands list for the current active version, please switch to the `legacy` branch. Nevertheless, you can follow **[this link](#-self-hosting)** for instructions.
 <br><br>
 
 ## 📢 **Commands List**
