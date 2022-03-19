@@ -2,10 +2,10 @@
 Contains miscellaneous commands to be used for fun.
 """
 
-import discord.ext.commands as commands
+import nextcord.ext.commands as commands
 import helpers
 import random
-import discord
+import nextcord
 import json
 import start
 import requests
@@ -45,7 +45,7 @@ async def meme(ctx: commands.Context):
     content = requests.get('https://meme-api.herokuapp.com/gimme').text
     data = json.loads(content, )
 
-    meme = discord.Embed(
+    meme = nextcord.Embed(
         title=str(data["title"]),
         color=start.colour
     )
@@ -65,7 +65,7 @@ async def poll(ctx: commands.Context, *poll: str):
     ctx (Context):
         Command invocation context.
     """
-    embed = discord.Embed(
+    embed = nextcord.Embed(
         title=f'Poll by **{ctx.author.name}**:',
         color=start.colour,
         description=' '.join(poll)

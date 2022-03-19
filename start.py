@@ -4,11 +4,11 @@ Main entry point for the application.
 This is where the bot is configured and launched.
 """
 
-import discord
+import nextcord
 import os
 import sys
-import discord.ext.commands as commands
-import discord.ext.tasks as tasks
+import nextcord.ext.commands as commands
+import nextcord.ext.tasks as tasks
 import itertools
 import dotenv
 
@@ -18,7 +18,7 @@ import dotenv
 
 dotenv.load_dotenv('files/.env')
 
-intents = discord.Intents.all()
+intents = nextcord.Intents.all()
 intents.members = True
 
 prefix = "~"
@@ -43,7 +43,7 @@ async def change_presence():
     Changes the bot's presence every 30 seconds.
     """
     activity = next(status)
-    await client.change_presence(activity=discord.Game(activity))
+    await client.change_presence(activity=nextcord.Game(activity))
 
 
 # |---------- EVENTS ----------|

@@ -2,8 +2,8 @@
 Contains the help command.
 """
 
-import discord.ext.commands as commands
-import discord
+import nextcord.ext.commands as commands
+import nextcord
 import start
 
 
@@ -21,7 +21,7 @@ async def help(ctx: commands.Context):
     ctx: (Context)
         Command invocation context.
     """
-    embed = discord.Embed(
+    embed = nextcord.Embed(
         title="Beep Boop Bot Documentation",
         color=start.colour,
         url="https://github.com/matthewflegg/beepboop/blob/main/README.md",

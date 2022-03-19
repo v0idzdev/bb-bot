@@ -2,9 +2,9 @@
 Contains all of the events that the client will listen to.
 """
 
-import discord.ext.commands as commands
+import nextcord.ext.commands as commands
 import helpers
-import discord
+import nextcord
 import start
 import json
 
@@ -20,7 +20,7 @@ class EventHandler(commands.Cog):
         self.client = client
 
     @commands.Cog.listener()
-    async def on_member_join(self, member: discord.Member):
+    async def on_member_join(self, member: nextcord.Member):
         """
         Sends a welcome message when a member joins a server.
 
@@ -33,7 +33,7 @@ class EventHandler(commands.Cog):
         await helpers.send_message(member, "Welcome")
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: discord.Member):
+    async def on_member_remove(self, member: nextcord.Member):
         """
         Sends a welcome message when a member leaves a server.
 
@@ -46,7 +46,7 @@ class EventHandler(commands.Cog):
         await helpers.send_message(member, "Goodbye")
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
+    async def on_message(self, message: nextcord.Message):
         """
         Called when a message is sent.
 
@@ -73,7 +73,7 @@ class EventHandler(commands.Cog):
             await message.delete()
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
+    async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.User):
         """
         Prevents users from voting more than once on a poll.
 
@@ -90,7 +90,7 @@ class EventHandler(commands.Cog):
             The user that reacted to the poll.
         """
         user = reaction.message.author
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
+        cached = nextcord.utils.get(self.client.cached_messages, id=reaction.message.id)
 
         if user.id == self.client.user.id:
             return

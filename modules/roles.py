@@ -2,13 +2,12 @@
 Contains a cog that handles reaction roles/self roles.
 """
 
-import discord.ext.commands as commands
-import discord.ext.tasks as tasks
-import discord
+import nextcord.ext.commands as commands
+import nextcord.ext.tasks as tasks
+import nextcord
 import helpers
 import start
 import json
-
 
 # |-------------- CONFIG --------------|
 
@@ -51,7 +50,7 @@ class JSONFileCleaner(commands.Cog):
             json.dump(data, file, indent=4)
 
     @commands.Cog.listener()
-    async def on_message_delete(self, message: discord.Message):
+    async def on_message_delete(self, message: nextcord.Message):
         """
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
@@ -78,7 +77,7 @@ class JSONFileCleaner(commands.Cog):
 
 
 async def add_or_remove_role(
-    payload: discord.RawReactionActionEvent, client: commands.Bot, type: str
+    payload: nextcord.RawReactionActionEvent, client: commands.Bot, type: str
 ):
     """
     Adds or removes a role from a user.
@@ -95,7 +94,7 @@ async def add_or_remove_role(
     type (str):
         Whether to add or remove a role. Accepted values are: 'add' and 'remove'.
     """
-    guild: discord.Guild = client.get_guild(payload.guild_id)
+    guild: nextcord.Guild = client.get_guild(payload.guild_id)
     roles = guild.roles
 
     match type:
@@ -105,7 +104,7 @@ async def add_or_remove_role(
             action = member.add_roles
 
         case 'remove':
-            member: discord.Member = guild.get_member(payload.user_id)
+            member: nextcord.Member = guild.get_member(payload.user_id)
             action = member.remove_roles
 
     if member.bot:
@@ -122,7 +121,7 @@ async def add_or_remove_role(
             continue
 
         # If not, either add/remove the role
-        role = discord.utils.get(roles, id=item['role_id'])
+        role = nextcord.utils.get(roles, id=item['role_id'])
         await action(role)
 
 
@@ -133,11 +132,11 @@ class ReactionEventHandler(commands.Cog):
     """
     Handles raw reaction add and raw reaction remove events.
     """
-    def __init__(self, client: discord.Client):
+    def __init__(self, client: nextcord.Client):
         self.client = client
 
     @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
+    async def on_raw_reaction_add(self, payload: nextcord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
 
@@ -150,7 +149,7 @@ class ReactionEventHandler(commands.Cog):
         await add_or_remove_role(payload, self.client, 'add')
 
     @commands.Cog.listener()
-    async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
+    async def on_raw_reaction_remove(self, payload: nextcord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
 
@@ -169,7 +168,7 @@ class ReactionEventHandler(commands.Cog):
 @commands.command(aliases=['crr'])
 @commands.has_permissions(manage_roles=True)
 async def reactrole(
-    ctx: commands.Context, emoji, role: discord.Role, *, message: str
+    ctx: commands.Context, emoji, role: nextcord.Role, *, message: str
 ):
     """
     Creates and sends an embed that gives users a role when they react to it.
@@ -189,7 +188,7 @@ async def reactrole(
     message (str):
         The message to use for the embed the bot will create.
     """
-    embed = discord.Embed(description=message)
+    embed = nextcord.Embed(description=message)
     msg = await ctx.channel.send(embed=embed)
     await msg.add_reaction(emoji)
 
@@ -212,7 +211,7 @@ async def reactrole(
 
 @commands.command(aliases=['rrr'])
 @commands.has_permissions(manage_roles=True)
-async def removereactrole(ctx: commands.Context, role: discord.Role):
+async def removereactrole(ctx: commands.Context, role: nextcord.Role):
     """
     Removes all messages containing a reaction role from the JSON file.
 
@@ -244,7 +243,7 @@ async def removereactrole(ctx: commands.Context, role: discord.Role):
     with open(FILEPATH, 'w') as file:
         json.dump(data, file, indent=4)
 
-    embed = discord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
+    embed = nextcord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
     await ctx.send(embed=embed)
 
 
@@ -284,7 +283,7 @@ async def reactrole_error(ctx: commands.Context, error):
             message += 'Please enter all the required arguments.\n' \
                 + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
 
-        case discord.HTTPException: # An invalid emoji raises a HTTP exception
+        case nextcord.HTTPException: # An invalid emoji raises a HTTP exception
             if 'Unknown Emoji' in error.__str__(): # Prevents this handler from catching unrelated errors
                 await ctx.channel.purge(limit=1)
                 message += 'Sorry, that emoji is invalid. Please use a valid emoji.'

@@ -2,8 +2,8 @@
 Contains utility functions to assist command modules.
 """
 
-import discord.ext.commands as commands
-import discord
+import nextcord.ext.commands as commands
+import nextcord
 
 
 # |-------- UTILITY FUNCTIONS --------|
@@ -27,7 +27,7 @@ def add_commands(client: commands.Bot, *cmds):
 
 
 async def sanction(
-    ctx: commands.Context, punishment: str, member: discord.Member, reason=None
+    ctx: commands.Context, punishment: str, member: nextcord.Member, reason=None
 ):
     """
     Utility function that bans or kicks a member.
@@ -68,7 +68,7 @@ async def sanction(
     await member.send(message_member)
 
 
-async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
+async def lift_ban(ctx: commands.Context, ban_type: str, user: nextcord.User):
     """
     Utility function that unbans a member.
 

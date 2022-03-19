@@ -2,8 +2,8 @@
 Contains music player commands.
 """
 
-import discord
-import discord.ext.commands as commands
+import nextcord
+import nextcord.ext.commands as commands
 import asyncio
 import itertools
 import start
@@ -58,7 +58,7 @@ class InvalidVC(VCError):
 # |----- YOUTUBEDL SOURCE -----|
 
 
-class YTDLSource(discord.PCMVolumeTransformer):
+class YTDLSource(nextcord.PCMVolumeTransformer):
     """
     Contains functionality/data relating to the YouTube download source.
     """
@@ -99,7 +99,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if 'entries' in data: # Get the first item in a playlist
             data = data["entries"][0]
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'✅ Added {data["title"]} to the Queue.',
             color=start.colour
         )
@@ -111,7 +111,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         else:
             return {'webpage_url': data['webpage_url'], 'requester': ctx.author, 'title': data['title']}
 
-        return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
+        return cls(nextcord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
 
     @classmethod
     async def regather_stream(cls, data: dict, *, loop: asyncio.AbstractEventLoop):
@@ -130,7 +130,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         to_run = partial(ytdl.extract_info, url=data['webpage_url'], download=False)
         data = await loop.run_in_executor(None, to_run)
 
-        return cls(discord.FFmpegPCMAudio(data['url']), data=data, requester=requester)
+        return cls(nextcord.FFmpegPCMAudio(data['url']), data=data, requester=requester)
 
 
 # |------- MUSIC PLAYER -------|
@@ -190,7 +190,7 @@ class MusicPlayer:
 
             self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
 
-            embed = discord.Embed(
+            embed = nextcord.Embed(
                 title=f'🎵 **Now Playing:** *{source.title}*',
                 description=f'Requested by: **{source.requester}**',
                 color=start.colour
@@ -207,7 +207,7 @@ class MusicPlayer:
             try:
                 # We are no longer playing this song...
                 await self.np.delete()
-            except discord.HTTPException:
+            except nextcord.HTTPException:
                 pass
 
     def destroy(self, guild):
@@ -280,7 +280,7 @@ class Music(commands.Cog):
         if isinstance(error, commands.NoPrivateMessage):
             try:
                 return await ctx.send(f':x: {ctx.author.mention}: You can\'t play music in a private message channel.')
-            except discord.HTTPException:
+            except nextcord.HTTPException:
                 pass
         elif isinstance(error, InvalidVC):
             await ctx.send(f':x: {ctx.author.mention}: Couldn\'t connect to a VC.'
@@ -305,7 +305,7 @@ class Music(commands.Cog):
         return player
 
     @commands.command(aliases=['join'])
-    async def connect(self, ctx: commands.Context, *, channel: discord.VoiceChannel=None):
+    async def connect(self, ctx: commands.Context, *, channel: nextcord.VoiceChannel=None):
         """
         Connects to a voice channel.
 
@@ -342,7 +342,7 @@ class Music(commands.Cog):
             except asyncio.TimeoutError:
                 raise VCError(f':x: {ctx.author.mention}: Connecting to channel **{channel}** timed out.')
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'🔥 Connected to:',
             description=f'**{channel}**',
             color=start.colour
@@ -401,7 +401,7 @@ class Music(commands.Cog):
 
         vc.pause()
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'⏸️ **{ctx.author}**: Paused the song.',
             color=start.colour
         )
@@ -430,7 +430,7 @@ class Music(commands.Cog):
 
         vc.resume()
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'▶️ **{ctx.author}**: Resumed the song.',
             color=start.colour
         )
@@ -462,7 +462,7 @@ class Music(commands.Cog):
 
         vc.stop()
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'⏭️ **{ctx.author}**: Skipped the song.',
             color=start.colour
         )
@@ -493,7 +493,7 @@ class Music(commands.Cog):
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
         fmt = '\n\n'.join(f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming))
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'Upcoming: {len(upcoming)} songs.',
             description=fmt,
             color=start.colour
@@ -526,10 +526,10 @@ class Music(commands.Cog):
         try:
             # Remove our previous now_playing message.
             await player.np.delete()
-        except discord.HTTPException:
+        except nextcord.HTTPException:
             pass
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'🎵 **Now Playing:** *{vc.source.title}*',
             description=f'Requested by: **{vc.source.requester}**',
             color=start.colour
@@ -551,7 +551,7 @@ class Music(commands.Cog):
         vol (float):
             The volume to set the music player to.
         """
-        vc: discord.VoiceProtocol = ctx.voice_client
+        vc: nextcord.VoiceProtocol = ctx.voice_client
 
         if not vc or not vc.is_connected():
             return await ctx.send(f':x: {ctx.author.mention}: I\'m not connected to VC.', delete_after=20)
@@ -566,7 +566,7 @@ class Music(commands.Cog):
 
         player.volume = vol / 100
 
-        embed = discord.Embed(
+        embed = nextcord.Embed(
             title=f'🔊 **{ctx.author}**: Set the volume to *{vol}%*',
             color=start.colour
         )

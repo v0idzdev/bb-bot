@@ -5,10 +5,10 @@ This is a global error handler and does not override local
 error handlers.
 """
 
-import discord.ext.commands as commands
-import discord.ui as UI
+import nextcord.ext.commands as commands
+import nextcord.ui as UI
 import helpers
-import discord
+import nextcord
 import traceback
 import math
 import sys
@@ -63,7 +63,7 @@ async def on_command_error(ctx: commands.Context, error):
             try:
                 message += 'You can\'t use this command in private messages.'
 
-            except discord.Forbidden:
+            except nextcord.Forbidden:
                 return
 
         case _:
@@ -72,7 +72,7 @@ async def on_command_error(ctx: commands.Context, error):
 
             return
 
-    button_continue = UI.Button(label='OK', style=discord.ButtonStyle.green)
+    button_continue = UI.Button(label='OK', style=nextcord.ButtonStyle.green)
     button_docspage = UI.Button(label='Help',
         url='https://github.com/matthewflegg/beepboop/blob/main/README.md',
     )

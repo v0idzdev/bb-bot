@@ -2,9 +2,9 @@
 Contains commands relating to administrator tasks.
 """
 
-import black
-import discord.ext.commands as commands
-import discord.ui as UI
+import nextcord.ext.commands as commands
+import nextcord.ui as UI
+import nextcord
 import helpers
 import asyncio
 import discord
@@ -31,13 +31,13 @@ async def clear(ctx: commands.Context, amount: int | None):
         The number of messages to clear.
     """
     if amount is not None: # If the user selected an amount, clear that amount of messages
-        await ctx.send(embed=discord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
+        await ctx.send(embed=nextcord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
         return await ctx.channel.purge(limit=amount)
 
     # Else, create two buttons
     # Then ask the user if they would like to clear all messages in the channel
-    yes_button = UI.Button(label='Yes', style=discord.ButtonStyle.green)
-    no_button = UI.Button(label='No', style=discord.ButtonStyle.red)
+    yes_button = UI.Button(label='Yes', style=nextcord.ButtonStyle.green)
+    no_button = UI.Button(label='No', style=nextcord.ButtonStyle.red)
 
     yes_button.callback = lambda interaction: \
         (await interaction.channel.purge(limit=None) for _ in '_').__anext__()
@@ -58,7 +58,7 @@ async def clear(ctx: commands.Context, amount: int | None):
 @commands.command()
 @commands.has_permissions(kick_members=True)
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def kick(ctx: commands.Context, member: discord.Member, *, reason=None):
+async def kick(ctx: commands.Context, member: nextcord.Member, *, reason=None):
     """
     Kicks a specified member from a server.
 
@@ -80,7 +80,7 @@ async def kick(ctx: commands.Context, member: discord.Member, *, reason=None):
 @commands.command()
 @commands.has_permissions(ban_members=True)
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
+async def ban(ctx: commands.Context, member: nextcord.Member, *, reason=None):
     """
     Bans a specified member from a server.
 
@@ -102,7 +102,7 @@ async def ban(ctx: commands.Context, member: discord.Member, *, reason=None):
 @commands.command()
 @commands.has_permissions(ban_members=True)
 @commands.cooldown(1, 30, commands.BucketType.user)
-async def softban(ctx: commands.Context, member: discord.Member, days=1, reason=None):
+async def softban(ctx: commands.Context, member: nextcord.Member, days=1, reason=None):
     """
     Temporarily bans a specified member from a server.
 
@@ -128,7 +128,7 @@ async def softban(ctx: commands.Context, member: discord.Member, days=1, reason=
 @commands.command()
 @commands.has_permissions(ban_members=True)
 @commands.cooldown(1, 2, commands.BucketType.user)
-async def unban(ctx: commands.Context, user: discord.User):
+async def unban(ctx: commands.Context, user: nextcord.User):
     """
     Unbans a specified user from a server.
 
@@ -205,10 +205,10 @@ async def clearblacklist(ctx: commands.Context):
     if id not in blacklist.keys():
         return await ctx.send(f':x: {mention}: This server does not have any words blacklisted.')
 
-    yes_button = UI.Button(label='Yes', style=discord.ButtonStyle.green, emoji='👍🏻')
-    no_button = UI.Button(label='No', style=discord.ButtonStyle.red, emoji='👎🏻')
+    yes_button = UI.Button(label='Yes', style=nextcord.ButtonStyle.green, emoji='👍🏻')
+    no_button = UI.Button(label='No', style=nextcord.ButtonStyle.red, emoji='👎🏻')
 
-    async def yes(interaction: discord.Interaction):
+    async def yes(interaction: nextcord.Interaction):
         for server_id in blacklist.keys():
             if server_id == id:
                 del blacklist[server_id]
@@ -221,7 +221,7 @@ async def clearblacklist(ctx: commands.Context):
 
     yes_button.callback = yes
 
-    async def no(interaction: discord.Interaction):
+    async def no(interaction: nextcord.Interaction):
         return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
 
     no_button.callback = no
