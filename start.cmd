@@ -11,6 +11,7 @@ Scripts\activate
 
 pip install -r requirements.txt
 py start.py
+
 EXIT
 
 :: If the code reaches here, Python is not installed
@@ -18,5 +19,3 @@ EXIT
 
 echo "Python is not installed."
 echo "Please install Python before continuing."
-
-EXIT
