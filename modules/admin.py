@@ -7,7 +7,6 @@ import nextcord.ui as UI
 import nextcord
 import helpers
 import asyncio
-import discord
 import json
 
 
