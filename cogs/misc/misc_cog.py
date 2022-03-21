@@ -16,7 +16,6 @@ class MiscCog(commands.Cog, name='Misc'):
     def __init__(self, client: commands.Bot):
         self.client = client
 
-
     @commands.command()
     async def choose(self, ctx: commands.Context, *choices: str):
         """
@@ -28,7 +27,6 @@ class MiscCog(commands.Cog, name='Misc'):
         ```
         """
         await ctx.send(random.choice(choices))
-
 
     @commands.command()
     async def meme(self, ctx: commands.Context):
@@ -50,7 +48,6 @@ class MiscCog(commands.Cog, name='Misc'):
 
         meme.set_image(url=str(data['url']))
         await ctx.reply(embed=meme)
-
 
     @commands.command()
     async def poll(self, ctx: commands.Context, *poll: str):

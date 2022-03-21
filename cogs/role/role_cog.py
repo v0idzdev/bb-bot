@@ -49,7 +49,6 @@ class RoleCog(commands.Cog, name='Roles'):
         with open(FILEPATH, 'w') as file:
             json.dump(data, file, indent=4)
 
-
     @commands.command(aliases=['rrr'])
     @commands.has_permissions(manage_roles=True)
     async def removereactrole(self, ctx: commands.Context, role: nextcord.Role):
@@ -116,7 +115,6 @@ class RoleCog(commands.Cog, name='Roles'):
 
         await ctx.send(message)
 
-
     @removereactrole.error
     async def removeractrole_error(self, ctx: commands.Context, error):
         """
@@ -144,110 +142,6 @@ class RoleCog(commands.Cog, name='Roles'):
                     + f'Please try again later.'
 
         await ctx.send(message)
-
-
-# |--------- BACKGROUND TASKS ---------|
-
-
-class JSONFileCleaner(commands.Cog):
-    """
-    Clears deleted roles from the reaction roles JSON file.
-    """
-    def __init__(self, client: commands.Bot):
-        self.client = client
-        self.clean_json_file.start() # Start the loop
-
-    @tasks.loop(seconds=60)
-    async def clean_json_file(self):
-        """
-        Automatically removes deleted roles from the JSON file containing reaction roles.
-        """
-        with open(FILEPATH) as file:
-            data: list = json.load(file)
-
-        for guild in self.client.guilds:
-            for item in list(filter(lambda item: item['guild_id'] == guild.id, data)):
-                if item['role_id'] not in [role.id for role in guild.roles]:
-                    data.remove(item)
-
-        with open(FILEPATH, 'w') as file:
-            json.dump(data, file, indent=4)
-
-    @commands.Cog.listener()
-    async def on_message_delete(self, message: nextcord.Message):
-        """
-        Deletes reaction role messages that correspond to a deleted role. Removes the
-        entry for that reaction role in the JSON file.
-        """
-        with open(FILEPATH) as file:
-            data: list = json.load(file)
-
-        for item in data:
-            if item['msg_id'] == message.id:
-                message.delete()
-                data.remove(item)
-
-        with open(FILEPATH, 'w') as file:
-            json.dump(data, file, indent=4)
-
-
-
-class ReactionEventHandler(commands.Cog):
-    """
-    Handles raw reaction add and raw reaction remove events.
-    """
-    def __init__(self, client: nextcord.Client):
-        self.client = client
-
-    async def _add_or_remove_role(
-        self, payload: nextcord.RawReactionActionEvent, client: commands.Bot, type: str
-    ):
-        """
-        Adds or removes a role from a user.
-        """
-        guild: nextcord.Guild = client.get_guild(payload.guild_id)
-        roles = guild.roles
-
-        match type:
-
-            case 'add':
-                member = payload.member
-                action = member.add_roles
-
-            case 'remove':
-                member: nextcord.Member = guild.get_member(payload.user_id)
-                action = member.remove_roles
-
-        if member.bot:
-            return
-
-        with open(FILEPATH) as file:
-            data = json.load(file)
-
-        for item in data:
-            # Check if the reaction emoji and message are the ones used to give a user
-            # a specific role, or if the role has been deleted
-            if item['emoji'] != payload.emoji.name or item['msg_id'] != payload.message_id \
-            or item['role_id'] not in [role.id for role in guild.roles]:
-                continue
-
-            # If not, either add/remove the role
-            role = nextcord.utils.get(roles, id=item['role_id'])
-            await action(role)
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload: nextcord.RawReactionActionEvent):
-        """
-        Runs when a reaction is added, regardless of the internal message cache.
-        """
-        await self._add_or_remove_role(payload, self.client, 'add')
-
-    @commands.Cog.listener()
-    async def on_raw_reaction_remove(self, payload: nextcord.RawReactionActionEvent):
-        """
-        Runs when a reaction is added, regardless of the internal message cache.
-        """
-        await self._add_or_remove_role(payload, self.client, 'remove')
 
 
 def setup(client: commands.Bot):

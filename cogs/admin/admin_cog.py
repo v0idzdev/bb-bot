@@ -15,7 +15,6 @@ class AdminCog(commands.Cog, name='Admin'):
     def __init__(self, client: commands.Bot):
         self.client = client
 
-
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 15, commands.BucketType.user)
@@ -52,7 +51,6 @@ class AdminCog(commands.Cog, name='Admin'):
             view=view
         )
 
-
     @commands.command()
     @commands.has_permissions(kick_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -67,7 +65,6 @@ class AdminCog(commands.Cog, name='Admin'):
         """
         await sanction(ctx, "kick", member, reason=reason)
 
-
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -81,7 +78,6 @@ class AdminCog(commands.Cog, name='Admin'):
         ```
         """
         await sanction(ctx, "ban", member, reason=reason)
-
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
@@ -99,7 +95,6 @@ class AdminCog(commands.Cog, name='Admin'):
         await asyncio.sleep(days * 86400)  # Convert to seconds
         await lift_ban(ctx, "temporary", member)
 
-
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
@@ -113,7 +108,6 @@ class AdminCog(commands.Cog, name='Admin'):
         ```
         """
         await lift_ban(ctx, "permanent", user)
-
 
     @commands.command(aliases=['bladd'])
     @commands.has_permissions(manage_messages=True)
@@ -147,7 +141,6 @@ class AdminCog(commands.Cog, name='Admin'):
             json.dump(blacklist, file, indent=4)
 
         await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
-
 
     @commands.command(aliases=['blclear'])
     @commands.has_permissions(manage_messages=True)

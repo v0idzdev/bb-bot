@@ -4,6 +4,9 @@ Contains a embedded help command.
 
 import nextcord
 import start
+import sys
+
+sys.path.append('../handlers')
 
 from nextcord.ext import commands
 from .help_command import HelpCommand
