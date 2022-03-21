@@ -9,6 +9,8 @@ import json
 from nextcord.ext import commands
 from .admin_utils import *
 
+FILEPATH = 'files/blacklist.json'
+
 
 class AdminCog(commands.Cog, name='Admin'):
     """⚙️ Commands for server administrators or moderators."""
@@ -121,11 +123,10 @@ class AdminCog(commands.Cog, name='Admin'):
         ~blacklist | ~bladd <word>
         ```
         """
-        filepath = 'files/blacklist.json'
         id = str(ctx.guild.id)
         word = word.lower()
 
-        with open(filepath, 'r') as file:
+        with open(FILEPATH, 'r') as file:
             blacklist: dict = json.load(file)
 
         if id not in blacklist.keys():
@@ -137,7 +138,7 @@ class AdminCog(commands.Cog, name='Admin'):
         blacklist[id].append(word)
         print(blacklist)
 
-        with open(filepath, 'w') as file:
+        with open(FILEPATH, 'w') as file:
             json.dump(blacklist, file, indent=4)
 
         await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
@@ -153,10 +154,9 @@ class AdminCog(commands.Cog, name='Admin'):
         ~clearblacklist | ~blclear <word>
         ```
         """
-        filepath = 'files/blacklist.json'
         id = str(ctx.guild.id)
 
-        with open(filepath) as file:
+        with open(FILEPATH) as file:
             blacklist: dict = json.load(file)
 
         mention = ctx.author.mention
@@ -172,7 +172,7 @@ class AdminCog(commands.Cog, name='Admin'):
                 if server_id == id:
                     del blacklist[server_id]
 
-                    with open(filepath, 'w') as file:
+                    with open(FILEPATH, 'w') as file:
                         json.dump(blacklist, file, indent=4)
 
                     return await interaction.message.channel.send(f':thumbsup: {mention}: The blacklist for this server'
@@ -181,12 +181,11 @@ class AdminCog(commands.Cog, name='Admin'):
         yes_button.callback = yes
 
         async def no(interaction: nextcord.Interaction):
-            interaction.auth
             return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
 
         no_button.callback = no
 
-        view = nextcord.ui.View(ctx)
+        view = nextcord.ui.View()
         view.add_item(yes_button)
         view.add_item(no_button)
 
@@ -195,6 +194,28 @@ class AdminCog(commands.Cog, name='Admin'):
             + f'This action cannot be undone.',
             view=view
         )
+
+    @commands.command(aliases=['blshow'])
+    async def showblacklist(self, ctx: commands.Context):
+        """
+        ⚙️ Shows the list of banned words.
+
+        Usage:
+        ```
+        ~showblacklist | ~blshow
+        ```
+        """
+        with open(FILEPATH) as file:
+            blacklist: dict = json.load(file)
+
+        server_id = str(ctx.guild.id)
+        if server_id not in blacklist.keys():
+            return await ctx.send(f':x: {ctx.author.mention}: This server does not have any words blacklisted.')
+
+        embed = nextcord.Embed(title='⛔ Blacklist')
+        embed.description = ''.join([f' `{word}` ' for word in blacklist[server_id]])
+
+        await ctx.send(embed=embed)
 
 
 def setup(client: commands.Bot):
