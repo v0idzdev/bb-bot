@@ -151,7 +151,7 @@ class EventHandler(commands.Cog):
         """
         Executes when the bot has loaded.
         """
-        print(f'Loaded {self.client.user.name} successfully.')
+        print(f'\nLoaded {self.client.user.name} successfully.\n\nLOGS:')
 
         task_handler = self.client.cogs.get('TaskHandler')
         tasks = [

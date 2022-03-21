@@ -43,7 +43,7 @@ class ErrorHandler(commands.Cog):
 
         return f'{start} need the **{fmt}** permission(s) to use this command.'
 
-
+    @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error):
         """
         Handles errors raised by commands that are not locally handled.
@@ -88,19 +88,7 @@ class ErrorHandler(commands.Cog):
 
                 return
 
-        button_continue = nextcord.ui.Button(label='OK', style=nextcord.ButtonStyle.green)
-        button_docspage = nextcord.ui.Button(label='Help',
-            url='https://github.com/matthewflegg/beepboop/blob/main/README.md',
-        )
-
-        button_continue.callback = lambda interaction: \
-            (await interaction.message.delete(delay=3) for _ in '_').__anext__()
-
-        view = nextcord.ui.View()
-        view.add_item(button_continue)
-        view.add_item(button_docspage)
-
-        return await ctx.send(message, view=view)
+        return await ctx.send(message)
 
 
 def setup(client: commands.Bot):
