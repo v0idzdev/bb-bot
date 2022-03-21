@@ -6,7 +6,6 @@ This is where the bot is configured and launched.
 
 import nextcord
 import os
-import sys
 import nextcord.ext.commands as commands
 import nextcord.ext.tasks as tasks
 import itertools

@@ -11,7 +11,7 @@ from .music_player import MusicPlayer
 
 class MusicCog(commands.Cog):
     """
-    🎵 Class containing music related commands.
+    🎵 Contains music commands.
     """
     __slots__ = ("bot", "players")
 
