@@ -24,14 +24,24 @@ intents.members = True
 prefix = "~"
 colour = 0x486572
 status = itertools.cycle(['~help', '~ai', '~play'])
-client = commands.Bot(prefix, intents=intents, help_command=None, case_insensitive=True) # Help command = none so we can override it
+client = commands.Bot(prefix, intents=intents, case_insensitive=True) # Help command = none so we can override it
 
 PATH = './modules'
+HELP = './help' # Help commands
+
 sys.path.append(PATH)
 
-for module in os.listdir(PATH):
-    if module.endswith('.py') and module not in ('__init__.py', 'helpers.py'):
-        client.load_extension(f'modules.{module}'.replace('.py', ''))
+
+# def load(module):
+#     if module.endswith('.py') and module not in ('__init__.py', 'helpers.py'):
+#         client.load_extension(f'modules.{module}'.replace('.py', ''))
+
+
+# for module in os.listdir(PATH):
+#     if module == HELP:
+#         load(f'{HELP}.help_cog.py')
+
+#     load(module)
 
 
 # |----- BACKGROUND TASKS -----|
