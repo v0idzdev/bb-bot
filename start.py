@@ -35,7 +35,7 @@ cogs = [
 for i, cog in enumerate(cogs):
     try:
         client.load_extension(cog)
-        print(f'[COG] Loaded <<{cog}>> successfully')
+        print(f'[COG] Loaded <<{cog}>> successfully.')
     except:
         print(f'[COG] <<{cog}>> encountered an error.')
 
