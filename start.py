@@ -26,10 +26,19 @@ colour = 0x486572
 status = itertools.cycle(['~help', '~ai', '~play'])
 client = commands.Bot(prefix, intents=intents, case_insensitive=True) # Help command = none so we can override it
 
-PATH = './modules'
-HELP = './help' # Help commands
+# List of filepaths in the Python import format
+# This is here because a loop isn't necessary
+cogs = [
+    'cogs.admin.admin_cog',
+    'cogs.help.help_cog',
+    'cogs.misc.misc_cog',
+    'cogs.music.music_cog',
+    'cogs.role.role_cog'
+]
 
-sys.path.append(PATH)
+for cog in cogs:
+    client.load_extension(cog)
+    print(f'Loaded "{cog}" successfully')
 
 
 # def load(module):
@@ -64,7 +73,7 @@ async def on_ready():
     """
     Executes when the bot has loaded.
     """
-    print(f"Loaded {client.user.name} successfully.")
+    print(f'Loaded {client.user.name} successfully.')
     await change_presence.start()
 
 

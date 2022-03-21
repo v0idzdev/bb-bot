@@ -11,7 +11,7 @@ from .admin_utils import *
 
 
 class AdminCog(commands.Cog):
-    """Commands for server administrators or moderators."""
+    """⚙️ Commands for server administrators or moderators."""
     def __init__(self, client: commands.Bot):
         self.client = client
 
@@ -21,7 +21,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def clear(self, ctx: commands.Context, amount: int | None):
         """
-        Clears messages from a text channel.
+        ⚙️ Clears messages from a text channel.
 
         Usage:
         ```
@@ -58,7 +58,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def kick(self, ctx: commands.Context, member: nextcord.Member, *, reason=None):
         """
-        Kicks a member from a server.
+        ⚙️ Kicks a member from a server.
 
         Usage:
         ```
@@ -73,7 +73,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def ban(self, ctx: commands.Context, member: nextcord.Member, *, reason=None):
         """
-        Bans a member from a server.
+        ⚙️ Bans a member from a server.
 
         Usage:
         ```
@@ -88,7 +88,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def softban(self, ctx: commands.Context, member: nextcord.Member, days=1, reason=None):
         """
-        Temporarily bans a member from a server.
+        ⚙️ Temporarily bans a member from a server.
 
         Usage:
         ```
@@ -105,7 +105,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def unban(self, ctx: commands.Context, user: nextcord.User):
         """
-        Unbans a member from a server.
+        ⚙️ Unbans a member from a server.
 
         Usage:
         ```
@@ -120,7 +120,7 @@ class AdminCog(commands.Cog):
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def blacklist(self, ctx: commands.Context, *, word: str):
         """
-        Bans a word from being used.
+        ⚙️ Bans a word from being used.
 
         Usage:
         ```
@@ -153,7 +153,7 @@ class AdminCog(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def clearblacklist(self, ctx: commands.Context):
         """
-        Clears the list of banned words.
+        ⚙️ Clears the list of banned words.
 
         Usage:
         ```
