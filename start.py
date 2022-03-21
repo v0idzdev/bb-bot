@@ -35,9 +35,9 @@ cogs = [
 for i, cog in enumerate(cogs):
     try:
         client.load_extension(cog)
-        print(f'[COG {i + 1}/{len(cogs)}] Loaded "{cog}" successfully')
+        print(f'[COG] Loaded <<{cog}>> successfully')
     except:
-        print(f'[COG {i + 1}/{len(cogs)}] "{cog}" encountered an error')
+        print(f'[COG] <<{cog}>> encountered an error.')
 
 # Doing the same for handlers
 # This is separate to improve readability
@@ -50,9 +50,9 @@ handlers = [
 for i, handler in enumerate(handlers):
     try:
         client.load_extension(handler)
-        print(f'[HANDLER {i + 1}/{len(handlers)}] Loaded "{handler}" successfully')
+        print(f'[HANDLER] Loaded <<{handler}>> successfully.')
     except:
-        print(f'[HANDLER {i + 1}/{len(handlers)}] "{handler}" encountered an error')
+        print(f'[HANDLER] <<{handler}>> encountered an error.')
 
 
 TOKEN = os.getenv("TOKEN")

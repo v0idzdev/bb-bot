@@ -109,6 +109,10 @@ class RoleCog(commands.Cog, name='Roles'):
                     await ctx.channel.purge(limit=1)
                     message += 'Sorry, that emoji is invalid. Please use a valid emoji.'
 
+            case nextcord.Forbidden:
+                message += 'BB.Bot is forbidden from assigning/removing this role.\n' \
+                    + f'Try moving this role above the reaction role.'
+
             case _:
                 message += 'An unknown error occurred while creating your reaction role.\n' \
                     + f'Please try again later.'

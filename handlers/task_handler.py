@@ -20,6 +20,8 @@ class TaskHandler(commands.Cog):
         """
         Automatically removes deleted roles from the JSON file containing reaction roles.
         """
+        print(f'[TASK] Running <<clean_json_file>>.')
+
         with open(FILEPATH) as file:
             data: list = json.load(file)
 
@@ -36,6 +38,8 @@ class TaskHandler(commands.Cog):
         """
         Changes the bot's presence every 30 seconds.
         """
+        print(f'[TASK] Running <<change_presence>>.')
+
         activity = next(start.status)
         await self.client.change_presence(activity=nextcord.Game(activity))
 

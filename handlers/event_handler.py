@@ -153,8 +153,17 @@ class EventHandler(commands.Cog):
         """
         print(f'Loaded {self.client.user.name} successfully.')
 
-        await self.client.cogs.get('TaskHandler').__getattribute__('change_presence').start()
-        await self.client.cogs.get('TaskHandler').__getattribute__('json_file_cleaner').start()
+        task_handler = self.client.cogs.get('TaskHandler')
+        tasks = [
+            'change_presence',
+            'clean_json_file'
+        ]
+
+        for task in tasks:
+            await task_handler.__getattribute__(task).start()
+
+        # await self.client.cogs.get('TaskHandler').__getattribute__('change_presence').start()
+        # await self.client.cogs.get('TaskHandler').__getattribute__('clean_json_file').start()
 
 
 def setup(client: commands.Bot):
