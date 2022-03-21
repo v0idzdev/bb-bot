@@ -146,6 +146,7 @@ class EventHandler(commands.Cog):
         with open(FILEPATH, 'w') as file:
             json.dump(data, file, indent=4)
 
+    @commands.Cog.listener()
     async def on_ready(self):
         """
         Executes when the bot has loaded.

@@ -32,9 +32,12 @@ cogs = [
     'cogs.role.role_cog'
 ]
 
-for cog in cogs:
-    client.load_extension(cog)
-    print(f'[COG] Loaded "{cog}" successfully')
+for i, cog in enumerate(cogs):
+    try:
+        client.load_extension(cog)
+        print(f'[COG {i + 1}/{len(cogs)}] Loaded "{cog}" successfully')
+    except:
+        print(f'[COG {i + 1}/{len(cogs)}] "{cog}" encountered an error')
 
 # Doing the same for handlers
 # This is separate to improve readability
@@ -44,9 +47,12 @@ handlers = [
     'handlers.task_handler'
 ]
 
-for handler in handlers:
-    client.load_extension(handler)
-    print(f'[HANDLER] Loaded "{handler}" successfully')
+for i, handler in enumerate(handlers):
+    try:
+        client.load_extension(handler)
+        print(f'[HANDLER {i + 1}/{len(handlers)}] Loaded "{handler}" successfully')
+    except:
+        print(f'[HANDLER {i + 1}/{len(handlers)}] "{handler}" encountered an error')
 
 
 TOKEN = os.getenv("TOKEN")
