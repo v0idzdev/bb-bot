@@ -53,7 +53,7 @@ class HelpCommand(commands.MinimalHelpCommand):
             title='Bot Commands',
             description='BB.Bot commands. See our GitHub repository for more information.'
                 + f'\n\nUse **~help <command name>** for more information about a command.'
-                + f'\n\nUse **~help <cog name>** for more information about a cog.',
+                + f'\nUse **~help <cog name>** for more information about a cog.',
             mapping=mapping
         )
 
