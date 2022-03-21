@@ -92,7 +92,7 @@ class AdminCog(commands.Cog, name='Admin'):
 
         Usage:
         ```
-        ~softban <member> [days *(default: 1)*] [reason]
+        ~softban <member> [days] [reason]
         ```
         """
         await sanction(ctx, "softban", member, reason=reason)
