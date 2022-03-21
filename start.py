@@ -9,7 +9,7 @@ import os
 import itertools
 import dotenv
 
-from nextcord.ext import commands, tasks
+from nextcord.ext import commands
 
 
 dotenv.load_dotenv('files/.env')
