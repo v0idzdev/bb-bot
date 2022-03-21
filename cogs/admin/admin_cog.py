@@ -196,6 +196,7 @@ class AdminCog(commands.Cog, name='Admin'):
         )
 
     @commands.command(aliases=['blshow'])
+    @commands.has_permissions(manage_messages=True)
     async def showblacklist(self, ctx: commands.Context):
         """
         ⚙️ Shows the list of banned words.
