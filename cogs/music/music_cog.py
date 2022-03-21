@@ -9,7 +9,7 @@ from .music_utils import YTDLSource, VCError, InvalidVC
 from .music_player import MusicPlayer
 
 
-class MusicCog(commands.Cog):
+class MusicCog(commands.Cog, name='Music'):
     """
     🎵 Contains music commands.
     """

@@ -10,7 +10,7 @@ from nextcord.ext import commands
 from .admin_utils import *
 
 
-class AdminCog(commands.Cog):
+class AdminCog(commands.Cog, name='Admin'):
     """⚙️ Commands for server administrators or moderators."""
     def __init__(self, client: commands.Bot):
         self.client = client

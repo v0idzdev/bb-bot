@@ -11,7 +11,7 @@ from nextcord.ext import commands, tasks
 FILEPATH = 'files/reactionroles.json' # JSON file containing reaction role data
 
 
-class RoleCog(commands.Cog):
+class RoleCog(commands.Cog, name='Roles'):
     """🏷️ Contains role commands."""
     def __init__(self, client: commands.Bot):
         self.client = client

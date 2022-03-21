@@ -11,7 +11,7 @@ import requests
 from nextcord.ext import commands
 
 
-class MiscCog(commands.Cog):
+class MiscCog(commands.Cog, name='Misc'):
     """🎲 Contains miscellaneous commands."""
     def __init__(self, client: commands.Bot):
         self.client = client
