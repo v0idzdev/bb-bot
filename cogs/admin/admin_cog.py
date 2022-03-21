@@ -218,6 +218,38 @@ class AdminCog(commands.Cog, name='Admin'):
 
         await ctx.send(embed=embed)
 
+    @commands.command(aliases=['blrem'])
+    @commands.has_permissions(manage_messages=True)
+    async def blacklistremove(self, ctx: commands.Context, *, word: str):
+        """
+        ⚙️ Removes a word from the list of banned words.
+
+        Usage:
+        ```
+        ~blacklistremove | ~blrem <word>
+        ```
+        """
+        id = str(ctx.guild.id)
+        word = word.lower()
+
+        with open(FILEPATH, 'r') as file:
+            blacklist: dict = json.load(file)
+
+        if id not in blacklist.keys():
+            return await ctx.send(f':x: {ctx.author.mention}: This server does not have any words blacklisted.')
+
+        if word not in blacklist[id]:
+            return await ctx.send(f':x: {ctx.author.mention}: That word is not in this server\'s blacklist.')
+
+        blacklist[id].remove(word)
+        print(blacklist)
+
+        with open(FILEPATH, 'w') as file:
+            json.dump(blacklist, file, indent=4)
+
+        await ctx.send(f':tools: \'{word}\' has been removed from the blacklist.')
+
+
 
 def setup(client: commands.Bot):
     client.add_cog(AdminCog(client))
