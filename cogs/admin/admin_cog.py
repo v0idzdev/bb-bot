@@ -176,16 +176,17 @@ class AdminCog(commands.Cog, name='Admin'):
                         json.dump(blacklist, file, indent=4)
 
                     return await interaction.message.channel.send(f':thumbsup: {mention}: The blacklist for this server'
-                        + f'has successfully been deleted.')
+                        + f' has successfully been deleted.')
 
         yes_button.callback = yes
 
         async def no(interaction: nextcord.Interaction):
+            interaction.auth
             return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
 
         no_button.callback = no
 
-        view = nextcord.ui.View()
+        view = nextcord.ui.View(ctx)
         view.add_item(yes_button)
         view.add_item(no_button)
 
