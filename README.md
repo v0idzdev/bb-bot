@@ -34,7 +34,11 @@ This version of BB.Bot is a **pre-release** version and is **NOT** currently onl
 
 ### 🔖 Help Commands
 
-> **~help**
+> **~docs**
+
+Sends an embed containing a list of commands and categories **this page**
+
+> **~docs**
 
 Sends an embed linking to **this page**.
 <br><br>             
