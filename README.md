@@ -36,6 +36,11 @@ This version of BB.Bot is a **pre-release** version and is **NOT** currently onl
 
 > **~help**
 
+Sends an embed containing a list of commands and categories **this page**.     
+You can use **`~help <command>`** or **`~help <category>`** to see more information.
+
+> **~docs**
+
 Sends an embed linking to **this page**.
 <br><br>             
 
@@ -54,6 +59,16 @@ Adds the word to a list of words that are disallowed. Any messages containing th
 > **~clearblacklist | ~blclear**
 
 Clears the blacklist for the server.<br>
+**Requires**: `Manage Messages`
+
+> **~showblacklist | ~blshow**
+
+Shows the blacklist for the server.<br>
+**Requires**: `Manage Messages`
+
+> **~blacklistremove | ~blrem**
+
+Removes a word from the blacklist.<br>
 **Requires**: `Manage Messages`
 
 > **~kick `member` `reason?`**
