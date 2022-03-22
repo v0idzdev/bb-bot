@@ -1,16 +1,16 @@
-import nextcord
+import discord
 import asyncio
-import start
+
 
 from youtube_dl import YoutubeDL
 from functools import partial
-from nextcord.ext import commands
+from discord.ext import commands
 from ._music_utils_config import ytdl_options
 
 ytdl = YoutubeDL(ytdl_options)
 
 
-class YTDLSource(nextcord.PCMVolumeTransformer):
+class YTDLSource(discord.PCMVolumeTransformer):
     """
     Contains functionality/data relating to the YouTube download source.
     """
@@ -51,9 +51,9 @@ class YTDLSource(nextcord.PCMVolumeTransformer):
         if 'entries' in data: # Get the first item in a playlist
             data = data["entries"][0]
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'✅ Added {data["title"]} to the Queue.',
-            color=start.colour
+            color=ctx.bot.theme
         )
 
         await ctx.send(embed=embed, delete_after=15)
@@ -63,7 +63,7 @@ class YTDLSource(nextcord.PCMVolumeTransformer):
         else:
             return {'webpage_url': data['webpage_url'], 'requester': ctx.author, 'title': data['title']}
 
-        return cls(nextcord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
+        return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
 
     @classmethod
     async def regather_stream(cls, data: dict, *, loop: asyncio.AbstractEventLoop):
@@ -82,4 +82,4 @@ class YTDLSource(nextcord.PCMVolumeTransformer):
         to_run = partial(ytdl.extract_info, url=data['webpage_url'], download=False)
         data = await loop.run_in_executor(None, to_run)
 
-        return cls(nextcord.FFmpegPCMAudio(data['url']), data=data, requester=requester)
+        return cls(discord.FFmpegPCMAudio(data['url']), data=data, requester=requester)

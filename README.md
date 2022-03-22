@@ -3,7 +3,7 @@
 </p>
 <h1 align="center">🤖 BB.Bot</h1>
 <h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ⭐ Reaction Roles | ❓ Polls</h3>
-<h4 align="center">Powered by Nextcord and GCP, BB.Bot is the bot for you.</h4>
+<h4 align="center">Powered by discord.py and GCP, BB.Bot is the bot for you.</h4>
 <br>
 
 <p align="center">

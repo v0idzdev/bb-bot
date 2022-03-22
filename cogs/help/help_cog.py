@@ -2,25 +2,25 @@
 Contains a embedded help command.
 """
 
-import nextcord
-import start
 import sys
 
-sys.path.append('../handlers')
+import discord
+from discord.ext import commands
 
-from nextcord.ext import commands
 from .help_command import HelpCommand
+
+sys.path.append('../handlers')
 
 
 class HelpCommandCog(commands.Cog, name='Help'):
     """❓ Shows help information about commands."""
     def __init__(self, client: commands.Bot):
+        self.client = client
         self._current_help_command = client.help_command
-
         client.help_command = HelpCommand()
         client.help_command.cog = self
 
-    def cog_unload(self):
+    async def cog_unload(self):
         """Called when the cog is removed."""
         self.client.help_command = self._current_help_command
 
@@ -34,9 +34,9 @@ class HelpCommandCog(commands.Cog, name='Help'):
         ~docs
         ```
         """
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title="Beep Boop Bot Documentation",
-            color=start.colour,
+            color=self.client.theme,
             url="https://github.com/matthewflegg/beepboop/blob/main/README.md",
             description="View the official commands list for Beep Boop Bot on GitHub.",
         )
@@ -58,12 +58,12 @@ class HelpCommandCog(commands.Cog, name='Help'):
         await ctx.send(embed=embed)
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(HelpCommandCog(client))
+    await client.add_cog(HelpCommandCog(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(HelpCommandCog(client))
+    await client.remove_cog(HelpCommandCog(client))
 

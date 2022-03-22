@@ -1,4 +1,4 @@
-from nextcord.ext import commands
+from discord.ext import commands
 
 
 class VCError(commands.CommandError):

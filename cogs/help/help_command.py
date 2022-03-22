@@ -2,10 +2,10 @@
 Sends an embedded, custom, help command.
 """
 
-import nextcord
-
-from nextcord.ext import commands
 from typing import Optional
+
+import discord
+from discord.ext import commands
 
 
 class HelpCommand(commands.MinimalHelpCommand):
@@ -18,7 +18,7 @@ class HelpCommand(commands.MinimalHelpCommand):
         command_set: Optional[set[commands.Command]]=None
     ):
         """Sends a help embed to the channel the help command was used in."""
-        embed = nextcord.Embed(title=title)
+        embed = discord.Embed(title=title)
 
         if description: # Only give the embed a description if there is one
             embed.description = description
@@ -40,7 +40,7 @@ class HelpCommand(commands.MinimalHelpCommand):
                     continue
 
                 name = cog.qualified_name if cog else 'No category'
-                command_list = '\u2002'.join(f'{self.context.clean_prefix}{command.name}' for command in filtered)
+                command_list = ' '.join(f'`{self.context.clean_prefix}{command.name}`' for command in filtered)
                 value = (f'{cog.description}\n{command_list}' if cog and cog.description else command_list)
 
                 embed.add_field(name=name, value=value, inline=False)
@@ -57,7 +57,8 @@ class HelpCommand(commands.MinimalHelpCommand):
             mapping=mapping
         )
 
-        await self.get_destination().send(embed=embed)
+        channel = self.get_destination()
+        await channel.send(embed=embed)
 
     async def send_command_help(self, command: commands.Command | commands.Group):
         embed = await self.help_embed(

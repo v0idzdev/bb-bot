@@ -3,12 +3,9 @@ Contains miscellaneous commands to be used for fun.
 """
 
 import random
-import nextcord
-import json
-import start
-import requests
 
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 
 
 class MiscCog(commands.Cog, name='Misc'):
@@ -38,14 +35,12 @@ class MiscCog(commands.Cog, name='Misc'):
         ~meme
         ```
         """
-        content = requests.get('https://meme-api.herokuapp.com/gimme').text
-        data = json.loads(content, )
-
-        meme = nextcord.Embed(
+        response = await self.client.session.get('https://meme-api.herokuapp.com/gimme')
+        data = await response.json()
+        meme = discord.Embed(
             title=str(data["title"]),
-            color=start.colour
+            color=self.client.theme
         )
-
         meme.set_image(url=str(data['url']))
         await ctx.reply(embed=meme)
 
@@ -59,9 +54,9 @@ class MiscCog(commands.Cog, name='Misc'):
         ~poll [question]
         ```
         """
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'Poll by **{ctx.author.name}**:',
-            color=start.colour,
+            color=self.client.theme,
             description=' '.join(poll)
         )
 
@@ -71,12 +66,12 @@ class MiscCog(commands.Cog, name='Misc'):
         await message.add_reaction('❌')
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(MiscCog(client))
+    await client.add_cog(MiscCog(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(MiscCog(client))
+    await client.remove_cog(MiscCog(client))
 

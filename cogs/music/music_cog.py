@@ -1,12 +1,10 @@
-import nextcord
-import nextcord.ext.commands as commands
 import asyncio
 import itertools
-import start
 
-from async_timeout import timeout
-from .music_utils import YTDLSource, VCError, InvalidVC
+import discord
+import discord.ext.commands as commands
 from .music_player import MusicPlayer
+from .music_utils import InvalidVC, VCError, YTDLSource
 
 
 class MusicCog(commands.Cog, name='Music'):
@@ -48,7 +46,7 @@ class MusicCog(commands.Cog, name='Music'):
         if isinstance(error, commands.NoPrivateMessage):
             try:
                 return await ctx.send(f':x: {ctx.author.mention}: You can\'t play music in a private message channel.')
-            except nextcord.HTTPException:
+            except discord.HTTPException:
                 pass
         elif isinstance(error, InvalidVC):
             await ctx.send(f':x: {ctx.author.mention}: Couldn\'t connect to a VC.'
@@ -67,7 +65,7 @@ class MusicCog(commands.Cog, name='Music'):
         return player
 
     @commands.command(aliases=['join'])
-    async def connect(self, ctx: commands.Context, *, channel: nextcord.VoiceChannel=None):
+    async def connect(self, ctx: commands.Context, *, channel: discord.VoiceChannel=None):
         """
         🎵 Joins a voice channel.
 
@@ -100,10 +98,10 @@ class MusicCog(commands.Cog, name='Music'):
             except asyncio.TimeoutError:
                 raise VCError(f':x: {ctx.author.mention}: Connecting to channel **{channel}** timed out.')
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'🔥 Connected to:',
             description=f'**{channel}**',
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed, delete_after=20)
@@ -151,9 +149,9 @@ class MusicCog(commands.Cog, name='Music'):
 
         vc.pause()
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'⏸️ **{ctx.author}**: Paused the song.',
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -179,9 +177,9 @@ class MusicCog(commands.Cog, name='Music'):
 
         vc.resume()
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'▶️ **{ctx.author}**: Resumed the song.',
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -210,9 +208,9 @@ class MusicCog(commands.Cog, name='Music'):
 
         vc.stop()
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'⏭️ **{ctx.author}**: Skipped the song.',
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -240,10 +238,10 @@ class MusicCog(commands.Cog, name='Music'):
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
         fmt = '\n\n'.join(f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming))
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'Upcoming: {len(upcoming)} songs.',
             description=fmt,
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -272,13 +270,13 @@ class MusicCog(commands.Cog, name='Music'):
         try:
             # Remove our previous now_playing message.
             await player.np.delete()
-        except nextcord.HTTPException:
+        except discord.HTTPException:
             pass
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'🎵 **Now Playing:** *{vc.source.title}*',
             description=f'Requested by: **{vc.source.requester}**',
-            color=start.colour
+            color=self.bot.theme
         )
 
         player.np = await ctx.send(embed=embed)
@@ -293,7 +291,7 @@ class MusicCog(commands.Cog, name='Music'):
         ~volume | ~vol <volume>
         ```
         """
-        vc: nextcord.VoiceProtocol = ctx.voice_client
+        vc: discord.VoiceProtocol = ctx.voice_client
 
         if not vc or not vc.is_connected():
             return await ctx.send(f':x: {ctx.author.mention}: I\'m not connected to VC.', delete_after=20)
@@ -308,9 +306,9 @@ class MusicCog(commands.Cog, name='Music'):
 
         player.volume = vol / 100
 
-        embed = nextcord.Embed(
+        embed = discord.Embed(
             title=f'🔊 **{ctx.author}**: Set the volume to *{vol}%*',
-            color=start.colour
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -335,11 +333,11 @@ class MusicCog(commands.Cog, name='Music'):
         await self.cleanup(ctx.guild)
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(MusicCog(client))
+    await client.add_cog(MusicCog(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(MusicCog(client))
+    await client.remove_cog(MusicCog(client))

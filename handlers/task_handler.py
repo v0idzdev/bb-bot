@@ -1,8 +1,8 @@
-import nextcord
-import start
+import discord
+
 import json
 
-from nextcord.ext import commands, tasks
+from discord.ext import commands, tasks
 
 # JSON file containing reaction role data
 FILEPATH = 'files/reactionroles.json'
@@ -39,16 +39,15 @@ class TaskHandler(commands.Cog):
         Changes the bot's presence every 30 seconds.
         """
         print(f'[TASK] Running <<change_presence>>.')
+        activity = next(self.client.possible_status)
+        await self.client.change_presence(activity=discord.Game(activity))
 
-        activity = next(start.status)
-        await self.client.change_presence(activity=nextcord.Game(activity))
 
-
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(TaskHandler(client))
+    await client.add_cog(TaskHandler(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(TaskHandler(client))
+    await client.remove_cog(TaskHandler(client))

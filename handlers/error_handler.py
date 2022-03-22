@@ -5,12 +5,12 @@ This is a global error handler and does not override local
 error handlers.
 """
 
-import nextcord
+import discord
 import traceback
 import math
 import sys
 
-from nextcord.ext import commands
+from discord.ext import commands
 
 
 class ErrorHandler(commands.Cog):
@@ -79,7 +79,7 @@ class ErrorHandler(commands.Cog):
                 try:
                     message += 'You can\'t use this command in private messages.'
 
-                except nextcord.Forbidden:
+                except discord.Forbidden:
                     return
 
             case _:
@@ -91,11 +91,11 @@ class ErrorHandler(commands.Cog):
         return await ctx.send(message)
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(ErrorHandler(client))
+    await client.add_cog(ErrorHandler(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(ErrorHandler(client))
+    await client.remove_cog(ErrorHandler(client))
