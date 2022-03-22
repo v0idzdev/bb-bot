@@ -5,9 +5,9 @@ IF errorlevel 1 GOTO noPython
 
 :: If the code reaches here then Python is installed
 py -m venv venv
-cd venv
+:: cd'ing into venv/ directory should throw No Such File As requirements.txt
 
-Scripts\activate
+venv\Scripts\activate
 
 pip install -r requirements.txt
 py start.py

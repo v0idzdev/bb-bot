@@ -1,9 +1,9 @@
-import nextcord
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 
 
 async def sanction(
-    ctx: commands.Context, punishment: str, member: nextcord.Member, reason=None
+    ctx: commands.Context, punishment: str, member: discord.Member, reason=None
 ):
     """
     Utility function that bans or kicks a member.
@@ -32,7 +32,7 @@ async def sanction(
     await member.send(message_member)
 
 
-async def lift_ban(ctx: commands.Context, ban_type: str, user: nextcord.User):
+async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
     """
     Utility function that unbans a member.
     """

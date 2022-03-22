@@ -2,11 +2,11 @@
 Contains a cog that handles reaction roles/self roles.
 """
 
-import nextcord
-import start
+import discord
+
 import json
 
-from nextcord.ext import commands, tasks
+from discord.ext import commands, tasks
 
 FILEPATH = 'files/reactionroles.json' # JSON file containing reaction role data
 
@@ -19,7 +19,7 @@ class RoleCog(commands.Cog, name='Roles'):
     @commands.command(aliases=['crr'])
     @commands.has_permissions(manage_roles=True)
     async def reactrole(
-        self, ctx: commands.Context, emoji, role: nextcord.Role, *, message: str
+        self, ctx: commands.Context, emoji, role: discord.Role, *, message: str
     ):
         """
         🏷️ Creates a reaction role message.
@@ -29,7 +29,7 @@ class RoleCog(commands.Cog, name='Roles'):
         ~reactrole | ~rrr <@role>
         ```
         """
-        embed = nextcord.Embed(description=message)
+        embed = discord.Embed(description=message)
         msg = await ctx.channel.send(embed=embed)
         await msg.add_reaction(emoji)
 
@@ -51,7 +51,7 @@ class RoleCog(commands.Cog, name='Roles'):
 
     @commands.command(aliases=['rrr'])
     @commands.has_permissions(manage_roles=True)
-    async def removereactrole(self, ctx: commands.Context, role: nextcord.Role):
+    async def removereactrole(self, ctx: commands.Context, role: discord.Role):
         """
         🏷️ Removes a reaction role message.
 
@@ -77,7 +77,7 @@ class RoleCog(commands.Cog, name='Roles'):
         with open(FILEPATH, 'w') as file:
             json.dump(data, file, indent=4)
 
-        embed = nextcord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
+        embed = discord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
         await ctx.send(embed=embed)
 
     @reactrole.error
@@ -98,18 +98,18 @@ class RoleCog(commands.Cog, name='Roles'):
 
             case commands.UserInputError:
                 message += 'Invalid input, please try again.\n' \
-                    + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
+                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
 
             case commands.MissingRequiredArgument:
                 message += 'Please enter all the required arguments.\n' \
-                    + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
+                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
 
-            case nextcord.HTTPException: # An invalid emoji raises a HTTP exception
+            case discord.HTTPException: # An invalid emoji raises a HTTP exception
                 if 'Unknown Emoji' in error.__str__(): # Prevents this handler from catching unrelated errors
                     await ctx.channel.purge(limit=1)
                     message += 'Sorry, that emoji is invalid. Please use a valid emoji.'
 
-            case nextcord.Forbidden:
+            case discord.Forbidden:
                 message += 'BB.Bot is forbidden from assigning/removing this role.\n' \
                     + f'Try moving this role above the reaction role.'
 
@@ -135,11 +135,11 @@ class RoleCog(commands.Cog, name='Roles'):
 
             case commands.UserInputError:
                 message += 'Invalid input, please try again.\n' \
-                    + f'Use **{start.prefix}reactrole `emoji` `@role` `message`**.'
+                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
 
             case commands.MissingRequiredArgument:
                 message += 'Please enter all the required arguments.\n' \
-                    + f'Use **{start.prefix}removereactrole `@role`**.'
+                    + f'Use **{ctx.prefix}removereactrole `@role`**.'
 
             case _:
                 message += 'An unknown error occurred while creating your reaction role.\n' \
@@ -148,11 +148,11 @@ class RoleCog(commands.Cog, name='Roles'):
         await ctx.send(message)
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(RoleCog(client))
+    await client.add_cog(RoleCog(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(RoleCog(client))
+    await client.remove_cog(RoleCog(client))

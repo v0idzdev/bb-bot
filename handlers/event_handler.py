@@ -2,11 +2,11 @@
 Contains all of the events that the client will listen to.
 """
 
-import nextcord
-import start
+import discord
+
 import json
 
-from nextcord.ext import commands
+from discord.ext import commands
 
 # This is the filepath for the reaction roles data
 FILEPATH = 'files/reactionroles.json'
@@ -20,12 +20,12 @@ class EventHandler(commands.Cog):
         self.client = client
 
     async def _add_or_remove_role(
-        self, payload: nextcord.RawReactionActionEvent, client: commands.Bot, type: str
+        self, payload: discord.RawReactionActionEvent, client: commands.Bot, type: str
     ):
         """
         Adds or removes a role from a user.
         """
-        guild: nextcord.Guild = client.get_guild(payload.guild_id)
+        guild: discord.Guild = client.get_guild(payload.guild_id)
         roles = guild.roles
 
         match type:
@@ -35,7 +35,7 @@ class EventHandler(commands.Cog):
                 action = member.add_roles
 
             case 'remove':
-                member: nextcord.Member = guild.get_member(payload.user_id)
+                member: discord.Member = guild.get_member(payload.user_id)
                 action = member.remove_roles
 
         if member.bot:
@@ -52,11 +52,11 @@ class EventHandler(commands.Cog):
                 continue
 
             # If not, either add/remove the role
-            role = nextcord.utils.get(roles, id=item['role_id'])
+            role = discord.utils.get(roles, id=item['role_id'])
             await action(role)
 
     @commands.Cog.listener()
-    async def on_member_join(self, member: nextcord.Member):
+    async def on_member_join(self, member: discord.Member):
         """
         Sends a welcome message when a member joins a server.
         """
@@ -66,7 +66,7 @@ class EventHandler(commands.Cog):
             await channel.send(f"👋🏻 Welcome, **{member.name}**.")
 
     @commands.Cog.listener()
-    async def on_member_remove(self, member: nextcord.Member):
+    async def on_member_remove(self, member: discord.Member):
         """
         Sends a welcome message when a member leaves a server.
         """
@@ -76,17 +76,16 @@ class EventHandler(commands.Cog):
             await channel.send(f"👋🏻 Goodbye, **{member.name}**.")
 
     @commands.Cog.listener()
-    async def on_message(self, message: nextcord.Message):
+    async def on_message(self, message: discord.Message):
         """
         Called when a message is sent.
         """
         with open('files/blacklist.json', 'r') as file:
             blacklist = json.load(file)
 
-        if start.prefix in message.content \
+        if self.client.command_prefix(self.client, message) in message.content \
         or (id := str(message.guild.id)) not in blacklist:
             return
-
         for wordlist in (
             words_msg := set(message.content.split(" ")), # Words in the message
             words_ban := set(blacklist.get(id)) # Words blacklisted in the server
@@ -97,12 +96,12 @@ class EventHandler(commands.Cog):
             await message.delete()
 
     @commands.Cog.listener()
-    async def on_reaction_add(self, reaction: nextcord.Reaction, user: nextcord.User):
+    async def on_reaction_add(self, reaction: discord.Reaction, user: discord.User):
         """
         Prevents users from voting more than once on a poll.
         """
         user = reaction.message.author
-        cached = nextcord.utils.get(self.client.cached_messages, id=reaction.message.id)
+        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
 
         if user.id == self.client.user.id:
             return
@@ -116,21 +115,21 @@ class EventHandler(commands.Cog):
             await cached.remove_reaction(react.emoji, user)
 
     @commands.Cog.listener()
-    async def on_raw_reaction_add(self, payload: nextcord.RawReactionActionEvent):
+    async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
         """
         await self._add_or_remove_role(payload, self.client, 'add')
 
     @commands.Cog.listener()
-    async def on_raw_reaction_remove(self, payload: nextcord.RawReactionActionEvent):
+    async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
         """
         Runs when a reaction is added, regardless of the internal message cache.
         """
         await self._add_or_remove_role(payload, self.client, 'remove')
 
     @commands.Cog.listener()
-    async def on_message_delete(self, message: nextcord.Message):
+    async def on_message_delete(self, message: discord.Message):
         """
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
@@ -166,11 +165,11 @@ class EventHandler(commands.Cog):
         # await self.client.cogs.get('TaskHandler').__getattribute__('clean_json_file').start()
 
 
-def setup(client: commands.Bot):
+async def setup(client: commands.Bot):
     """Registers the cog with the client."""
-    client.add_cog(EventHandler(client))
+    await client.add_cog(EventHandler(client))
 
 
-def teardown(client: commands.Bot):
+async def teardown(client: commands.Bot):
     """Un-registers the cog with the client."""
-    client.remove_cog(EventHandler(client))
+    await client.remove_cog(EventHandler(client))
