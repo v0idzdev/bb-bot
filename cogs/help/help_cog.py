@@ -15,8 +15,8 @@ sys.path.append('../handlers')
 class HelpCommandCog(commands.Cog, name='Help'):
     """❓ Shows help information about commands."""
     def __init__(self, client: commands.Bot):
+        self.client = client
         self._current_help_command = client.help_command
-
         client.help_command = HelpCommand()
         client.help_command.cog = self
 
