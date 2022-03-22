@@ -3,20 +3,22 @@ Contains a cog that handles reaction roles/self roles.
 """
 
 import discord
-
 import json
 
 from discord.ext import commands, tasks
 
-FILEPATH = 'files/reactionroles.json' # JSON file containing reaction role data
+FILEPATH = "files/reactionroles.json"  # JSON file containing reaction role data
 
 
-class RoleCog(commands.Cog, name='Roles'):
-    """🏷️ Contains role commands."""
+class RoleCog(commands.Cog, name="Roles"):
+    """
+    🏷️ Contains role commands.
+    """
+
     def __init__(self, client: commands.Bot):
         self.client = client
 
-    @commands.command(aliases=['crr'])
+    @commands.command(aliases=["crr"])
     @commands.has_permissions(manage_roles=True)
     async def reactrole(
         self, ctx: commands.Context, emoji, role: discord.Role, *, message: str
@@ -34,22 +36,22 @@ class RoleCog(commands.Cog, name='Roles'):
         await msg.add_reaction(emoji)
 
         with open(FILEPATH) as file:
-            data: list = json.load(file) # Contains a dictionary for each reaction role
+            data: list = json.load(file)  # Contains a dictionary for each reaction role
 
-            react_role = { # Create a dictionary to store in the JSON file
-                'guild_id': ctx.guild.id,
-                'name': role.name,
-                'role_id': role.id,
-                'emoji': emoji,
-                'msg_id': msg.id
+            react_role = {  # Create a dictionary to store in the JSON file
+                "guild_id": ctx.guild.id,
+                "name": role.name,
+                "role_id": role.id,
+                "emoji": emoji,
+                "msg_id": msg.id,
             }
 
             data.append(react_role)
 
-        with open(FILEPATH, 'w') as file:
+        with open(FILEPATH, "w") as file:
             json.dump(data, file, indent=4)
 
-    @commands.command(aliases=['rrr'])
+    @commands.command(aliases=["rrr"])
     @commands.has_permissions(manage_roles=True)
     async def removereactrole(self, ctx: commands.Context, role: discord.Role):
         """
@@ -62,22 +64,22 @@ class RoleCog(commands.Cog, name='Roles'):
         """
 
         with open(FILEPATH) as file:
-            data: list = json.load(file) # Contains a dictionary for each reaction role
+            data: list = json.load(file)  # Contains a dictionary for each reaction role
 
-        instances = [item for item in data if item['role_id'] == role.id]
+        instances = [item for item in data if item["role_id"] == role.id]
 
         if len(instances) == 0:
             raise commands.RoleNotFound(role.__str__())
 
         for instance in instances:
-            msg = await ctx.fetch_message(instance['msg_id'])
+            msg = await ctx.fetch_message(instance["msg_id"])
             await msg.delete()
             data.remove(instance)
 
-        with open(FILEPATH, 'w') as file:
+        with open(FILEPATH, "w") as file:
             json.dump(data, file, indent=4)
 
-        embed = discord.Embed(title=f'🔧 Removed the \'{role.name}\' reaction role.')
+        embed = discord.Embed(title=f"🔧 Removed the '{role.name}' reaction role.")
         await ctx.send(embed=embed)
 
     @reactrole.error
@@ -85,37 +87,47 @@ class RoleCog(commands.Cog, name='Roles'):
         """
         Error handler for the reactrole command.
         """
-        error = getattr(error, 'original', error)
-        message = f':x: {ctx.author.mention}: '
+        error = getattr(error, "original", error)
+        message = f":x: {ctx.author.mention}: "
 
         match error.__class__:
 
             case commands.RoleNotFound:
-                message += 'That role does not exist. Please create the role first.'
+                message += "That role does not exist. Please create the role first."
 
             case commands.EmojiNotFound:
-                message += 'Sorry, that emoji was not found. Please try again.'
+                message += "Sorry, that emoji was not found. Please try again."
 
             case commands.UserInputError:
-                message += 'Invalid input, please try again.\n' \
-                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
+                message += (
+                    "Invalid input, please try again.\n"
+                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                )
 
             case commands.MissingRequiredArgument:
-                message += 'Please enter all the required arguments.\n' \
-                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
+                message += (
+                    "Please enter all the required arguments.\n"
+                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                )
 
-            case discord.HTTPException: # An invalid emoji raises a HTTP exception
-                if 'Unknown Emoji' in error.__str__(): # Prevents this handler from catching unrelated errors
+            case discord.HTTPException:  # An invalid emoji raises a HTTP exception
+                if (
+                    "Unknown Emoji" in error.__str__()
+                ):  # Prevents this handler from catching unrelated errors
                     await ctx.channel.purge(limit=1)
-                    message += 'Sorry, that emoji is invalid. Please use a valid emoji.'
+                    message += "Sorry, that emoji is invalid. Please use a valid emoji."
 
             case discord.Forbidden:
-                message += 'BB.Bot is forbidden from assigning/removing this role.\n' \
-                    + f'Try moving this role above the reaction role.'
+                message += (
+                    "BB.Bot is forbidden from assigning/removing this role.\n"
+                    + f"Try moving this role above the reaction role."
+                )
 
             case _:
-                message += 'An unknown error occurred while creating your reaction role.\n' \
-                    + f'Please try again later.'
+                message += (
+                    "An unknown error occurred while creating your reaction role.\n"
+                    + f"Please try again later."
+                )
 
         await ctx.send(message)
 
@@ -124,26 +136,34 @@ class RoleCog(commands.Cog, name='Roles'):
         """
         Error handler for the removeractrole command.
         """
-        error = getattr(error, 'original', error)
-        message = f':x: {ctx.author.mention}: '
+        error = getattr(error, "original", error)
+        message = f":x: {ctx.author.mention}: "
 
         match error.__class__:
 
             case commands.RoleNotFound:
-                role = error.__str__().removeprefix('Role "').removesuffix('" not found.') # Role "Test" not found, => Test
-                message += f'**{role}** either doesn\'t exist, or isn\'t a reaction role on this server.'
+                role = (
+                    error.__str__().removeprefix('Role "').removesuffix('" not found.')
+                )  # Role "Test" not found, => Test
+                message += f"**{role}** either doesn't exist, or isn't a reaction role on this server."
 
             case commands.UserInputError:
-                message += 'Invalid input, please try again.\n' \
-                    + f'Use **{ctx.prefix}reactrole `emoji` `@role` `message`**.'
+                message += (
+                    "Invalid input, please try again.\n"
+                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                )
 
             case commands.MissingRequiredArgument:
-                message += 'Please enter all the required arguments.\n' \
-                    + f'Use **{ctx.prefix}removereactrole `@role`**.'
+                message += (
+                    "Please enter all the required arguments.\n"
+                    + f"Use **{ctx.prefix}removereactrole `@role`**."
+                )
 
             case _:
-                message += 'An unknown error occurred while creating your reaction role.\n' \
-                    + f'Please try again later.'
+                message += (
+                    "An unknown error occurred while creating your reaction role.\n"
+                    + f"Please try again later."
+                )
 
         await ctx.send(message)
 

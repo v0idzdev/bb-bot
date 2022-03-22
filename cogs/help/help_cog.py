@@ -6,14 +6,16 @@ import sys
 
 import discord
 from discord.ext import commands
-
 from .help_command import HelpCommand
 
-sys.path.append('../handlers')
+sys.path.append("../handlers")
 
 
-class HelpCommandCog(commands.Cog, name='Help'):
-    """❓ Shows help information about commands."""
+class HelpCommandCog(commands.Cog, name="Help"):
+    """
+    ❓ Shows help information about commands.
+    """
+
     def __init__(self, client: commands.Bot):
         self.client = client
         self._current_help_command = client.help_command
@@ -21,7 +23,9 @@ class HelpCommandCog(commands.Cog, name='Help'):
         client.help_command.cog = self
 
     async def cog_unload(self):
-        """Called when the cog is removed."""
+        """
+        Called when the cog is removed.
+        """
         self.client.help_command = self._current_help_command
 
     @commands.command()
@@ -59,11 +63,14 @@ class HelpCommandCog(commands.Cog, name='Help'):
 
 
 async def setup(client: commands.Bot):
-    """Registers the cog with the client."""
+    """
+    Registers the cog with the client.
+    """
     await client.add_cog(HelpCommandCog(client))
 
 
 async def teardown(client: commands.Bot):
-    """Un-registers the cog with the client."""
+    """
+    Un-registers the cog with the client.
+    """
     await client.remove_cog(HelpCommandCog(client))
-

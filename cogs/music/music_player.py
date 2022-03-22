@@ -1,9 +1,8 @@
 import asyncio
-
 import discord
+
 from async_timeout import timeout
 from discord.ext import commands
-
 from .music_utils import YTDLSource
 
 
@@ -11,7 +10,18 @@ class MusicPlayer:
     """
     Class assigned to each guild using the bot for music.
     """
-    __slots__ = ('bot', '_guild', '_channel', '_cog', 'queue', 'next', 'current', 'np', 'volume')
+
+    __slots__ = (
+        "bot",
+        "_guild",
+        "_channel",
+        "_cog",
+        "queue",
+        "next",
+        "current",
+        "np",
+        "volume",
+    )
 
     def __init__(self, ctx: commands.Context):
         self.queue = asyncio.Queue()
@@ -22,8 +32,8 @@ class MusicPlayer:
         self._channel = ctx.channel
         self._cog = ctx.cog
 
-        self.np = None # Now playing message
-        self.volume = .5
+        self.np = None  # Now playing message
+        self.volume = 0.5
         self.current = None
 
         ctx.bot.loop.create_task(self.player_loop())
@@ -48,21 +58,27 @@ class MusicPlayer:
                 # Source was probably not downloaded
                 # So we should regather
                 try:
-                    source = await YTDLSource.regather_stream(source, loop=self.bot.loop)
+                    source = await YTDLSource.regather_stream(
+                        source, loop=self.bot.loop
+                    )
                 except Exception as e:
-                    await self._channel.send(f':x: Sorry, I couldn\'t process your song.\n'
-                        + f'\n[{e}]\n')
+                    await self._channel.send(
+                        f":x: Sorry, I couldn't process your song.\n" + f"\n[{e}]\n"
+                    )
                     continue
 
             source.volume = self.volume
             self.current = source
 
-            self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
+            self._guild.voice_client.play(
+                source,
+                after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set),
+            )
 
             embed = discord.Embed(
-                title=f'🎵 **Now Playing:** *{source.title}*',
-                description=f'Requested by: **{source.requester}**',
-                color=self.bot.theme
+                title=f"🎵 **Now Playing:** *{source.title}*",
+                description=f"Requested by: **{source.requester}**",
+                color=self.bot.theme,
             )
 
             self.np = await self._channel.send(embed=embed)

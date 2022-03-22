@@ -22,11 +22,15 @@ async def sanction(
             await member.kick()
             action = "kicked"
 
-    for message in ( # Generate the start of a message to send to the user and the server
+    for (
+        message
+    ) in (  # Generate the start of a message to send to the user and the server
         message_server := f":tools: **{ctx.author.name}** was {action}",
-        message_member := f":x: You were {action} from **{ctx.guild.name}**"
+        message_member := f":x: You were {action} from **{ctx.guild.name}**",
     ):
-        message += "." if reason is None else f" for **{reason}**." # Then add the correct ending
+        message += (
+            "." if reason is None else f" for **{reason}**."
+        )  # Then add the correct ending
 
     await ctx.send(message_server)
     await member.send(message_member)

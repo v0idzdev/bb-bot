@@ -4,17 +4,19 @@ Contains commands relating to administrator tasks.
 
 import asyncio
 import json
-
 import discord
-from discord.ext import commands
 
+from discord.ext import commands
 from .admin_utils import *
 
-FILEPATH = 'files/blacklist.json'
+FILEPATH = "files/blacklist.json"
 
 
-class AdminCog(commands.Cog, name='Admin'):
-    """⚙️ Commands for server administrators or moderators."""
+class AdminCog(commands.Cog, name="Admin"):
+    """
+    ⚙️ Commands for server administrators or moderators.
+    """
+
     def __init__(self, client: commands.Bot):
         self.client = client
 
@@ -30,28 +32,34 @@ class AdminCog(commands.Cog, name='Admin'):
         ~clear [amount]
         ```
         """
-        if amount is not None: # If the user selected an amount, clear that amount of messages
-            await ctx.send(embed=discord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
+        if (
+            amount is not None
+        ):  # If the user selected an amount, clear that amount of messages
+            await ctx.send(
+                embed=discord.Embed(title=f"🛠️ Deleting **{amount}** messages.")
+            )
             return await ctx.channel.purge(limit=amount)
 
         # Else, create two buttons
         # Then ask the user if they would like to clear all messages in the channel
-        yes_button = discord.ui.Button(label='Yes', style=discord.ButtonStyle.green)
-        no_button = discord.ui.Button(label='No', style=discord.ButtonStyle.red)
+        yes_button = discord.ui.Button(label="Yes", style=discord.ButtonStyle.green)
+        no_button = discord.ui.Button(label="No", style=discord.ButtonStyle.red)
 
-        yes_button.callback = lambda interaction: \
-            (await interaction.channel.purge(limit=None) for _ in '_').__anext__()
-        no_button.callback = lambda interaction: \
-            (await interaction.message.delete() for _ in '_').__anext__()
+        yes_button.callback = lambda interaction: (
+            await interaction.channel.purge(limit=None) for _ in "_"
+        ).__anext__()
+        no_button.callback = lambda interaction: (
+            await interaction.message.delete() for _ in "_"
+        ).__anext__()
 
         view = discord.ui.View()
         view.add_item(yes_button)
         view.add_item(no_button)
 
         return await ctx.send(
-            f':warning: {ctx.author.mention}: You have not selected a number of messages to clear.\n'
-            + 'Would you like to clear all messages in this channel?',
-            view=view
+            f":warning: {ctx.author.mention}: You have not selected a number of messages to clear.\n"
+            + "Would you like to clear all messages in this channel?",
+            view=view,
         )
 
     @commands.command()
@@ -85,7 +93,9 @@ class AdminCog(commands.Cog, name='Admin'):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def softban(self, ctx: commands.Context, member: discord.Member, days=1, reason=None):
+    async def softban(
+        self, ctx: commands.Context, member: discord.Member, days=1, reason=None
+    ):
         """
         ⚙️ Temporarily bans a member from a server.
 
@@ -112,7 +122,7 @@ class AdminCog(commands.Cog, name='Admin'):
         """
         await lift_ban(ctx, "permanent", user)
 
-    @commands.command(aliases=['bladd'])
+    @commands.command(aliases=["bladd"])
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def blacklist(self, ctx: commands.Context, *, word: str):
@@ -127,24 +137,26 @@ class AdminCog(commands.Cog, name='Admin'):
         id = str(ctx.guild.id)
         word = word.lower()
 
-        with open(FILEPATH, 'r') as file:
+        with open(FILEPATH, "r") as file:
             blacklist: dict = json.load(file)
 
         if id not in blacklist.keys():
             blacklist[id] = []
 
         if word in blacklist[id]:
-            return await ctx.send(f':x: The word \'{word}\' has already been blacklisted.')
+            return await ctx.send(
+                f":x: The word '{word}' has already been blacklisted."
+            )
 
         blacklist[id].append(word)
         print(blacklist)
 
-        with open(FILEPATH, 'w') as file:
+        with open(FILEPATH, "w") as file:
             json.dump(blacklist, file, indent=4)
 
-        await ctx.send(f':tools: \'{word}\' has been added to the blacklist.')
+        await ctx.send(f":tools: '{word}' has been added to the blacklist.")
 
-    @commands.command(aliases=['blclear'])
+    @commands.command(aliases=["blclear"])
     @commands.has_permissions(manage_messages=True)
     async def clearblacklist(self, ctx: commands.Context):
         """
@@ -163,26 +175,34 @@ class AdminCog(commands.Cog, name='Admin'):
         mention = ctx.author.mention
 
         if id not in blacklist.keys():
-            return await ctx.send(f':x: {mention}: This server does not have any words blacklisted.')
+            return await ctx.send(
+                f":x: {mention}: This server does not have any words blacklisted."
+            )
 
-        yes_button = discord.ui.Button(label='Yes', style=discord.ButtonStyle.green, emoji='👍🏻')
-        no_button = discord.ui.Button(label='No', style=discord.ButtonStyle.red, emoji='👎🏻')
+        yes_button = discord.ui.Button(
+            label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻"
+        )
+        no_button = discord.ui.Button(
+            label="No", style=discord.ButtonStyle.red, emoji="👎🏻"
+        )
 
         async def yes(interaction: discord.Interaction):
             for server_id in blacklist.keys():
                 if server_id == id:
                     del blacklist[server_id]
 
-                    with open(FILEPATH, 'w') as file:
+                    with open(FILEPATH, "w") as file:
                         json.dump(blacklist, file, indent=4)
 
-                    return await interaction.message.channel.send(f':thumbsup: {mention}: The blacklist for this server'
-                        + f' has successfully been deleted.')
+                    return await interaction.message.channel.send(
+                        f":thumbsup: {mention}: The blacklist for this server"
+                        + f" has successfully been deleted."
+                    )
 
         yes_button.callback = yes
 
         async def no(interaction: discord.Interaction):
-            return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
+            return await interaction.message.channel.send(f":thumbsup: {mention}: Ok!")
 
         no_button.callback = no
 
@@ -191,12 +211,12 @@ class AdminCog(commands.Cog, name='Admin'):
         view.add_item(no_button)
 
         await ctx.send(
-            f':warning: {mention}: Are you sure you\'d like to clear your server\'s blacklist?\n'
-            + f'This action cannot be undone.',
-            view=view
+            f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
+            + f"This action cannot be undone.",
+            view=view,
         )
 
-    @commands.command(aliases=['blshow'])
+    @commands.command(aliases=["blshow"])
     @commands.has_permissions(manage_messages=True)
     async def showblacklist(self, ctx: commands.Context):
         """
@@ -212,14 +232,16 @@ class AdminCog(commands.Cog, name='Admin'):
 
         server_id = str(ctx.guild.id)
         if server_id not in blacklist.keys():
-            return await ctx.send(f':x: {ctx.author.mention}: This server does not have any words blacklisted.')
+            return await ctx.send(
+                f":x: {ctx.author.mention}: This server does not have any words blacklisted."
+            )
 
-        embed = discord.Embed(title='⛔ Blacklist')
-        embed.description = ''.join([f' `{word}` ' for word in blacklist[server_id]])
+        embed = discord.Embed(title="⛔ Blacklist")
+        embed.description = "".join([f" `{word}` " for word in blacklist[server_id]])
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['blrem'])
+    @commands.command(aliases=["blrem"])
     @commands.has_permissions(manage_messages=True)
     async def blacklistremove(self, ctx: commands.Context, *, word: str):
         """
@@ -233,29 +255,37 @@ class AdminCog(commands.Cog, name='Admin'):
         id = str(ctx.guild.id)
         word = word.lower()
 
-        with open(FILEPATH, 'r') as file:
+        with open(FILEPATH, "r") as file:
             blacklist: dict = json.load(file)
 
         if id not in blacklist.keys():
-            return await ctx.send(f':x: {ctx.author.mention}: This server does not have any words blacklisted.')
+            return await ctx.send(
+                f":x: {ctx.author.mention}: This server does not have any words blacklisted."
+            )
 
         if word not in blacklist[id]:
-            return await ctx.send(f':x: {ctx.author.mention}: That word is not in this server\'s blacklist.')
+            return await ctx.send(
+                f":x: {ctx.author.mention}: That word is not in this server's blacklist."
+            )
 
         blacklist[id].remove(word)
         print(blacklist)
 
-        with open(FILEPATH, 'w') as file:
+        with open(FILEPATH, "w") as file:
             json.dump(blacklist, file, indent=4)
 
-        await ctx.send(f':tools: \'{word}\' has been removed from the blacklist.')
-
+        await ctx.send(f":tools: '{word}' has been removed from the blacklist.")
 
 
 async def setup(client: commands.Bot):
+    """
+    Registers the cog with the client.
+    """
     await client.add_cog(AdminCog(client))
 
 
 async def teardown(client: commands.Bot):
+    """
+    Un-registers the cog with the client.
+    """
     await client.remove_cog(AdminCog(client))
-

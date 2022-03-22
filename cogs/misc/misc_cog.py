@@ -8,8 +8,11 @@ import discord
 from discord.ext import commands
 
 
-class MiscCog(commands.Cog, name='Misc'):
-    """🎲 Contains miscellaneous commands."""
+class MiscCog(commands.Cog, name="Misc"):
+    """
+    🎲 Contains miscellaneous commands.
+    """
+
     def __init__(self, client: commands.Bot):
         self.client = client
 
@@ -35,13 +38,10 @@ class MiscCog(commands.Cog, name='Misc'):
         ~meme
         ```
         """
-        response = await self.client.session.get('https://meme-api.herokuapp.com/gimme')
+        response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
         data = await response.json()
-        meme = discord.Embed(
-            title=str(data["title"]),
-            color=self.client.theme
-        )
-        meme.set_image(url=str(data['url']))
+        meme = discord.Embed(title=str(data["title"]), color=self.client.theme)
+        meme.set_image(url=str(data["url"]))
         await ctx.reply(embed=meme)
 
     @commands.command()
@@ -55,23 +55,26 @@ class MiscCog(commands.Cog, name='Misc'):
         ```
         """
         embed = discord.Embed(
-            title=f'Poll by **{ctx.author.name}**:',
+            title=f"Poll by **{ctx.author.name}**:",
             color=self.client.theme,
-            description=' '.join(poll)
+            description=" ".join(poll),
         )
 
         message = await ctx.send(embed=embed)
 
-        await message.add_reaction('✔️')
-        await message.add_reaction('❌')
+        await message.add_reaction("✔️")
+        await message.add_reaction("❌")
 
 
 async def setup(client: commands.Bot):
-    """Registers the cog with the client."""
+    """
+    Registers the cog with the client.
+    """
     await client.add_cog(MiscCog(client))
 
 
 async def teardown(client: commands.Bot):
-    """Un-registers the cog with the client."""
+    """
+    Un-registers the cog with the client.
+    """
     await client.remove_cog(MiscCog(client))
-
