@@ -101,7 +101,7 @@ class MusicCog(commands.Cog, name='Music'):
         embed = discord.Embed(
             title=f'🔥 Connected to:',
             description=f'**{channel}**',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed, delete_after=20)
@@ -151,7 +151,7 @@ class MusicCog(commands.Cog, name='Music'):
 
         embed = discord.Embed(
             title=f'⏸️ **{ctx.author}**: Paused the song.',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -179,7 +179,7 @@ class MusicCog(commands.Cog, name='Music'):
 
         embed = discord.Embed(
             title=f'▶️ **{ctx.author}**: Resumed the song.',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -210,7 +210,7 @@ class MusicCog(commands.Cog, name='Music'):
 
         embed = discord.Embed(
             title=f'⏭️ **{ctx.author}**: Skipped the song.',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -241,7 +241,7 @@ class MusicCog(commands.Cog, name='Music'):
         embed = discord.Embed(
             title=f'Upcoming: {len(upcoming)} songs.',
             description=fmt,
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)
@@ -276,7 +276,7 @@ class MusicCog(commands.Cog, name='Music'):
         embed = discord.Embed(
             title=f'🎵 **Now Playing:** *{vc.source.title}*',
             description=f'Requested by: **{vc.source.requester}**',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         player.np = await ctx.send(embed=embed)
@@ -308,7 +308,7 @@ class MusicCog(commands.Cog, name='Music'):
 
         embed = discord.Embed(
             title=f'🔊 **{ctx.author}**: Set the volume to *{vol}%*',
-            color=self.client.theme
+            color=self.bot.theme
         )
 
         await ctx.send(embed=embed)

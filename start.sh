@@ -22,7 +22,7 @@ python3.10 -m venv venv
 . venv/bin/activate
 
 # installing dependencies
-pip install -U -r requirements.txt
+pip install -r requirements.txt
 
 clear
 # starting script
