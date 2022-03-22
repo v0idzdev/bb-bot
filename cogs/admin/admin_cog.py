@@ -32,35 +32,16 @@ class AdminCog(commands.Cog, name="Admin"):
         ~clear [amount]
         ```
         """
-        if (
-            amount is not None
-        ):  # If the user selected an amount, clear that amount of messages
-            await ctx.send(
-                embed=discord.Embed(title=f"🛠️ Deleting **{amount}** messages.")
-            )
+        if amount is not None:
+            await ctx.send(f'🛠️ Deleting **{amount}** messages.')
             return await ctx.channel.purge(limit=amount)
 
-        # Else, create two buttons
-        # Then ask the user if they would like to clear all messages in the channel
-        yes_button = discord.ui.Button(label="Yes", style=discord.ButtonStyle.green)
-        no_button = discord.ui.Button(label="No", style=discord.ButtonStyle.red)
-
-        yes_button.callback = lambda interaction: (
-            await interaction.channel.purge(limit=None) for _ in "_"
-        ).__anext__()
-        no_button.callback = lambda interaction: (
-            await interaction.message.delete() for _ in "_"
-        ).__anext__()
-
-        view = discord.ui.View()
-        view.add_item(yes_button)
-        view.add_item(no_button)
-
-        return await ctx.send(
-            f":warning: {ctx.author.mention}: You have not selected a number of messages to clear.\n"
-            + "Would you like to clear all messages in this channel?",
-            view=view,
+        embed = discord.Embed(
+            title='⚠️ You have not selected a number of messages to clear.',
+            description='❓ Would you like to clear all messages in this channel?',
         )
+
+        return await ctx.send(embed=embed, view=ClearMessagesView, ephemeral=True)
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
