@@ -15,7 +15,7 @@ then
 fi
 
 #Configure project
-pip install virtualenv
+python3 -m pip install virtualenv
 python3 -m venv venv
 
 # activating virtual env
