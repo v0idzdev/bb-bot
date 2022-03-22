@@ -10,7 +10,7 @@ py -m venv venv
 venv\Scripts\activate
 
 pip install -r requirements.txt
-py start.py
+py main.py
 
 EXIT
 
