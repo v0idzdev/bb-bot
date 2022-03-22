@@ -2,11 +2,12 @@
 Contains commands relating to administrator tasks.
 """
 
-import nextcord
 import asyncio
 import json
 
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
+
 from .admin_utils import *
 
 FILEPATH = 'files/blacklist.json'
@@ -30,20 +31,20 @@ class AdminCog(commands.Cog, name='Admin'):
         ```
         """
         if amount is not None: # If the user selected an amount, clear that amount of messages
-            await ctx.send(embed=nextcord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
+            await ctx.send(embed=discord.Embed(title=f'🛠️ Deleting **{amount}** messages.'))
             return await ctx.channel.purge(limit=amount)
 
         # Else, create two buttons
         # Then ask the user if they would like to clear all messages in the channel
-        yes_button = nextcord.ui.Button(label='Yes', style=nextcord.ButtonStyle.green)
-        no_button = nextcord.ui.Button(label='No', style=nextcord.ButtonStyle.red)
+        yes_button = discord.ui.Button(label='Yes', style=discord.ButtonStyle.green)
+        no_button = discord.ui.Button(label='No', style=discord.ButtonStyle.red)
 
         yes_button.callback = lambda interaction: \
             (await interaction.channel.purge(limit=None) for _ in '_').__anext__()
         no_button.callback = lambda interaction: \
             (await interaction.message.delete() for _ in '_').__anext__()
 
-        view = nextcord.ui.View()
+        view = discord.ui.View()
         view.add_item(yes_button)
         view.add_item(no_button)
 
@@ -56,7 +57,7 @@ class AdminCog(commands.Cog, name='Admin'):
     @commands.command()
     @commands.has_permissions(kick_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def kick(self, ctx: commands.Context, member: nextcord.Member, *, reason=None):
+    async def kick(self, ctx: commands.Context, member: discord.Member, *, reason=None):
         """
         ⚙️ Kicks a member from a server.
 
@@ -70,7 +71,7 @@ class AdminCog(commands.Cog, name='Admin'):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def ban(self, ctx: commands.Context, member: nextcord.Member, *, reason=None):
+    async def ban(self, ctx: commands.Context, member: discord.Member, *, reason=None):
         """
         ⚙️ Bans a member from a server.
 
@@ -84,7 +85,7 @@ class AdminCog(commands.Cog, name='Admin'):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def softban(self, ctx: commands.Context, member: nextcord.Member, days=1, reason=None):
+    async def softban(self, ctx: commands.Context, member: discord.Member, days=1, reason=None):
         """
         ⚙️ Temporarily bans a member from a server.
 
@@ -100,7 +101,7 @@ class AdminCog(commands.Cog, name='Admin'):
     @commands.command()
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def unban(self, ctx: commands.Context, user: nextcord.User):
+    async def unban(self, ctx: commands.Context, user: discord.User):
         """
         ⚙️ Unbans a member from a server.
 
@@ -164,10 +165,10 @@ class AdminCog(commands.Cog, name='Admin'):
         if id not in blacklist.keys():
             return await ctx.send(f':x: {mention}: This server does not have any words blacklisted.')
 
-        yes_button = nextcord.ui.Button(label='Yes', style=nextcord.ButtonStyle.green, emoji='👍🏻')
-        no_button = nextcord.ui.Button(label='No', style=nextcord.ButtonStyle.red, emoji='👎🏻')
+        yes_button = discord.ui.Button(label='Yes', style=discord.ButtonStyle.green, emoji='👍🏻')
+        no_button = discord.ui.Button(label='No', style=discord.ButtonStyle.red, emoji='👎🏻')
 
-        async def yes(interaction: nextcord.Interaction):
+        async def yes(interaction: discord.Interaction):
             for server_id in blacklist.keys():
                 if server_id == id:
                     del blacklist[server_id]
@@ -180,12 +181,12 @@ class AdminCog(commands.Cog, name='Admin'):
 
         yes_button.callback = yes
 
-        async def no(interaction: nextcord.Interaction):
+        async def no(interaction: discord.Interaction):
             return await interaction.message.channel.send(f':thumbsup: {mention}: Ok!')
 
         no_button.callback = no
 
-        view = nextcord.ui.View()
+        view = discord.ui.View()
         view.add_item(yes_button)
         view.add_item(no_button)
 
@@ -213,7 +214,7 @@ class AdminCog(commands.Cog, name='Admin'):
         if server_id not in blacklist.keys():
             return await ctx.send(f':x: {ctx.author.mention}: This server does not have any words blacklisted.')
 
-        embed = nextcord.Embed(title='⛔ Blacklist')
+        embed = discord.Embed(title='⛔ Blacklist')
         embed.description = ''.join([f' `{word}` ' for word in blacklist[server_id]])
 
         await ctx.send(embed=embed)
@@ -251,10 +252,10 @@ class AdminCog(commands.Cog, name='Admin'):
 
 
 
-def setup(client: commands.Bot):
-    client.add_cog(AdminCog(client))
+async def setup(client: commands.Bot):
+    await client.add_cog(AdminCog(client))
 
 
-def teardown(client: commands.Bot):
-    client.remove_cog(AdminCog(client))
+async def teardown(client: commands.Bot):
+    await client.remove_cog(AdminCog(client))
 

@@ -1,9 +1,9 @@
 import asyncio
-import nextcord
-import start
 
+import discord
 from async_timeout import timeout
-from nextcord.ext import commands
+from discord.ext import commands
+
 from .music_utils import YTDLSource
 
 
@@ -59,10 +59,10 @@ class MusicPlayer:
 
             self._guild.voice_client.play(source, after=lambda _: self.bot.loop.call_soon_threadsafe(self.next.set))
 
-            embed = nextcord.Embed(
+            embed = discord.Embed(
                 title=f'🎵 **Now Playing:** *{source.title}*',
                 description=f'Requested by: **{source.requester}**',
-                color=start.colour
+                color=self.client.theme
             )
 
             self.np = await self._channel.send(embed=embed)
@@ -76,7 +76,7 @@ class MusicPlayer:
             try:
                 # We are no longer playing this song...
                 await self.np.delete()
-            except nextcord.HTTPException:
+            except discord.HTTPException:
                 pass
 
     def destroy(self, guild):
