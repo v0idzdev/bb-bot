@@ -8,8 +8,8 @@ class ClearMessagesView(ui.View):
     """
     Yes/no buttons for clearing all messages in a channel.
     """
-    def __init__(self, ctx: commands.Context, timeout=120):
-        super().__init__(timeout=timeout)
+    def __init__(self, ctx: commands.Context):
+        super().__init__()
 
         self.value = None
         self.ctx = ctx
