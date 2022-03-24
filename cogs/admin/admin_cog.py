@@ -8,7 +8,7 @@ import discord
 
 from discord.ext import commands
 from .admin_utils import *
-from admin_components import *
+from ..admin.admin_components.clear_messages_view import ClearMessagesView
 
 FILEPATH = "files/blacklist.json"
 
@@ -42,7 +42,7 @@ class AdminCog(commands.Cog, name="Admin"):
             description='❓ Would you like to clear all messages in this channel?',
         )
 
-        return await ctx.send(embed=embed, view=ClearMessagesView, ephemeral=True)
+        return await ctx.send(embed=embed, view=ClearMessagesView())
 
     @commands.command()
     @commands.has_permissions(kick_members=True)

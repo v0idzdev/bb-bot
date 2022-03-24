@@ -53,11 +53,8 @@ class BeepBoop(commands.Bot):
         ]
 
         for cog in cogs:
-            try:
-                await self.load_extension(cog)
-                print(f"[COG] Loaded <<{cog}>> successfully.")
-            except:
-                print(f"[COG] <<{cog}>> encountered an error.")
+            await self.load_extension(cog)
+            print(f"[COG] Loaded <<{cog}>> successfully.")
 
     async def load_handlers(self):
         """
@@ -70,11 +67,8 @@ class BeepBoop(commands.Bot):
         ]
 
         for handler in handlers:
-            try:
-                await client.load_extension(handler)
-                print(f"[HANDLER] Loaded <<{handler}>> successfully.")
-            except:
-                print(f"[HANDLER] <<{handler}>> encountered an error.")
+            await client.load_extension(handler)
+            print(f"[HANDLER] Loaded <<{handler}>> successfully.")
 
 
 dotenv.load_dotenv("files/.env")
