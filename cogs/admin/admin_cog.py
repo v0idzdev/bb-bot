@@ -8,6 +8,7 @@ import discord
 
 from discord.ext import commands
 from .admin_utils import *
+from admin_components import *
 
 FILEPATH = "files/blacklist.json"
 
