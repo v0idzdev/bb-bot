@@ -42,7 +42,7 @@ class AdminCog(commands.Cog, name="Admin"):
             description='❓ Would you like to clear all messages in this channel?',
         )
 
-        return await ctx.send(embed=embed, view=ClearMessagesView())
+        return await ctx.send(embed=embed, view=ClearMessagesView(ctx))
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
