@@ -1,4 +1,6 @@
 import discord
+import json
+
 from discord.ext import commands
 
 
@@ -44,3 +46,21 @@ async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
 
     await ctx.guild.unban(user)
     await ctx.send(message)
+
+
+async def handle_id(interaction: discord.Interaction, server_id: str, blacklist: dict, filepath: str):
+    """
+    Checks if a server ID is in the blacklist, and deletes it if it is.
+
+    Returns None if the ID is not found.
+    """
+    if server_id == id:
+        del blacklist[server_id]
+
+        with open(filepath, "w") as file:
+            json.dump(blacklist, file, indent=4)
+
+        return await interaction.message.channel.send(
+            f":thumbsup: {interaction.message.author.mention}: The blacklist for this server"
+            + f" has successfully been deleted."
+        )

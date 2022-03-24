@@ -170,16 +170,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         async def yes(interaction: discord.Interaction):
             for server_id in blacklist.keys():
-                if server_id == id:
-                    del blacklist[server_id]
-
-                    with open(FILEPATH, "w") as file:
-                        json.dump(blacklist, file, indent=4)
-
-                    return await interaction.message.channel.send(
-                        f":thumbsup: {mention}: The blacklist for this server"
-                        + f" has successfully been deleted."
-                    )
+                handle_id(interaction, server_id, blacklist, FILEPATH) # If the ID is in the blacklist, delete it, else do nothing
 
         yes_button.callback = yes
 
