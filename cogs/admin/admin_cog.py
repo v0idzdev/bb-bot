@@ -9,6 +9,7 @@ import discord
 from discord.ext import commands
 from .admin_utils import *
 from ..admin.admin_components.clear_messages_view import ClearMessagesView
+from ..admin.admin_components.clear_blacklist_view import ClearBlacklistView
 
 FILEPATH = "files/blacklist.json"
 
@@ -149,54 +150,22 @@ class AdminCog(commands.Cog, name="Admin"):
         ~clearblacklist | ~blclear <word>
         ```
         """
-        id = str(ctx.guild.id)
-
         with open(FILEPATH) as file:
             blacklist: dict = json.load(file)
 
-        mention = ctx.author.mention
+        id = str(ctx.guild.id) # Server ID to clear the blacklist of
 
         if id not in blacklist.keys():
             return await ctx.send(
-                f":x: {mention}: This server does not have any words blacklisted."
+                f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
             )
 
-        yes_button = discord.ui.Button(
-            label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻"
-        )
-        no_button = discord.ui.Button(
-            label="No", style=discord.ButtonStyle.red, emoji="👎🏻"
+        embed = discord.Embed(
+            title='⚠️ Are you sure you\'d like to clear your server\'s blacklist?.',
+            description='❗ This action cannot be undone.',
         )
 
-        async def yes(interaction: discord.Interaction):
-            for server_id in blacklist.keys():
-                if server_id == id:
-                    del blacklist[server_id]
-
-                    with open(FILEPATH, "w") as file:
-                        json.dump(blacklist, file, indent=4)
-
-                    return await interaction.message.channel.send(
-                        f":thumbsup: {interaction.message.author.mention}: The blacklist for this server"
-                        + f" has successfully been deleted."
-                    )
-
-        yes_button.callback = yes
-
-        async def no(interaction: discord.Interaction):
-            return await interaction.message.channel.send(f":thumbsup: {mention}: Ok!")
-
-        no_button.callback = no
-
-        view = discord.ui.View()
-        view.add_item(yes_button)
-        view.add_item(no_button)
-
-        await ctx.send(
-            f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
-            + f"This action cannot be undone.",
-            view=view,
-        )
+        await ctx.send(embed=embed, view=ClearBlacklistView(ctx, FILEPATH, blacklist, id))
 
     @commands.command(aliases=["blshow"])
     @commands.has_permissions(manage_messages=True)
