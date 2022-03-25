@@ -8,7 +8,11 @@ import discord
 
 from discord.ext import commands
 from .admin_utils import *
+<<<<<<< HEAD
 from utils.buttons import BlacklistClearButton, ClearMessagesView
+=======
+from ..admin.admin_components.clear_messages_view import ClearMessagesView
+>>>>>>> 9f08d46ae9dcc7f5cb133ee7bde1635d3dc8d152
 
 FILEPATH = "files/blacklist.json"
 
@@ -33,16 +37,21 @@ class AdminCog(commands.Cog, name="Admin"):
         ~clear [amount]
         ```
         """
-        if amount is not None:
-            await ctx.send(f'🛠️ Deleting **{amount}** messages.')
-            return await ctx.channel.purge(limit=amount)
+        if isinstance(amount, int) and amount is not None:
+            await ctx.channel.purge(limit=amount)
+            return await ctx.send(f'🛠️ Deleted **{amount}** messages.')
 
         embed = discord.Embed(
             title='⚠️ You have not selected a number of messages to clear.',
             description='❓ Would you like to clear all messages in this channel?',
         )
+<<<<<<< HEAD
         view = ClearMessagesView(ctx)
         view.message = await ctx.send(embed=embed, view=view)
+=======
+
+        return await ctx.send(embed=embed, view=ClearMessagesView(ctx))
+>>>>>>> 9f08d46ae9dcc7f5cb133ee7bde1635d3dc8d152
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
@@ -150,7 +159,42 @@ class AdminCog(commands.Cog, name="Admin"):
             return await ctx.send(
                 f":x: {mention}: This server does not have any words blacklisted."
             )
+<<<<<<< HEAD
         view = BlacklistClearButton(ctx, data=blacklist)
+=======
+
+        yes_button = discord.ui.Button(
+            label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻"
+        )
+        no_button = discord.ui.Button(
+            label="No", style=discord.ButtonStyle.red, emoji="👎🏻"
+        )
+
+        async def yes(interaction: discord.Interaction):
+            for server_id in blacklist.keys():
+                if server_id == id:
+                    del blacklist[server_id]
+
+                    with open(FILEPATH, "w") as file:
+                        json.dump(blacklist, file, indent=4)
+
+                    return await interaction.message.channel.send(
+                        f":thumbsup: {interaction.message.author.mention}: The blacklist for this server"
+                        + f" has successfully been deleted."
+                    )
+
+        yes_button.callback = yes
+
+        async def no(interaction: discord.Interaction):
+            return await interaction.message.channel.send(f":thumbsup: {mention}: Ok!")
+
+        no_button.callback = no
+
+        view = discord.ui.View()
+        view.add_item(yes_button)
+        view.add_item(no_button)
+
+>>>>>>> 9f08d46ae9dcc7f5cb133ee7bde1635d3dc8d152
         await ctx.send(
             f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
             + f"This action cannot be undone.",
