@@ -108,9 +108,11 @@ intents = discord.Intents.all()
 client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True, application_id = 955734544521248818)
 
 
-@client.tree.command(description="People really like this command!")
-async def nice(interaction: discord.Interaction):
-    await interaction.response.send_message("Haha, cool indeed!")
+
+# THIS WAS FOR TESTING PURPOSES ONLY
+# @client.tree.command(description="People really like this command!")
+# async def nice(interaction: discord.Interaction):
+#     await interaction.response.send_message("Haha, cool indeed!")
 
 async def main():
     """
