@@ -7,8 +7,7 @@ import json
 import discord
 
 from discord.ext import commands
-from .admin_utils import *
-from ..admin.admin_components.clear_messages_view import ClearMessagesView
+from utils.buttons import BlacklistClearButton, ClearMessagesView
 
 FILEPATH = "files/blacklist.json"
 
@@ -41,8 +40,9 @@ class AdminCog(commands.Cog, name="Admin"):
             title='⚠️ You have not selected a number of messages to clear.',
             description='❓ Would you like to clear all messages in this channel?',
         )
+        view = ClearMessagesView(ctx)
+        view.message = await ctx.send(embed=embed, view=view)
 
-        return await ctx.send(embed=embed, view=ClearMessagesView(ctx))
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
@@ -119,12 +119,9 @@ class AdminCog(commands.Cog, name="Admin"):
         id = str(ctx.guild.id)
         word = word.lower()
 
-        with open(FILEPATH, "r") as file:
-            blacklist: dict = json.load(file)
-
+        blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
             blacklist[id] = []
-
         if word in blacklist[id]:
             return await ctx.send(
                 f":x: The word '{word}' has already been blacklisted."
@@ -132,10 +129,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         blacklist[id].append(word)
         print(blacklist)
-
-        with open(FILEPATH, "w") as file:
-            json.dump(blacklist, file, indent=4)
-
+        self.client.update_json(FILEPATH, blacklist)
         await ctx.send(f":tools: '{word}' has been added to the blacklist.")
 
     @commands.command(aliases=["blclear"])
@@ -150,48 +144,13 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         id = str(ctx.guild.id)
-
-        with open(FILEPATH) as file:
-            blacklist: dict = json.load(file)
-
+        blacklist = self.client.cache.blacklist
         mention = ctx.author.mention
-
         if id not in blacklist.keys():
             return await ctx.send(
                 f":x: {mention}: This server does not have any words blacklisted."
             )
-
-        yes_button = discord.ui.Button(
-            label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻"
-        )
-        no_button = discord.ui.Button(
-            label="No", style=discord.ButtonStyle.red, emoji="👎🏻"
-        )
-
-        async def yes(interaction: discord.Interaction):
-            for server_id in blacklist.keys():
-                if server_id == id:
-                    del blacklist[server_id]
-
-                    with open(FILEPATH, "w") as file:
-                        json.dump(blacklist, file, indent=4)
-
-                    return await interaction.message.channel.send(
-                        f":thumbsup: {interaction.message.author.mention}: The blacklist for this server"
-                        + f" has successfully been deleted."
-                    )
-
-        yes_button.callback = yes
-
-        async def no(interaction: discord.Interaction):
-            return await interaction.message.channel.send(f":thumbsup: {mention}: Ok!")
-
-        no_button.callback = no
-
-        view = discord.ui.View()
-        view.add_item(yes_button)
-        view.add_item(no_button)
-
+        view = BlacklistClearButton(ctx, data=blacklist)
         await ctx.send(
             f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
             + f"This action cannot be undone.",
@@ -209,8 +168,7 @@ class AdminCog(commands.Cog, name="Admin"):
         ~showblacklist | ~blshow
         ```
         """
-        with open(FILEPATH) as file:
-            blacklist: dict = json.load(file)
+        blacklist = self.client.cache.blacklist
 
         server_id = str(ctx.guild.id)
         if server_id not in blacklist.keys():
@@ -237,8 +195,7 @@ class AdminCog(commands.Cog, name="Admin"):
         id = str(ctx.guild.id)
         word = word.lower()
 
-        with open(FILEPATH, "r") as file:
-            blacklist: dict = json.load(file)
+        blacklist = self.client.cache.blacklist
 
         if id not in blacklist.keys():
             return await ctx.send(
@@ -253,8 +210,7 @@ class AdminCog(commands.Cog, name="Admin"):
         blacklist[id].remove(word)
         print(blacklist)
 
-        with open(FILEPATH, "w") as file:
-            json.dump(blacklist, file, indent=4)
+        self.client.update_json(FILEPATH, blacklist)
 
         await ctx.send(f":tools: '{word}' has been removed from the blacklist.")
 

@@ -2,10 +2,10 @@
 Sends an embedded, custom, help command.
 """
 
-import discord
-
-from discord.ext import commands
 from typing import Optional
+
+import discord
+from discord.ext import commands
 
 
 class HelpCommand(commands.MinimalHelpCommand):
