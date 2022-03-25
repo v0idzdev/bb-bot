@@ -105,7 +105,7 @@ class BeepBoop(commands.Bot):
 dotenv.load_dotenv("files/.env")
 
 intents = discord.Intents.all()
-client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True, application_id = 955734544521248818)
+client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True)
 
 
 
