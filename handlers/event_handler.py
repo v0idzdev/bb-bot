@@ -3,8 +3,6 @@ Contains all of the events that the client will listen to.
 """
 
 import discord
-import json
-
 from discord.ext import commands
 
 # This is the filepath for the reaction roles data
@@ -29,20 +27,16 @@ class EventHandler(commands.Cog):
         roles = guild.roles
 
         match type:
-
             case "add":
                 member = payload.member
                 action = member.add_roles
-
             case "remove":
                 member: discord.Member = guild.get_member(payload.user_id)
                 action = member.remove_roles
 
         if member.bot:
             return
-
-        with open(FILEPATH) as file:
-            data = json.load(file)
+        data = self.client.cache.reactionroles
 
         for item in data:
             # Check if the reaction emoji and message are the ones used to give a user
@@ -53,7 +47,6 @@ class EventHandler(commands.Cog):
                 or item["role_id"] not in [role.id for role in guild.roles]
             ):
                 continue
-
             # If not, either add/remove the role
             role = discord.utils.get(roles, id=item["role_id"])
             await action(role)
@@ -83,8 +76,7 @@ class EventHandler(commands.Cog):
         """
         Called when a message is sent.
         """
-        with open("files/blacklist.json", "r") as file:
-            blacklist = json.load(file)
+        blacklist = self.client.cache.blacklist
 
         if (
             self.client.command_prefix(self.client, message) in message.content
@@ -106,7 +98,7 @@ class EventHandler(commands.Cog):
         Prevents users from voting more than once on a poll.
         """
         user = reaction.message.author
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
+        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id) # why 
 
         if user.id == self.client.user.id:
             return
@@ -139,16 +131,12 @@ class EventHandler(commands.Cog):
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
         """
-        with open(FILEPATH) as file:
-            data: list = json.load(file)
-
+        data = self.client.cache.reactionroles
         for item in data:
             if item["msg_id"] == message.id:
                 await message.delete()
                 data.remove(item)
-
-        with open(FILEPATH, "w") as file:
-            json.dump(data, file, indent=4)
+        self.client.update_json(FILEPATH, data)
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -161,7 +149,7 @@ class EventHandler(commands.Cog):
         tasks = ["change_presence", "clean_json_file"]
 
         for task in tasks:
-            await task_handler.__getattribute__(task).start()
+            task_handler.__getattribute__(task).start()
 
 
 async def setup(client: commands.Bot):

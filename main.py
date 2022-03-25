@@ -6,12 +6,15 @@ This is where the bot is configured and launched.
 
 import asyncio
 import itertools
+import json
 import os
+
 import aiohttp
 import discord
 import dotenv
-
 from discord.ext import commands
+
+from utils.models import Cache
 
 
 def get_prefix(bot, message: discord.Message):
@@ -32,6 +35,21 @@ class BeepBoop(commands.Bot):
         self.theme = 0x486572
         self.possible_status = itertools.cycle(["~help", "~play"])
         self.session: aiohttp.ClientSession = None
+        self.cache: Cache = None
+        self.fill_cache()
+
+    def update_json(self, filename, payload):
+        with open(filename, 'w') as file:
+            json.dump(payload, file, indent=4)
+
+    def fill_cache(self):
+        files = ["./files/blacklist.json", "./files/reactionroles.json"]
+        temp_cache = {}
+        for file in files:
+            with open(file, 'r') as f:
+                key = file.split('/')[-1].split('.')[0]
+                temp_cache[key] = json.load(f)
+        self.cache = Cache(**temp_cache)
 
     async def start(self, *args, **kwargs) -> None:
         """
@@ -39,6 +57,13 @@ class BeepBoop(commands.Bot):
         """
         async with aiohttp.ClientSession() as self.session:
             return await super().start(*args, **kwargs)
+
+    async def sync_slash_commands(self):
+        print("syncing slash commands")
+        await self.wait_until_ready()
+        await self.tree.sync()
+        print("Finished syncing slash commands")
+        
 
     async def load_cogs(self):
         """
@@ -80,18 +105,25 @@ class BeepBoop(commands.Bot):
 dotenv.load_dotenv("files/.env")
 
 intents = discord.Intents.all()
-client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True)
+client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True, application_id = 955734544521248818)
 
+
+@client.tree.command(description="People really like this command!")
+async def nice(interaction: discord.Interaction):
+    await interaction.response.send_message("Haha, cool indeed!")
 
 async def main():
     """
     Main entry point of the application.
     """
-    await client.load_cogs()
-    await client.load_handlers()
+    async with client:
+        client.loop.create_task(client.sync_slash_commands())
 
-    TOKEN = os.getenv("TOKEN")
-    await client.start(TOKEN)
+        await client.load_cogs()
+        await client.load_handlers()
+
+        TOKEN = os.getenv("TOKEN")
+        await client.start(TOKEN)
 
 
 asyncio.run(main())
