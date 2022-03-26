@@ -28,7 +28,7 @@ class ClearMessagesView(discord.ui.View):
             return False
             
     @discord.ui.button(label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻")
-    async def yes(self, _: discord.Button, interaction: discord.Interaction):
+    async def yes(self, interaction: discord.Interaction, _: discord.Button):
         await interaction.response.defer() # manually defer interaction for an increased respond time
         channel_pos = interaction.channel.position
         category = interaction.channel.category
@@ -38,7 +38,7 @@ class ClearMessagesView(discord.ui.View):
         self.stop()
     
     @discord.ui.button(label="No", style=discord.ButtonStyle.red, emoji="👎🏻")
-    async def no(self, _: discord.Button, interaction: discord.Interaction):
+    async def no(self, interaction: discord.Interaction, _: discord.Button):
         await interaction.response.send_message('Aborting command')
         await self.disable_all_buttons(interaction)
 
@@ -63,7 +63,7 @@ class BlacklistClearButton(discord.ui.View):
         self.stop()
 
     @discord.ui.button(label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻")
-    async def yes(self, _: discord.Button, interaction: discord.Interaction):
+    async def yes(self, interaction: discord.Interaction, _: discord.Button):
         await interaction.response.defer() # manually defer interaction for an increased respond time
         mention = interaction.user.mention
         server_id = str(interaction.guild.id)
@@ -78,7 +78,7 @@ class BlacklistClearButton(discord.ui.View):
             await self.disable_all_buttons(interaction)
 
     @discord.ui.button(label="No", style=discord.ButtonStyle.red, emoji="👎🏻")
-    async def no(self, _: discord.Button, interaction: discord.Interaction):
+    async def no(self, interaction: discord.Interaction, _: discord.Button):
         mention = interaction.user.mention
         await interaction.response.send_message(f":thumbsup: {mention}: Ok!")
         await self.disable_all_buttons()
