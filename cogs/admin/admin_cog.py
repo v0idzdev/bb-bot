@@ -124,19 +124,12 @@ class AdminCog(commands.Cog, name="Admin"):
             blacklist[id] = []
 
         # Remove words that are already in the blacklist from the words to add
-        # Make a list of duplicates to send as an error message if none of the words can be added
-        duplicates = set(words) & set(blacklist[id])
         words = set(words) - set(blacklist[id])
 
         # If the list of words is zero, we know that none of the words
         # can be added. So, send an error message
         if not words:
-            embed = discord.Embed(
-                title=f"❌ The following words are already in the blacklist:",
-                description=' '.join(f'`{word}`' for word in duplicates)
-            )
-
-            return await ctx.send(embed=embed)
+            return await ctx.send("❌ Those words are already in the blacklist.")
 
         # If duplicate words have been removed, add non-duplicates
         # to the list without any error message
