@@ -109,11 +109,11 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.cooldown(1, 2, commands.BucketType.user)
     async def blacklist(self, ctx: commands.Context, *, words: str):
         """
-        ⚙️ Bans a word from being used.
+        ⚙️ Bans words from being used.
 
         Usage:
         ```
-        ~blacklist | ~bladd <word>
+        ~blacklist | ~bladd <...words>
         ```
         """
         id = str(ctx.guild.id)
@@ -123,25 +123,31 @@ class AdminCog(commands.Cog, name="Admin"):
         if id not in blacklist.keys():
             blacklist[id] = []
 
-        words_not_in_blacklist = []
+        words_already_in_blacklist = []
 
         for word in words:
             if word not in blacklist[id]:
                 continue
 
-            words_not_in_blacklist.append(word)
-        else:
+            words_already_in_blacklist.append(word)
+
+        # Sends message with any words that aren't in the blacklist.
+        # Skips this code block if there aren't any
+        if len(words_already_in_blacklist) > 0:
             error_embed = discord.Embed(
-                title=f"🛠️ The following words are not in the blacklist:",
-                description=' '.join(f'`{word}`' for word in words_not_in_blacklist)
+                title=f"❌ The following words are already in the blacklist:",
+                description=' '.join(f'`{word}`' for word in words_already_in_blacklist)
             )
 
         # If no words can be added to the blacklist:
-        if len(words_not_in_blacklist) == len(words):
+        if len(words_already_in_blacklist) == len(words):
             return await ctx.send(embed=error_embed)
 
+        # Remove words that are already in the blacklist from the list of words to add.
         # Even if there are words not in the blacklist, we still want to add words that
         # are to it
+        words = list(set(words) - set(words_already_in_blacklist))
+
         for word in words:
             blacklist[id].append(word)
 
