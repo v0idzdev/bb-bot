@@ -44,7 +44,6 @@ class AdminCog(commands.Cog, name="Admin"):
         view = ClearMessagesView(ctx)
         view.message = await ctx.send(embed=embed, view=view)
 
-
     @commands.command()
     @commands.has_permissions(kick_members=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -108,7 +107,7 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.command(aliases=["bladd"])
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def blacklist(self, ctx: commands.Context, *, word: str):
+    async def blacklist(self, ctx: commands.Context, *, words: str):
         """
         ⚙️ Bans a word from being used.
 
@@ -118,23 +117,39 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         id = str(ctx.guild.id)
-        word = word.lower()
+        words = [word.lower() for word in words.split(' ')]
 
         blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
             blacklist[id] = []
 
-        if word in blacklist[id]:
-            return await ctx.send(
-                f":x: The word '{word}' has already been blacklisted."
+        words_not_in_blacklist = []
+
+        for word in words:
+            if word not in blacklist[id]:
+                continue
+
+            words_not_in_blacklist.append(word)
+        else:
+            error_embed = discord.Embed(
+                title=f"🛠️ The following words are not in the blacklist:",
+                description=' '.join(f'`{word}`' for word in words_not_in_blacklist)
             )
 
-        blacklist[id].append(word)
+        # If no words can be added to the blacklist:
+        if len(words_not_in_blacklist) == len(words):
+            return await ctx.send(embed=error_embed)
+
+        # Even if there are words not in the blacklist, we still want to add words that
+        # are to it
+        for word in words:
+            blacklist[id].append(word)
+
         self.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words have been added to the blacklist",
-            description=f'`{word}`'
+            title=f"🛠️ Words have been added to the blacklist:",
+            description=' '.join(f'`{word}`' for word in words)
         )
 
         await ctx.send(embed=embed)
