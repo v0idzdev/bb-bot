@@ -3,8 +3,8 @@ Contains commands relating to administrator tasks.
 """
 
 import asyncio
-
 import discord
+
 from discord.ext import commands
 from utils.buttons import BlacklistClearButton, ClearMessagesView
 from utils.functions import lift_ban, sanction
@@ -123,31 +123,23 @@ class AdminCog(commands.Cog, name="Admin"):
         if id not in blacklist.keys():
             blacklist[id] = []
 
-        words_already_in_blacklist = []
+        # Remove words that are already in the blacklist from the words to add
+        # Make a list of duplicates to send as an error message if none of the words can be added
+        duplicates = set(words) & set(blacklist[id])
+        words = set(words) - set(blacklist[id])
 
-        for word in words:
-            if word not in blacklist[id]:
-                continue
-
-            words_already_in_blacklist.append(word)
-
-        # Sends message with any words that aren't in the blacklist.
-        # Skips this code block if there aren't any
-        if len(words_already_in_blacklist) > 0:
-            error_embed = discord.Embed(
+        # If the list of words is zero, we know that none of the words
+        # can be added. So, send an error message
+        if not words:
+            embed = discord.Embed(
                 title=f"❌ The following words are already in the blacklist:",
-                description=' '.join(f'`{word}`' for word in words_already_in_blacklist)
+                description=' '.join(f'`{word}`' for word in duplicates)
             )
 
-        # If no words can be added to the blacklist:
-        if len(words_already_in_blacklist) == len(words):
-            return await ctx.send(embed=error_embed)
+            return await ctx.send(embed=embed)
 
-        # Remove words that are already in the blacklist from the list of words to add.
-        # Even if there are words not in the blacklist, we still want to add words that
-        # are to it
-        words = list(set(words) - set(words_already_in_blacklist))
-
+        # If duplicate words have been removed, add non-duplicates
+        # to the list without any error message
         for word in words:
             blacklist[id].append(word)
 
