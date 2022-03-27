@@ -34,8 +34,11 @@ async def sanction(
             "." if reason is None else f" for **{reason}**."
         )  # Then add the correct ending
 
-    await ctx.send(message_server)
-    await member.send(message_member)
+    embed_server = discord.Embed(title=message_server)
+    embed_member = discord.Embed(title=message_member)
+
+    await ctx.send(embed=embed_server)
+    await member.send(embed=embed_member)
 
 
 async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
