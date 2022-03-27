@@ -79,6 +79,10 @@ class MiscCog(commands.Cog, name="Misc"):
         ~choose <...choices>
         ```
         """
+        # Display some error messages if the user's input is invalid.
+        # This is because it's kinda awkward to do this in the on_command_error event.
+        if len(choices) < 1:
+            return await ctx.send(f':x: {ctx.author.mention}: You need to give me choices to choose from.')
         if len(choices) == 1:
             return await ctx.send(f':x: {ctx.author.mention}: I need more than one choice!')
 
