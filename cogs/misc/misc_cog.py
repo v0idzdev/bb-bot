@@ -76,9 +76,12 @@ class MiscCog(commands.Cog, name="Misc"):
 
         Usage:
         ```
-        ~choose [...choices]
+        ~choose <...choices>
         ```
         """
+        if len(choices) == 1:
+            return await ctx.send(f':x: {ctx.author.mention}: I need more than one choice!')
+
         embed = discord.Embed(title=f'🎲 I choose {random.choice(choices)}')
         await ctx.send(embed=embed)
 
