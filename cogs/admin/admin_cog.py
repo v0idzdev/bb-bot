@@ -123,25 +123,29 @@ class AdminCog(commands.Cog, name="Admin"):
         if id not in blacklist.keys():
             blacklist[id] = []
 
-        # Remove words that are already in the blacklist from the words to add
-        words = set(words) - set(blacklist[id])
+        # Remove words that are already in the blacklist from the words to add.
+        # Make a copy so we can add a footer if any words were removed
+        words_ = set(words) - set(blacklist[id])
 
         # If the list of words is zero, we know that none of the words
         # can be added. So, send an error message
-        if not words:
-            return await ctx.send("❌ Those words are already in the blacklist.")
+        if not words_:
+            return await ctx.send(f"❌ {ctx.author.mention}: Sorry. Those words are already in the blacklist.")
 
         # If duplicate words have been removed, add non-duplicates
         # to the list without any error message
-        for word in words:
+        for word in words_:
             blacklist[id].append(word)
 
         self.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words have been added to the blacklist:",
-            description=' '.join(f'`{word}`' for word in words)
+            title=f"🛠️ Words successfully added.",
+            description=' '.join(f'`{word}`' for word in words_)
         )
+
+        if len(words) != len(words_):
+            embed.set_footer(text='⚠️ Some words were duplicates and were not added.')
 
         await ctx.send(embed=embed)
 
@@ -162,7 +166,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         if id not in blacklist.keys():
             return await ctx.send(
-                f":x: {mention}: This server does not have any words blacklisted."
+                f"❌ {mention}: This server does not have any words blacklisted."
             )
 
         embed = discord.Embed(
@@ -189,7 +193,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         if server_id not in blacklist.keys():
             return await ctx.send(
-                f":x: {ctx.author.mention}: This server does not have any words blacklisted."
+                f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
             )
 
         embed = discord.Embed(title="⛔ Blacklist")
@@ -199,39 +203,48 @@ class AdminCog(commands.Cog, name="Admin"):
 
     @commands.command(aliases=["blrem"])
     @commands.has_permissions(manage_messages=True)
-    async def blacklistremove(self, ctx: commands.Context, *, word: str):
+    async def blacklistremove(self, ctx: commands.Context, *, words: str):
         """
         ⚙️ Removes a word from the list of banned words.
 
         Usage:
         ```
-        ~blacklistremove | ~blrem <word>
+        ~blacklistremove | ~blrem <...words>
         ```
         """
         id = str(ctx.guild.id)
-        word = word.lower()
+        words = {word.lower() for word in words.split(' ')}
 
         blacklist = self.client.cache.blacklist
 
         if id not in blacklist.keys():
             return await ctx.send(
-                f":x: {ctx.author.mention}: This server does not have any words blacklisted."
+                f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
             )
 
-        if word not in blacklist[id]:
+        # Only remove words that are already in the blacklist from the words to remove.
+        # Make a copy so we can add a footer if any words were removed
+        words_ = words & set(blacklist[id])
+
+        if not words_:
             return await ctx.send(
-                f":x: {ctx.author.mention}: That word is not in this server's blacklist."
+                f"❌ {ctx.author.mention}: Sorry. Those words are not in the blacklist."
             )
 
-        blacklist[id].remove(word)
-        print(blacklist)
+        # If duplicate words have been removed, remove non-duplicates
+        # from the list without any error message
+        for word in words_:
+            blacklist[id].remove(word)
 
         self.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words have been removed from the blacklist",
-            description=f'`{word}`'
+            title=f"🛠️ Words successfully removed.",
+            description=' '.join(f'`{word}`' for word in words_)
         )
+
+        if len(words) != len(words_):
+            embed.set_footer(text='⚠️ Some words were not in the blacklist, and were not removed.')
 
         await ctx.send(embed=embed)
 
