@@ -11,6 +11,9 @@ class ClearMessagesView(discord.ui.View):
         self.ctx = ctx
 
     async def on_timeout(self) -> None:
+        """
+        Called when the view times out.
+        """
         await self.disable_all_buttons()
 
     async def disable_all_buttons(self, interaction: discord.Interaction = None):
@@ -80,8 +83,10 @@ class BlacklistClearButton(discord.ui.View):
         Disables all buttons.
         """
         interaction = interaction or self
+
         for child in self.children:
             child.disabled = True
+
         await interaction.message.edit(view=self)
         self.stop()
 
