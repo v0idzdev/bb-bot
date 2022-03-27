@@ -14,7 +14,7 @@ import discord
 import dotenv
 from discord.ext import commands
 
-from utils.models import Cache
+from utils.models import Cache, Twitch
 
 
 def get_prefix(bot, message: discord.Message):
@@ -36,6 +36,9 @@ class BeepBoop(commands.Bot):
         self.possible_status = itertools.cycle(["~help", "~play"])
         self.session: aiohttp.ClientSession = None
         self.cache: Cache = None
+        self.twitch: Twitch = None
+        self.twitch_client_id = os.getenv("TWITCH_CLIENT_ID")
+        self.twitch_client_secret = os.getenv("TWITCH_CLIENT_SECRET")
         self.fill_cache()
 
     def update_json(self, filename, payload):
@@ -56,6 +59,7 @@ class BeepBoop(commands.Bot):
         Overriding Bot.startup to create a re-usable aiohttp session.
         """
         async with aiohttp.ClientSession() as self.session:
+            self.twitch = Twitch(client_id=self.twitch_client_id, client_secret=self.twitch_client_secret)
             return await super().start(*args, **kwargs)
 
     async def sync_slash_commands(self):
@@ -106,8 +110,6 @@ dotenv.load_dotenv("files/.env")
 
 intents = discord.Intents.all()
 client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True)
-
-
 
 # THIS WAS FOR TESTING PURPOSES ONLY
 # @client.tree.command(description="People really like this command!")

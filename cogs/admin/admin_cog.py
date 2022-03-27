@@ -3,11 +3,11 @@ Contains commands relating to administrator tasks.
 """
 
 import asyncio
-import json
-import discord
 
+import discord
 from discord.ext import commands
 from utils.buttons import BlacklistClearButton, ClearMessagesView
+from utils.functions import lift_ban, sanction
 
 FILEPATH = "files/blacklist.json"
 
@@ -151,7 +151,7 @@ class AdminCog(commands.Cog, name="Admin"):
                 f":x: {mention}: This server does not have any words blacklisted."
             )
         view = BlacklistClearButton(ctx, data=blacklist)
-        await ctx.send(
+        view.message = await ctx.send(
             f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
             + f"This action cannot be undone.",
             view=view,
