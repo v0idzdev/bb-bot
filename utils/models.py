@@ -84,7 +84,7 @@ class Twitch:
         expire_datetime_object = datetime.datetime.utcnow() + datetime.timedelta(seconds=expire_seconds)
         dictionary_object = {'datetime': expire_datetime_object, 'token': (token_type.title(), token)}
         self.authorized = dictionary_object
-    
+
     @session_check
     async def authorize(self) -> None:
         params = {'client_id': self.client_id, 'client_secret': self.client_secret, 'grant_type': 'client_credentials'}

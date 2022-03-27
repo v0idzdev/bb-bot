@@ -42,16 +42,24 @@ class BeepBoop(commands.Bot):
         self.fill_cache()
 
     def update_json(self, filename, payload):
+        """
+        Updates a JSON file.
+        """
         with open(filename, 'w') as file:
             json.dump(payload, file, indent=4)
 
     def fill_cache(self):
+        """
+        Loads the cache from the blacklist and reaction role json files.
+        """
         files = ["./files/blacklist.json", "./files/reactionroles.json"]
         temp_cache = {}
+
         for file in files:
             with open(file, 'r') as f:
                 key = file.split('/')[-1].split('.')[0]
                 temp_cache[key] = json.load(f)
+
         self.cache = Cache(**temp_cache)
 
     async def start(self, *args, **kwargs) -> None:
@@ -63,11 +71,15 @@ class BeepBoop(commands.Bot):
             return await super().start(*args, **kwargs)
 
     async def sync_slash_commands(self):
-        print("syncing slash commands")
+        """
+        Syncs all application commands with Discord.
+        """
+        print("[SLASH] Syncing slash commands.")
+
         await self.wait_until_ready()
         await self.tree.sync()
-        print("Finished syncing slash commands")
-        
+
+        print("[SLASH] Finished syncing slash commands")
 
     async def load_cogs(self):
         """
@@ -84,9 +96,9 @@ class BeepBoop(commands.Bot):
         for cog in cogs:
             try:
                 await self.load_extension(cog)
-                print(f"[COG] Loaded <<{cog}>> successfully.")
-            except:
-                print(f"[COG] <<{cog}>> encountered an error.")
+                print(f"[COG] Loaded {cog} successfully.")
+            except Exception as ex: # Catching a generic exception so we can access the args and __traceback__ properties
+                print(f"[COG] {cog} encountered an error.", ex.args, ex.__traceback__)
 
     async def load_handlers(self):
         """
@@ -101,9 +113,9 @@ class BeepBoop(commands.Bot):
         for handler in handlers:
             try:
                 await client.load_extension(handler)
-                print(f"[HANDLER] Loaded <<{handler}>> successfully.")
-            except:
-                print(f"[HANDLER] <<{handler}>> encountered an error.")
+                print(f"[HANDLER] Loaded {handler} successfully.")
+            except Exception as ex:
+                print(f"[HANDLER] {handler} encountered an error.", ex.args, ex.__traceback__)
 
 
 dotenv.load_dotenv("files/.env")

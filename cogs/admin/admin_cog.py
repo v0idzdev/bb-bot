@@ -40,6 +40,7 @@ class AdminCog(commands.Cog, name="Admin"):
             title='⚠️ You have not selected a number of messages to clear.',
             description='❓ Would you like to clear all messages in this channel?',
         )
+
         view = ClearMessagesView(ctx)
         view.message = await ctx.send(embed=embed, view=view)
 
@@ -122,15 +123,21 @@ class AdminCog(commands.Cog, name="Admin"):
         blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
             blacklist[id] = []
+
         if word in blacklist[id]:
             return await ctx.send(
                 f":x: The word '{word}' has already been blacklisted."
             )
 
         blacklist[id].append(word)
-        print(blacklist)
         self.client.update_json(FILEPATH, blacklist)
-        await ctx.send(f":tools: '{word}' has been added to the blacklist.")
+
+        embed = discord.Embed(
+            title=f"🛠️ Words have been added to the blacklist",
+            description=f'`{word}`'
+        )
+
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["blclear"])
     @commands.has_permissions(manage_messages=True)
@@ -146,16 +153,19 @@ class AdminCog(commands.Cog, name="Admin"):
         id = str(ctx.guild.id)
         blacklist = self.client.cache.blacklist
         mention = ctx.author.mention
+
         if id not in blacklist.keys():
             return await ctx.send(
                 f":x: {mention}: This server does not have any words blacklisted."
             )
-        view = BlacklistClearButton(ctx, data=blacklist)
-        view.message = await ctx.send(
-            f":warning: {mention}: Are you sure you'd like to clear your server's blacklist?\n"
-            + f"This action cannot be undone.",
-            view=view,
+
+        embed = discord.Embed(
+            title=f"⚠️ Are you sure you'd like to clear your server's blacklist?\n",
+            description=f"❗ This action cannot be undone.",
         )
+
+        view = BlacklistClearButton(ctx, data=blacklist)
+        view.message = await ctx.send(embed=embed, view=view)
 
     @commands.command(aliases=["blshow"])
     @commands.has_permissions(manage_messages=True)
@@ -169,8 +179,8 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         blacklist = self.client.cache.blacklist
-
         server_id = str(ctx.guild.id)
+
         if server_id not in blacklist.keys():
             return await ctx.send(
                 f":x: {ctx.author.mention}: This server does not have any words blacklisted."
@@ -212,7 +222,12 @@ class AdminCog(commands.Cog, name="Admin"):
 
         self.client.update_json(FILEPATH, blacklist)
 
-        await ctx.send(f":tools: '{word}' has been removed from the blacklist.")
+        embed = discord.Embed(
+            title=f"🛠️ Words have been removed from the blacklist",
+            description=f'`{word}`'
+        )
+
+        await ctx.send(embed=embed)
 
 
 async def setup(client: commands.Bot):
