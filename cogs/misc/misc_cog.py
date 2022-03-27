@@ -79,7 +79,8 @@ class MiscCog(commands.Cog, name="Misc"):
         ~choose [...choices]
         ```
         """
-        await ctx.send(random.choice(choices))
+        embed = discord.Embed(title=f'🎲 I choose {random.choice(choices)}')
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def meme(self, ctx: commands.Context):
