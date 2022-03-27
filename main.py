@@ -32,7 +32,7 @@ class BeepBoop(commands.Bot):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.theme = 0x486572
+        # self.theme = 0x486572 --- Commented this out to add it again later, possibly
         self.possible_status = itertools.cycle(["~help", "~play"])
         self.session: aiohttp.ClientSession = None
         self.cache: Cache = None
