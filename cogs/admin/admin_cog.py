@@ -196,7 +196,7 @@ class AdminCog(commands.Cog, name="Admin"):
                 f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
             )
 
-        embed = discord.Embed(title="⛔ Blacklist")
+        embed = discord.Embed(title="⛔ Blacklist:")
         embed.description = "".join([f" `{word}` " for word in blacklist[server_id]])
 
         await ctx.send(embed=embed)
