@@ -100,9 +100,11 @@ class MiscCog(commands.Cog, name="Misc"):
         ```
         """
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
+
         data = await response.json()
-        meme = discord.Embed(title=str(data["title"]), color=self.client.theme)
+        meme = discord.Embed(title=str(data["title"]))
         meme.set_image(url=str(data["url"]))
+
         await ctx.reply(embed=meme)
 
     @commands.command()
@@ -112,13 +114,15 @@ class MiscCog(commands.Cog, name="Misc"):
 
         Usage:
         ```
-        ~poll [question]
+        ~poll <question>
         ```
         """
+        if not poll:
+            return await ctx.send(f':x: {ctx.author.mention}: You need to specify a question.')
+
         embed = discord.Embed(
             title=f"Poll by **{ctx.author.name}**:",
-            color=self.client.theme,
-            description=" ".join(poll),
+            description=" ".join(poll)
         )
 
         message = await ctx.send(embed=embed)

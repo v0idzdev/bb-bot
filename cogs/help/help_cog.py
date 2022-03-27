@@ -40,7 +40,6 @@ class HelpCommandCog(commands.Cog, name="Help"):
         """
         embed = discord.Embed(
             title="Beep Boop Bot Documentation",
-            color=self.client.theme,
             url="https://github.com/matthewflegg/beepboop/blob/main/README.md",
             description="View the official commands list for Beep Boop Bot on GitHub.",
         )
