@@ -2,7 +2,7 @@
   <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
 </p>
 <h1 align="center">🤖 BB.Bot</h1>
-<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 📖 Memes | ⭐ Reaction Roles | ❓ Polls</h3>
+<h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 😆 Memes | ⭐ Reaction Roles | ❓ Polls</h3>
 <h4 align="center">Powered by discord.py and GCP, BB.Bot is the bot for you.</h4>
 <br>
 
@@ -17,8 +17,7 @@
 * Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 
-Currently, self-hosting BB.Bot causes various errors to occur and is **NOT** recommended.
-This version of BB.Bot is a **pre-release** version and is **NOT** currently online. If you're looking for the commands list for the current active version, please switch to the `legacy` branch. Nevertheless, you can follow **[this link](#-self-hosting)** for instructions.
+Currently, self-hosting BB.Bot causes various errors to occur and is **not** recommended. Nevertheless, you can follow **[this link](#-self-hosting)** for instructions. This version of BB.Bot is a **pre-release** version. To view the commands list for the current release, please switch to the `legacy` branch.
 <br><br>
 
 ## 📢 **Commands List**
@@ -51,9 +50,9 @@ Sends an embed linking to **this page**.
 Clears a specified number of messages from a text channel.<br>
 **Requires**: `Manage Messages`
 
-> **~blacklist | ~bladd `word`**
+> **~blacklist | ~bladd `word a` `word b` `word c` `...`**
 
-Adds the word to a list of words that are disallowed. Any messages containing these words will be deleted.<br>
+Adds one or more words to the server's blacklist. Any messages containing these words will be deleted.<br>
 **Requires**: `Manage Messages`
 
 > **~clearblacklist | ~blclear**
@@ -66,9 +65,9 @@ Clears the blacklist for the server.<br>
 Shows the blacklist for the server.<br>
 **Requires**: `Manage Messages`
 
-> **~blacklistremove | ~blrem**
+> **~blacklistremove | ~blrem `word a` `word b` `word c` `...`**
 
-Removes a word from the blacklist.<br>
+Removes one or more words from the server's blacklist.<br>
 **Requires**: `Manage Messages`
 
 > **~kick `member` `reason?`**
