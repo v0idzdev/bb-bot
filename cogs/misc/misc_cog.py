@@ -4,12 +4,12 @@ Contains miscellaneous commands to be used for fun.
 
 import datetime
 import random
+import humanize
 
 import discord
 from discord.ext import commands
-
 from utils.models import TwitchBroadcast
-import humanize
+
 
 class MiscCog(commands.Cog, name="Misc"):
     """
@@ -21,35 +21,52 @@ class MiscCog(commands.Cog, name="Misc"):
 
     @commands.command()
     async def twitch(self, ctx: commands.Context, *, name: str):
+        """
+        🎲 Shows information about a Twitch streamer.
+
+        Usage:
+        ```
+        ~twitch <streamer name>
+        ```
+        """
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)
         broad_list = broadcaster_data['data']
+
         if broad_list:
             broadcaster_id = broad_list[0]['id']
-            print(broad_list)
+
             broadcaster_name = broad_list[0]['display_name']
             json = await client.connect('helix/streams', user_id=str(broadcaster_id))
+
             if not json['data']:
                 return await ctx.send(f"{broadcaster_name} isn't live")
+
             stream: TwitchBroadcast = await client.return_information(json)
             stream.thumbnail.seek(0)
             file = discord.File(fp=stream.thumbnail, filename="stream.png")
+
             game_cover = stream.game_image
             game_name = stream.game_name
             view_count = stream.viewer_count
             username = stream.username
             stream_title = stream.stream_title
             started_at = stream.started_at
+
             on_going_for = humanize.precisedelta(datetime.datetime.utcnow() - started_at, format="%0.0f")
+
             embed = discord.Embed(title=stream_title, color=self.client.theme, timestamp=datetime.datetime.utcnow(), url=stream.stream_url)
+
             embed.set_image(url="attachment://stream.png")
             embed.set_thumbnail(url=game_cover)
             embed.add_field(name="Stream Time", value=on_going_for)
             embed.add_field(name="Username", value=username)
             embed.add_field(name="Viewer Count", value=view_count)
             embed.add_field(name="Category", value=game_name)
+
             return await ctx.send(embed=embed, file=file)
+
         return await ctx.send(f"{name} isn't a valid streamer's name")
 
     @commands.command()

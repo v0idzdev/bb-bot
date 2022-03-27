@@ -18,7 +18,7 @@ def authorization_check(coro):
             await self.authorize()
         elif not self.authorized:
             await self.authorize()
-        return await coro(self, *args, **kwargs) 
+        return await coro(self, *args, **kwargs)
     return wrapper
 
 def executor(func):
