@@ -81,4 +81,4 @@ class BlacklistClearButton(discord.ui.View):
     async def no(self, interaction: discord.Interaction, _: discord.Button):
         mention = interaction.user.mention
         await interaction.response.send_message(f":thumbsup: {mention}: Ok!")
-        await self.disable_all_buttons()
+        await self.disable_all_buttons(interaction)
