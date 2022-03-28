@@ -121,11 +121,11 @@ class BlacklistClearButton(discord.ui.View):
 
 
 class BlacklistModal(discord.ui.Modal):
-    def __init__(self, view: discord.ui.View, drop: discord.ui.Select, *, title: str = "Type the word you want to blacklist") -> None:
+    def __init__(self, view: discord.ui.View, drop: discord.ui.Select, *, title: str = "🔑 Enter a word to blacklist:") -> None:
         super().__init__(title=title)
         self.view = view
         self.drop = drop
-        self.text = discord.ui.TextInput(label="Word", placeholder="Type the word you want to blacklist", max_length=100)
+        self.text = discord.ui.TextInput(label="Word", placeholder="🔑 Enter a word to blacklist:", max_length=100)
         self.add_item(self.text)
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -147,7 +147,7 @@ class BlacklistDropdown(discord.ui.Select):
             discord.SelectOption(label='\u200b', default=False)
         ]
         self.words = []
-        super().__init__(placeholder='Choose the words you want to blacklist...', min_values=1, max_values=len(options),options=options)
+        super().__init__(placeholder='📃 Choose words to blacklist...', min_values=1, max_values=len(options), options=options)
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         """
@@ -156,13 +156,18 @@ class BlacklistDropdown(discord.ui.Select):
         if interaction.user.id == self.ctx.author.id:
             return True
         else:
-            await interaction.response.send_message(":x: This isn't your interaction!")
+            await interaction.response.send_message(
+                f"❌ {interaction.user.mention}: This isn't your interaction!",
+                ephemeral=True
+            )
             return False
 
     async def callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
         if not self.values:
-            return await interaction.followup.send("You need to select one or more than one words to blacklist!", ephemeral=True)
+            return await interaction.followup.send(
+                f"❌ {interaction.user.mention}: You need to select one or more than one words to blacklist!", ephemeral=True
+            )
         self.words = self.values
         return
 
@@ -180,7 +185,10 @@ class DropdownView(discord.ui.View):
         if interaction.user.id == self.ctx.author.id:
             return True
         else:
-            await interaction.response.send_message(":x: This isn't your interaction!")
+            await interaction.response.send_message(
+                f"❌ {interaction.user.mention}: This isn't your interaction!",
+                ephemeral=True
+            )
             return False
 
     async def disable_all_buttons(self, interaction: discord.Interaction = None):
@@ -194,35 +202,44 @@ class DropdownView(discord.ui.View):
         await interaction.message.edit(view=self)
         self.stop()
 
-    @discord.ui.button(label="Enter New Word", style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label="Enter a New Word", style=discord.ButtonStyle.blurple, emoji="💬")
     async def send_modal(self, interaction: discord.Interaction, button: discord.Button):
         modal = BlacklistModal(self, self.drop)
         await interaction.response.send_modal(modal)
 
-    @discord.ui.button(label="Submit Words", style=discord.ButtonStyle.green)
+    @discord.ui.button(label="Submit Words", style=discord.ButtonStyle.green, emoji="👍🏻")
     async def submit(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.defer()
         values = self.drop.words
         id = str(interaction.guild_id)
         if not values:
             print(values)
-            return await interaction.followup.send(":x: You need to have atleast one word selected!")
+            return await interaction.followup.send(
+                f"❌ {interaction.user.mention}: You need to have at least one word selected!",
+                ephemeral=True
+            )
         blacklist = interaction.client.cache.blacklist
         if id not in blacklist.keys():
             blacklist[id] = []
         words = set(values) - set(blacklist[id])
         if not words:
-            return await interaction.followup.send(f"❌ {interaction.user.mention}: Sorry. Those words are already in the blacklist.")
+            return await interaction.followup.send(
+                f"❌ {interaction.user.mention}: Sorry. Those words are already in the blacklist.",
+                ephemeral=True
+            )
         blacklist[id].extend(words)
         interaction.client.update_json(FILEPATH, blacklist)
-        embed = discord.Embed(title="🛠️ Blacklist successfully updated.", description=f"{interaction.user.mention}: The following words have been added to the blacklist: {', '.join(words)}")
+        embed = discord.Embed(
+            title=f"🛠️ Words successfully added.",
+            description=' '.join(f'`{word}`' for word in words)
+        )
         if len(values) > len(words):
             embed.set_footer(text='⚠️ Some words were duplicates and were not added.')
         await interaction.followup.send(embed=embed)
-        
 
-    @discord.ui.button(label="Abort", style=discord.ButtonStyle.red)
+
+    @discord.ui.button(label="Abort", style=discord.ButtonStyle.red, emoji="👎🏻")
     async def abort(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message(":x: Aborting command!")
+        await interaction.response.send_message(f"❌ {interaction.user.mention}: Aborting command!", ephemeral=True)
         await self.disable_all_buttons(interaction)
 

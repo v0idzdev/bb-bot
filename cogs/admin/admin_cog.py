@@ -117,8 +117,7 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         if not words:
             view = DropdownView(ctx)
-            embed = discord.Embed()
-            embed.set_footer(text="🛠️ Please enter words to blacklist.", icon_url=ctx.author.display_avatar.url)
+            embed = discord.Embed(title="🛠️ Please enter one or more words to blacklist.")
             view.message = await ctx.send(embed=embed, view=view)
             return
         id = str(ctx.guild.id)
