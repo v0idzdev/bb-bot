@@ -138,7 +138,7 @@ class BeepBoop(commands.Bot):
                 print(f"[HANDLER] {handler} encountered an error.", ex.args, ex.__traceback__)
 
 
-dotenv.load_dotenv("files/.env")
+dotenv.load_dotenv(".env")
 
 intents = discord.Intents.all()
 client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=True)
