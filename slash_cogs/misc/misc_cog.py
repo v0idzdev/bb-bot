@@ -24,7 +24,7 @@ class SlashMiscCog(commands.Cog):
     @app_commands.describe(name="Twitch Streamer's name")
     async def twitch(self, interaction: discord.Interaction, *, name: str):
         """
-        🎲 Shows information about a Twitch streamer.
+        🎲 Shows information about a Twitch stream.
 
         Usage:
         ```
@@ -70,7 +70,7 @@ class SlashMiscCog(commands.Cog):
 
             return await interaction.followup.send(embed=embed, file=file)
 
-        return await interaction.followup.send(f"{name} isn't a valid streamer's name")
+        return await interaction.followup.send(f":x: {interaction.message.author}: {name} isn't a valid streamer's name")
 
     @app_commands.command()
     @app_commands.describe(choices="Your choices separated by spaces")

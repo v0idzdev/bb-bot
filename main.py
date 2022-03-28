@@ -75,10 +75,14 @@ class BeepBoop(commands.Bot):
         Syncs all application commands with Discord.
         """
         print("[SLASH] Syncing slash commands.")
-
         await self.wait_until_ready()
+
+        # Syncs with all guilds within an hour
         await self.tree.sync()
-        await self.tree.sync(guild=discord.Object(id=929426504985743390))
+
+        # Syncs with test guilds instantly
+        TEST_GUILD_ID = int(os.getenv('TEST_GUILD_ID'))
+        await self.tree.sync(guild=discord.Object(id=TEST_GUILD_ID))
 
         print("[SLASH] Finished syncing slash commands")
 
@@ -153,7 +157,7 @@ async def main():
         await client.load_slash_cogs() # can test this maybe
         await client.load_handlers()
 
-        client.loop.create_task(client.sync_slash_commands()) 
+        client.loop.create_task(client.sync_slash_commands())
 
         TOKEN = os.getenv("TOKEN")
         await client.start(TOKEN)
