@@ -16,8 +16,9 @@
 
 * Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
+* Click **[here](#-self-hosting)** for self-hosting instructions.
 
-Currently, **self-hosting BB.Bot causes various errors to occur** and is **not** recommended. Nevertheless, you can follow **[this link](#-self-hosting)** for instructions. This version of BB.Bot is a **pre-release** version. To view the commands list for the **current release**, please switch to the `legacy` branch.
+⚠️ Currently, self-hosting is **not 100% bug-free**. Please self-host at your own risk.
 <br><br>
 
 ## 📢 **Commands List**
