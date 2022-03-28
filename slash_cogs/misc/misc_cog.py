@@ -20,16 +20,21 @@ class SlashMiscCog(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
 
-    @app_commands.command(description="Shows information about a Twitch streamer.")
-    @app_commands.describe(name="Twitch Streamer's name")
+    @app_commands.command()
+    @app_commands.describe(name="❓ The Twitch streamer's username.")
     async def twitch(self, interaction: discord.Interaction, *, name: str):
         """
         🎲 Shows information about a Twitch stream.
+
+        ❓ This command is also available as a prefix command.
 
         Usage:
         ```
         /twitch <streamer name>
         ```
+        Or:
+        ```
+        ~choose <streamer name>
         """
         await interaction.response.defer()
         client = self.client.twitch
@@ -44,7 +49,9 @@ class SlashMiscCog(commands.Cog):
             json = await client.connect('helix/streams', user_id=str(broadcaster_id))
 
             if not json['data']:
-                return await interaction.followup.send(f"{broadcaster_name} isn't live")
+                return await interaction.followup.send(
+                    f":x: {interaction.message.author}: {broadcaster_name} isn't live."
+                )
 
             stream: TwitchBroadcast = await client.return_information(json)
             stream.thumbnail.seek(0)
@@ -70,18 +77,25 @@ class SlashMiscCog(commands.Cog):
 
             return await interaction.followup.send(embed=embed, file=file)
 
-        return await interaction.followup.send(f":x: {interaction.message.author}: {name} isn't a valid streamer's name")
+        return await interaction.followup.send(
+            f":x: I couldn't find a streamer with the name '{name}'."
+        )
 
     @app_commands.command()
-    @app_commands.describe(choices="Your choices separated by spaces")
+    @app_commands.describe(choices="❓ Choices separated by spaces.")
     async def choose(self, interaction: discord.Interaction, *, choices: str):
         """
         🎲 Chooses a random option from a list of choices.
+
+        ❓ This command is also available as a prefix command.
 
         Usage:
         ```
         /choose <...choices>
         ```
+        Or:
+        ```
+        ~choose <question>
         """
         await interaction.response.defer()
         choices = choices.split(' ')
@@ -100,10 +114,15 @@ class SlashMiscCog(commands.Cog):
         """
         🎲 Sends a random meme from Reddit.
 
+        ❓ This command is also available as a prefix command.
+
         Usage:
         ```
         /meme
         ```
+        Or:
+        ```
+        ~meme
         """
         await interaction.response.defer()
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
@@ -114,14 +133,20 @@ class SlashMiscCog(commands.Cog):
         await interaction.followup.send(embed=meme)
 
     @app_commands.command()
-    @app_commands.describe(question="The question you want to open the poll for")
+    @app_commands.describe(question="❓ The question to ask the poll for.")
     async def poll(self, interaction: discord.Interaction, *, question: str):
         """
         🎲 Creates a simple yes or no poll.
 
+        ❓ This command is also available as a prefix command.
+
         Usage:
         ```
         /poll <question>
+        ```
+        Or:
+        ```
+        ~poll <question>
         ```
         """
         await interaction.response.defer()
