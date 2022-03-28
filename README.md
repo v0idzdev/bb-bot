@@ -14,11 +14,10 @@
 
 **BB.Bot** is a Discord bot powered by **Python** and GCP's **Compute Engine**. Featuring **24/7 uptime**, **HQ music streaming**, **admin commands**, and more, **BB.Bot** is the bot for you. **Available for free** and **regularly maintained**, our bot comes with **no additional costs** and **long-term support**.
 
-* Click **[Here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
-* Click **[Here](https://discord.gg/Dacy34eM)** to join our Discord server.
+* Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot)** to invite BB.Bot to your server.
+* Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 
-Currently, self-hosting BB.Bot causes various errors to occur and is **NOT** recommended.
-This version of BB.Bot is a **pre-release** version and is **NOT** currently online. If you're looking for the commands list for the current active version, please switch to the `legacy` branch.
+Currently, **self-hosting BB.Bot causes various errors to occur** and is **not** recommended. Nevertheless, you can follow **[this link](#-self-hosting)** for instructions. This version of BB.Bot is a **pre-release** version. To view the commands list for the **current release**, please switch to the `legacy` branch.
 <br><br>
 
 ## 📢 **Commands List**
