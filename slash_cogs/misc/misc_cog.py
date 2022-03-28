@@ -28,7 +28,7 @@ class SlashMiscCog(commands.Cog):
 
         Usage:
         ```
-        ~twitch <streamer name>
+        /twitch <streamer name>
         ```
         """
         await interaction.response.defer()
@@ -80,7 +80,7 @@ class SlashMiscCog(commands.Cog):
 
         Usage:
         ```
-        ~choose <...choices>
+        /choose <...choices>
         ```
         """
         await interaction.response.defer()
@@ -102,7 +102,7 @@ class SlashMiscCog(commands.Cog):
 
         Usage:
         ```
-        ~meme
+        /meme
         ```
         """
         await interaction.response.defer()
@@ -121,7 +121,7 @@ class SlashMiscCog(commands.Cog):
 
         Usage:
         ```
-        ~poll <question>
+        /poll <question>
         ```
         """
         await interaction.response.defer()

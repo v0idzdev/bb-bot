@@ -3,9 +3,10 @@ Sends an embedded, custom, help command.
 """
 
 from typing import Optional
-
 import discord
+
 from discord.ext import commands
+from discord import app_commands
 
 
 class HelpCommand(commands.MinimalHelpCommand):
@@ -83,7 +84,7 @@ class HelpCommand(commands.MinimalHelpCommand):
         channel = self.get_destination()
         await channel.send(embed=embed)
 
-    async def send_command_help(self, command: commands.Command | commands.Group):
+    async def send_command_help(self, command: commands.Command):
         embed = await self.help_embed(
             title=command.qualified_name,
             description=command.help,

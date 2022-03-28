@@ -24,9 +24,15 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         🎲 Shows information about a Twitch stream.
 
+        ❓ This command is also available as a slash command.
+
         Usage:
         ```
         ~twitch <streamer name>
+        ```
+        Or:
+        ```
+        /twitch <streamer name>
         ```
         """
         client = self.client.twitch
@@ -74,9 +80,15 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         🎲 Chooses a random option from a list of choices.
 
+        ❓ This command is also available as a slash command.
+
         Usage:
         ```
         ~choose <...choices>
+        ```
+        Or:
+        ```
+        /choose <...choices>
         ```
         """
         # Display some error messages if the user's input is invalid.
@@ -94,9 +106,15 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         🎲 Sends a random meme from Reddit.
 
+        ❓ This command is also available as a slash command.
+
         Usage:
         ```
         ~meme
+        ```
+        Or:
+        ```
+        /meme
         ```
         """
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
@@ -112,9 +130,15 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         🎲 Creates a simple yes or no poll.
 
+        ❓ This command is also available as a slash command.
+
         Usage:
         ```
         ~poll <question>
+        ```
+        Or:
+        ```
+        /poll
         ```
         """
         if not poll:

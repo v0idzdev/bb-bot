@@ -33,8 +33,10 @@ class RoleCog(commands.Cog, name="Roles"):
         """
         embed = discord.Embed(description=message)
         msg = await ctx.channel.send(embed=embed)
+
         await msg.add_reaction(emoji)
         data = self.client.cache.reactionrole
+
         react_role = {  # Create a dictionary to store in the JSON file
             "guild_id": ctx.guild.id,
             "name": role.name,
@@ -42,6 +44,7 @@ class RoleCog(commands.Cog, name="Roles"):
             "emoji": emoji,
             "msg_id": msg.id,
         }
+
         data.append(react_role)
         self.client.update_json(FILEPATH, data)
 
