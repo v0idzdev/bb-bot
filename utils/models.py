@@ -59,7 +59,7 @@ class Twitch:
 
     @executor
     def process_image(self, image: BytesIO) -> BytesIO:
-        image_overlay = Image.open('./assets/twitch_overlay.png')
+        image_overlay = Image.open('./Assets/twitch_overlay.png')
         thumbnail = Image.open(image)
         image_overlay.paste(thumbnail, (15, 10))
         buffer = BytesIO()

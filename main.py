@@ -78,6 +78,7 @@ class BeepBoop(commands.Bot):
 
         await self.wait_until_ready()
         await self.tree.sync()
+        await self.tree.sync(guild=discord.Object(id=929426504985743390))
 
         print("[SLASH] Finished syncing slash commands")
 
@@ -99,6 +100,21 @@ class BeepBoop(commands.Bot):
                 print(f"[COG] Loaded {cog} successfully.")
             except Exception as ex: # Catching a generic exception so we can access the args and __traceback__ properties
                 print(f"[COG] {cog} encountered an error.", ex.args, ex.__traceback__)
+
+    async def load_slash_cogs(self):
+        """
+        Initializes the slash commands.
+        """
+        commands = [
+            "slash_cogs.misc.misc_cog",
+        ]
+
+        for command in commands:
+            try:
+                await self.load_extension(command)
+                print(f"[SLASH] Loaded {command} successfully.")
+            except Exception as ex:
+                print(f"[SLASH] {command} encountered an error.", ex.args, ex.__traceback__)
 
     async def load_handlers(self):
         """
@@ -133,10 +149,11 @@ async def main():
     Main entry point of the application.
     """
     async with client:
-        client.loop.create_task(client.sync_slash_commands())
-
         await client.load_cogs()
+        await client.load_slash_cogs() # can test this maybe
         await client.load_handlers()
+
+        client.loop.create_task(client.sync_slash_commands()) 
 
         TOKEN = os.getenv("TOKEN")
         await client.start(TOKEN)
