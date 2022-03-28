@@ -47,7 +47,9 @@ class MiscCog(commands.Cog, name="Misc"):
             json = await client.connect('helix/streams', user_id=str(broadcaster_id))
 
             if not json['data']:
-                return await ctx.send(f"{broadcaster_name} isn't live")
+                return await ctx.send(
+                    f":x: {ctx.author.mention}: {broadcaster_name} isn't live."
+                )
 
             stream: TwitchBroadcast = await client.return_information(json)
             stream.thumbnail.seek(0)
@@ -62,7 +64,7 @@ class MiscCog(commands.Cog, name="Misc"):
 
             on_going_for = humanize.precisedelta(datetime.datetime.utcnow() - started_at, format="%0.0f")
 
-            embed = discord.Embed(title=stream_title, color=self.client.theme, timestamp=datetime.datetime.utcnow(), url=stream.stream_url)
+            embed = discord.Embed(title=stream_title, timestamp=datetime.datetime.utcnow(), url=stream.stream_url)
 
             embed.set_image(url="attachment://stream.png")
             embed.set_thumbnail(url=game_cover)
@@ -73,7 +75,7 @@ class MiscCog(commands.Cog, name="Misc"):
 
             return await ctx.send(embed=embed, file=file)
 
-        return await ctx.send(f":x: {ctx.author.mention}: {name} isn't a valid streamer's name")
+        return await ctx.send(f":x: {ctx.author.mention}: I couldn't find a streamer with the name '{name}'.")
 
     @commands.command()
     async def choose(self, ctx: commands.Context, *choices: str):

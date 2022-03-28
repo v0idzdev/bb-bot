@@ -17,11 +17,17 @@ from discord.ext import commands
 from utils.models import Cache, Twitch
 
 
-def get_prefix(bot, message: discord.Message):
+# This should be set to false when the bot is released
+#
+# If this is true, it sets the prefix to ?.
+# This is terrible code, but I cba to fix it right now
+USING_DEVELOPMENT_VERSION = True
+
+def get_prefix(bot: commands.Bot, message: discord.Message):
     """
     Returns the client's command prefix.
     """
-    return "~"
+    return '?' if USING_DEVELOPMENT_VERSION else '~'
 
 
 class BeepBoop(commands.Bot):
