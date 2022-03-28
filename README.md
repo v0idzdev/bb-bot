@@ -51,9 +51,9 @@ Sends an embed linking to **this page**.
 Clears a specified number of messages from a text channel.<br>
 **Requires**: `Manage Messages`
 
-> **~blacklist | ~bladd `word a` `word b` `word c` `...`**
+> **~blacklist | ~bladd**
 
-Adds one or more words to the server's blacklist. Any messages containing these words will be deleted.<br>
+Allows the user to choose words to ban on the server with a dropdown menu.<br>
 **Requires**: `Manage Messages`
 
 > **~clearblacklist | ~blclear**
@@ -179,13 +179,14 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
 * **Python** 3.10+<br>
 * A **Discord bot** with:<br>
     * **All** priveleged gateway intents
-    * `Administrator` permissions<br><br>
+    * `Administrator` permissions
+    * `bot` and `applications.commands` scopes.<br><br>
 
 ### ⏳ How to Install
 
 1. Install a **.ZIP** from the **[releases](https://github.com/matthewflegg/bb-bot/releases)** page.<br>
 3. **Extract it** to your preferred file location.<br>
 4. **Create a file** in the **root directory** called `.env`.
-    * **Edit** the file. Enter `TOKEN={Your Token Here}`, with your bot's token.
+    * **Edit** the file. Enter `TOKEN=example`, replacing 'example' with your bot's token.
     * **Save** the file and **exit**.<br>
 5. Run `start.cmd` if you're using **Windows**, or `start.sh` if you're using **Linux**.
