@@ -145,17 +145,23 @@ Deletes all reaction role messages for a particular role.
 
 ### 📒 Misc Commands
 
-> **~choose `option a` `option b` `option c?` `...`**
+❓ Currently, we're testing out slash commands for this category.
+
+> **~choose `option a` `option b` `option c?` `...`** or **/choose `option a` `option b` `option c?` `...`**
 
 Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
 
-> **~meme**
+> **~meme** or **/meme**
 
 Sends a random meme from Reddit.
 
-> **~poll `yes/no question`**
+> **~poll `yes/no question`** or **/poll `yes/no question`**
 
 Creates a poll that users can react with yes or no to. 
+
+> **~twitch `streamer name`** or **/twitch `streamer name`**
+
+Gets information about a Twitch stream if the streamer is currently streaming.
 <br><br>
 
 ## 🚀 Self Hosting
