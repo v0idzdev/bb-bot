@@ -3,14 +3,13 @@ Contains commands relating to administrator tasks.
 """
 
 import asyncio
-import discord
 
+import discord
 from discord.ext import commands
-from utils.buttons import BlacklistClearButton, ClearMessagesView
+from utils.buttons import BlacklistClearButton, ClearMessagesView, DropdownView
 from utils.functions import lift_ban, sanction
 
 FILEPATH = "files/blacklist.json"
-
 
 class AdminCog(commands.Cog, name="Admin"):
     """
@@ -107,7 +106,7 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.command(aliases=["bladd"])
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def blacklist(self, ctx: commands.Context, *, words: str):
+    async def blacklist(self, ctx: commands.Context, *, words: str = None):
         """
         ⚙️ Bans words from being used.
 
@@ -116,6 +115,12 @@ class AdminCog(commands.Cog, name="Admin"):
         ~blacklist | ~bladd <...words>
         ```
         """
+        if not words:
+            view = DropdownView(ctx)
+            embed = discord.Embed()
+            embed.set_footer(text="🛠️ Please enter words to blacklist.", icon_url=ctx.author.display_avatar.url)
+            view.message = await ctx.send(embed=embed, view=view)
+            return
         id = str(ctx.guild.id)
         words = [word.lower() for word in words.split(' ')]
 
