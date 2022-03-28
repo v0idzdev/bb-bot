@@ -98,7 +98,7 @@ class EventHandler(commands.Cog):
         Prevents users from voting more than once on a poll.
         """
         user = reaction.message.author
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id) # why 
+        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id) # why
 
         if user.id == self.client.user.id:
             return
