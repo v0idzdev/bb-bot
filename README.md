@@ -152,6 +152,8 @@ Deletes all reaction role messages for a particular role.
 
 Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
 
+⚠️ The slash command version does not support choices with multiple words.
+
 > **~meme** or **/meme**
 
 Sends a random meme from Reddit.
