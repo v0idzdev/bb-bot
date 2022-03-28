@@ -8,26 +8,19 @@ import asyncio
 import itertools
 import json
 import os
-
 import aiohttp
 import discord
 import dotenv
-from discord.ext import commands
 
+from discord.ext import commands
 from utils.models import Cache, Twitch
 
-
-# This should be set to false when the bot is released
-#
-# If this is true, it sets the prefix to ?.
-# This is terrible code, but I cba to fix it right now
-USING_DEVELOPMENT_VERSION = True
 
 def get_prefix(bot: commands.Bot, message: discord.Message):
     """
     Returns the client's command prefix.
     """
-    return '?' if USING_DEVELOPMENT_VERSION else '~'
+    return '~' if bot.user.name == 'BB.Bot' else '?' # Set the prefix to '?' if the bot is the development version
 
 
 class BeepBoop(commands.Bot):
