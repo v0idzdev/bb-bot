@@ -66,10 +66,14 @@ Clears the blacklist for the server.<br>
 Shows the blacklist for the server.<br>
 **Requires**: `Manage Messages`
 
+⚠️ Other users will be able to see the words on the list. Only use this in an admin/mod-only channel.
+
 > **~blacklistremove | ~blrem `word a` `word b` `word c` `...`**
 
 Removes one or more words from the server's blacklist.<br>
 **Requires**: `Manage Messages`
+
+❗ We're currently working on updating this command to use a drop-down in the same way `~blacklist` does.<br>
 
 > **~kick `member` `reason?`**
 
@@ -86,6 +90,8 @@ Bans a specified user from the server.<br>
 Temporarily bans a specified user from the server.<br>
 **Requires**: `Ban Members`
 
+⚠️ It is **not** recommended to use this when self-hosting, unless your bot will be running 24/7.
+
 > **~unban `member`**
 
 Unbans a specified user from the server.<br>
@@ -96,7 +102,9 @@ Unbans a specified user from the server.<br>
 
 > **~connect** | **~join**
 
-Joins the VC you're currently in. When you use `play`, the bot will join automatically before playing.
+Joins the VC you're currently in.
+
+💿 When you use `play`, the bot will join automatically before playing, so this isn't needed most of the time.
 
 > **~play | ~p `song to search for`**
 
@@ -124,29 +132,33 @@ Shows the song currently playing if there is one.
 
 > **~volume | ~vol `volume as a percentage`**
 
+🎧 Tip: You can use this command to have finer control over volume - you can set the volume to 8.78, for instance.
+
 Adjust the volume of the music player.
 
 > **~stop | ~del**
 
 Stops the music player and clears all existing songs from the queue.
+
+⚠️ This command kicks the bot from the VC.
 <br><br>    
 
 ### 🌟 Role Commands
 
 > **~reactrole | ~crr `emoji` `@role` `message`**
 
-Creates an embed that users can react to for a role.
+Creates an embed that users can react to for a role.<br>
 **Requires**: `Manage Roles`
 
 > **~removereactrole | ~rrr `@role`**
 
-Deletes all reaction role messages for a particular role.
+Deletes all reaction role messages for a particular role.<br>
 **Requires**: `Manage Roles`
 <br><br>     
 
 ### 📒 Misc Commands
 
-❓ Currently, we're testing out slash commands for this category.
+❓ Currently, we're testing out **[slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)** for this category.
 
 > **~choose `option a` `option b` `option c?` `...`** or **/choose `option a` `option b` `option c?` `...`**
 
