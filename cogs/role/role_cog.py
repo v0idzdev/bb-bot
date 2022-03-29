@@ -35,7 +35,7 @@ class RoleCog(commands.Cog, name="Roles"):
         msg = await ctx.channel.send(embed=embed)
 
         await msg.add_reaction(emoji)
-        data = self.client.cache.reactionrole
+        data = self.client.cache.reactionroles
 
         react_role = {  # Create a dictionary to store in the JSON file
             "guild_id": ctx.guild.id,
@@ -53,13 +53,14 @@ class RoleCog(commands.Cog, name="Roles"):
     async def removereactrole(self, ctx: commands.Context, role: discord.Role):
         """
         🏷️ Removes a reaction role message.
+
         Usage:
         ```
         ~removereactrole | ~rrr <@role>
         ```
         """
 
-        data = self.client.cache.reactionrole
+        data = self.client.cache.reactionroles
         instances = [item for item in data if item["role_id"] == role.id]
         if len(instances) == 0:
             raise commands.RoleNotFound(role.__str__())
@@ -67,7 +68,7 @@ class RoleCog(commands.Cog, name="Roles"):
             msg = ctx.channel.get_partial_message(instance["msg_id"])
             await msg.delete()
             data.remove(instance)
-        self.update_json(FILEPATH, data)
+        self.client.update_json(FILEPATH, data)
         embed = discord.Embed(title=f"🔧 Removed the '{role.name}' reaction role.")
         await ctx.send(embed=embed)
 
@@ -106,6 +107,7 @@ class RoleCog(commands.Cog, name="Roles"):
                     + f"Try moving this role above the reaction role."
                 )
             case _:
+                print(error.args, error.__traceback__)
                 message += (
                     "An unknown error occurred while creating your reaction role.\n"
                     + f"Please try again later."
@@ -141,6 +143,7 @@ class RoleCog(commands.Cog, name="Roles"):
                 )
 
             case _:
+                print(error.args, error.__traceback__)
                 message += (
                     "An unknown error occurred while creating your reaction role.\n"
                     + f"Please try again later."
