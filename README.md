@@ -170,9 +170,9 @@ Randomly chooses an option from a list. Use quote marks "" around the options if
 
 Sends a random meme from Reddit.
 
-> **~poll `yes/no question` | ~poll `question` `option a`, `option b`, `option c` ** or **/poll `yes/no question`**
+> **~poll `yes/no question` | ~poll `question` `option a`, `option b`, `option c`** or **/poll `yes/no question`**
 
-📢 Put quote marks around the question and options if using the prefix command version. The slash command does not yet support multiple options.
+📢 Put quote marks "" around the arguments if using the prefix command version. The slash command does not yet support multiple options.
 
 Creates a poll that users can react with yes or no to. 
 
