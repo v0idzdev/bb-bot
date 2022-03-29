@@ -163,6 +163,12 @@ class MiscCog(commands.Cog, name="Misc"):
             await message.add_reaction("✔️")
             return await message.add_reaction("❌")
 
+        if len(options) < 2:
+            return await ctx.reply(f"❌ You need to add more than one option.")
+
+        if len(options) > 6:
+            return await ctx.reply(f"❌ You can't add more than 6 options.")
+
         key = {
             "A": "🔴",
             "B": "🟠",
