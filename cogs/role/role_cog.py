@@ -28,7 +28,7 @@ class RoleCog(commands.Cog, name="Roles"):
 
         Usage:
         ```
-        ~reactrole | ~rrr <@role>
+        ~reactrole | ~crr <emoji> <@role> <message>
         ```
         """
         embed = discord.Embed(description=message)
@@ -115,7 +115,7 @@ class RoleCog(commands.Cog, name="Roles"):
     @removereactrole.error
     async def removeractrole_error(self, ctx: commands.Context, error):
         """
-        Error handler for the removeractrole command.
+        Error handler for the removereactrole command.
         """
         error = getattr(error, "original", error)
         message = f":x: {ctx.author.mention}: "
