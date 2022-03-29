@@ -62,6 +62,7 @@ class ClearMessagesView(discord.ui.View):
         await interaction.response.send_message('👍🏻 Aborting command!')
         await self.disable_all_buttons(interaction)
 
+
 class BlacklistClearButton(discord.ui.View):
     def __init__(self, ctx: commands.Context, *, data: dict, timeout: Optional[float] = 180):
         super().__init__(timeout=timeout)
@@ -139,6 +140,7 @@ class BlacklistModal(discord.ui.Modal):
             self.drop.words.append(self.text.value)
             await interaction.message.edit(view=self.view)
             return await super().on_submit(interaction=interaction)
+
 
 class BlacklistDropdown(discord.ui.Select):
     def __init__(self, ctx: commands.Context):

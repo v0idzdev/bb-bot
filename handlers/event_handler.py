@@ -97,14 +97,13 @@ class EventHandler(commands.Cog):
         """
         Prevents users from voting more than once on a poll.
         """
-        user = reaction.message.author
         cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id) # why
 
         if user.id == self.client.user.id:
             return
 
         for react in cached.reactions:
-            users = await react.users().flatten()
+            users = [user async for user in react.users()]
 
             if any({user not in users, user.bot, str(react) == str(reaction.emoji)}):
                 continue
