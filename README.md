@@ -164,7 +164,7 @@ Deletes all reaction role messages for a particular role.<br>
 
 Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
 
-⚠️ The slash command version does not support choices with multiple words.
+⚠️ `/choose` does not currently support choices with multiple words.
 
 > **~meme** or **/meme**
 
@@ -172,9 +172,11 @@ Sends a random meme from Reddit.
 
 > **~poll `yes/no question` | ~poll `question` `option a`, `option b`, `option c`** or **/poll `yes/no question`**
 
-📢 Put quote marks "" around the arguments if using the prefix command version. The slash command does not yet support multiple options.
+Creates a poll that users can react with yes or no to.<br>
 
-Creates a poll that users can react with yes or no to. 
+📢 Put quote marks "" around the arguments if using the prefix command version.<br>     
+
+⚠️ `/poll` does not yet support multiple options.
 
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
