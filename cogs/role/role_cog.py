@@ -69,7 +69,7 @@ class RoleCog(commands.Cog, name="Roles"):
             await msg.delete()
             data.remove(instance)
         self.client.update_json(FILEPATH, data)
-        embed = discord.Embed(title=f"🔧 Removed the '{role.name}' reaction role.")
+        embed = discord.Embed(title="👍🏻 Done.", description=f"🔧 Removed '{role.name}'.")
         await ctx.send(embed=embed)
 
     @reactrole.error
@@ -87,30 +87,30 @@ class RoleCog(commands.Cog, name="Roles"):
                 message += "Sorry, that emoji was not found. Please try again."
             case commands.UserInputError:
                 message += (
-                    "Invalid input, please try again.\n"
-                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                    "Invalid input, please try again. "
+                    + "Use `~help crr` for more information."
                 )
             case commands.MissingRequiredArgument:
                 message += (
-                    "Please enter all the required arguments.\n"
-                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                    "Please enter all the required arguments. "
+                    + "Use `~help crr` for more information."
                 )
             case discord.HTTPException:  # An invalid emoji raises a HTTP exception
                 if (
                     "Unknown Emoji" in error.__str__()
                 ):  # Prevents this handler from catching unrelated errors
                     await ctx.channel.purge(limit=1)
-                    message += "Sorry, that emoji is invalid. Please use a valid emoji."
+                    message += "Sorry, that emoji is invalid."
             case discord.Forbidden:
                 message += (
-                    "BB.Bot is forbidden from assigning/removing this role.\n"
-                    + f"Try moving this role above the reaction role."
+                    "BB.Bot is forbidden from assigning/removing this role. "
+                    + "Try moving this role above the reaction role."
                 )
             case _:
                 print(error.args, error.__traceback__)
                 message += (
-                    "An unknown error occurred while creating your reaction role.\n"
-                    + f"Please try again later."
+                    "An unknown error occurred while creating your reaction role. "
+                    + "Please try again later."
                 )
         await ctx.send(message)
 
@@ -132,21 +132,21 @@ class RoleCog(commands.Cog, name="Roles"):
 
             case commands.UserInputError:
                 message += (
-                    "Invalid input, please try again.\n"
-                    + f"Use **{ctx.prefix}reactrole `emoji` `@role` `message`**."
+                    "Invalid input, please try again. "
+                    + "Use `~help crr` for more information."
                 )
 
             case commands.MissingRequiredArgument:
                 message += (
-                    "Please enter all the required arguments.\n"
-                    + f"Use **{ctx.prefix}removereactrole `@role`**."
+                    "Please enter all the required arguments. "
+                    + "Use `~help crr` for more information."
                 )
 
             case _:
                 print(error.args, error.__traceback__)
                 message += (
-                    "An unknown error occurred while creating your reaction role.\n"
-                    + f"Please try again later."
+                    "An unknown error occurred while creating your reaction role. "
+                    + "Please try again later."
                 )
 
         await ctx.send(message)
