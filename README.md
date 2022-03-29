@@ -174,7 +174,7 @@ Sends a random meme from Reddit.
 
 Creates a poll that users can react with yes or no to.<br>
 
-📢 Put quote marks "" around the arguments if using the prefix command version.<br>     
+📢 Put quote marks "" around **all** of the arguments if using the prefix command version.<br>     
 
 ⚠️ `/poll` does not yet support multiple options.
 
