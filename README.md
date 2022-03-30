@@ -186,7 +186,7 @@ Gets information about a Twitch stream if the streamer is currently streaming.
 ## 🚀 Self Hosting
 How to set up **BB.Bot** for self-hosting, step by step.<br>
 
-⚠️ For **self-hosted** and **development** versions of the bot, the prefix is `'?'`. This is so that we don't get the main & dev versions mixed up!
+⚠️ For **development** versions of the bot, the prefix is `'?'`. This is so that we don't get the main & dev versions mixed up!
 
 * Click **[here](https://realpython.com/installing-python/)** for more information on **installing Python**.
 * Click **[here](https://discordpy.readthedocs.io/en/stable/discord.html)** for more information on **setting up a Discord bot** using the **Discord Developer Portal**.
