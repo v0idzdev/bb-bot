@@ -146,7 +146,7 @@ client = BeepBoop(command_prefix=get_prefix, intents=intents, case_insensitive=T
 # @client.tree.command(description="People really like this command!")
 # async def nice(interaction: discord.Interaction):
 #     await interaction.response.send_message("Haha, cool indeed!")
-i =9
+
 async def main():
     """
     Main entry point of the application.
