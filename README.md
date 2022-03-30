@@ -17,6 +17,7 @@
 * Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot%20applications.commands)** to invite BB.Bot to your server.
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 * Click **[here](#-self-hosting)** for self-hosting instructions.
+* Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/contributions.md)** for information about contributing.
 
 ⚠️ Currently, self-hosting is **not 100% bug-free**. Please self-host at your own risk.
 <br><br>
