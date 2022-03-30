@@ -1,6 +1,6 @@
 ﻿# 🚀 Contribution Guide
 
-## 📢 Guidelines
+## 📢 How to Contribute
 
 ⚠️ For **development** versions of the bot, the prefix is `'?'`. This is so that we don't get the main & dev versions mixed up!
 
