@@ -131,10 +131,12 @@ class EventHandler(commands.Cog):
         entry for that reaction role in the JSON file.
         """
         data = self.client.cache.reactionroles
+
         for item in data:
             if item["msg_id"] == message.id:
                 await message.delete()
                 data.remove(item)
+
         self.client.update_json(FILEPATH, data)
 
     @commands.Cog.listener()

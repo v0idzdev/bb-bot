@@ -105,12 +105,14 @@ class SlashMiscCog(commands.Cog):
         """
         await interaction.response.defer()
         choices = choices.split(" ")
+
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
             return await interaction.followup.send(
                 f":x: {interaction.user.mention}: You need to give me choices to choose from."
             )
+
         if len(choices) == 1:
             return await interaction.followup.send(
                 f":x: {interaction.user.mention}: I need more than one choice!"

@@ -18,10 +18,12 @@ class TaskHandler(commands.Cog):
     def do_process(self):
         print(f"[INFO] Running clean_json_file.\n")
         data = self.client.cache.reactionroles
+
         for guild in self.client.guilds:
             for item in list(filter(lambda item: item["guild_id"] == guild.id, data)):
                 if item["role_id"] not in [role.id for role in guild.roles]:
                     data.remove(item)
+
         self.client.update_json(FILEPATH, data)
 
     @tasks.loop(seconds=60)
@@ -32,6 +34,7 @@ class TaskHandler(commands.Cog):
         cleanup_thread = threading.Thread(
             target=self.do_process, name="Renove Unwanted", daemon=True
         )
+
         cleanup_thread.start()
 
     @tasks.loop(seconds=30)
@@ -41,6 +44,7 @@ class TaskHandler(commands.Cog):
         """
         print(f"[INFO] Running change_presence.\n")
         activity = next(self.client.possible_status)
+
         await self.client.change_presence(activity=discord.Game(activity))
 
 
