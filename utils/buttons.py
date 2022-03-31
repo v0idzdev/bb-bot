@@ -131,7 +131,7 @@ class BlacklistModal(discord.ui.Modal):
         view: discord.ui.View,
         drop: discord.ui.Select,
         *,
-        title: str = "🔑 Enter a word to blacklist:",
+        title: str = "🔒 Add a Word to the Blacklist",
     ) -> None:
         super().__init__(title=title)
         self.view = view
@@ -276,7 +276,7 @@ class BlacklistRemoveModal(discord.ui.Modal):
         view: discord.ui.View,
         drop: discord.ui.Select,
         *,
-        title: str="🔑 Enter a word to remove from the blacklist:"
+        title: str="🔒 Remove a Word From the Blacklist"
     ) -> None:
         super().__init__(title=title)
 
