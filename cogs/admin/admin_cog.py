@@ -6,7 +6,7 @@ import asyncio
 
 import discord
 from discord.ext import commands
-from utils.buttons import BlacklistClearButton, ClearMessagesView, DropdownView
+from utils.buttons import BlacklistClearButton, BlacklistRemoveView, ClearMessagesView, DropdownView
 from utils.functions import lift_ban, sanction
 
 FILEPATH = "files/blacklist.json"
@@ -107,7 +107,7 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.command(aliases=["bladd"])
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def blacklist(self, ctx: commands.Context, *, words: str = None):
+    async def blacklist(self, ctx: commands.Context, *, words: str=None):
         """
         ⚙️ Bans words from being used.
 
@@ -123,6 +123,7 @@ class AdminCog(commands.Cog, name="Admin"):
             )
             view.message = await ctx.send(embed=embed, view=view)
             return
+
         id = str(ctx.guild.id)
         words = [word.lower() for word in words.split(" ")]
 
@@ -212,7 +213,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
     @commands.command(aliases=["blrem"])
     @commands.has_permissions(manage_messages=True)
-    async def blacklistremove(self, ctx: commands.Context, *, words: str):
+    async def blacklistremove(self, ctx: commands.Context, *, words: str=None):
         """
         ⚙️ Removes a word from the list of banned words.
 
@@ -221,6 +222,15 @@ class AdminCog(commands.Cog, name="Admin"):
         ~blacklistremove | ~blrem <...words>
         ```
         """
+        if not words:
+            view = BlacklistRemoveView(ctx)
+            embed = discord.Embed(
+                title="🛠️ Please enter one or more words to remove from the blacklist."
+            )
+
+            view.message = await ctx.send(embed=embed, view=view)
+            return
+
         id = str(ctx.guild.id)
         words = {word.lower() for word in words.split(" ")}
 
