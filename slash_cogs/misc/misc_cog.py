@@ -133,8 +133,8 @@ class SlashMiscCog(commands.Cog):
         await interaction.followup.send(embed=meme)
 
     @app_commands.command()
-    @app_commands.describe(question="❓ The question to ask the poll for.")
-    async def poll(self, interaction: discord.Interaction, *, question: str):
+    @app_commands.describe(poll="❓ The question to ask the poll for.")
+    async def poll(self, interaction: discord.Interaction, *, poll: str):
         """
         🎲 Creates a simple yes or no poll.
 
@@ -150,18 +150,34 @@ class SlashMiscCog(commands.Cog):
         ```
         """
         await interaction.response.defer()
-        if not question:
+
+        if not poll:
             return await interaction.followup.send(f':x: {interaction.user.mention}: You need to specify a question.')
 
         embed = discord.Embed(
-            title=f"Poll by **{interaction.user.name}**:",
-            description=question
+            title=f"📢 Poll by **{interaction.user.name}**:",
+            description=f"```❓ {poll}```\n"
         )
 
+        embed.set_footer(text='Vote ✔️ Yes or ❌ No.')
         message = await interaction.followup.send(embed=embed)
 
         await message.add_reaction("✔️")
-        await message.add_reaction("❌")
+        return await message.add_reaction("❌")
+
+        # if not poll:
+        #     return await ctx.reply(f':x: {ctx.author.mention}: You need to specify a question.')
+
+        # embed = discord.Embed(
+        #     title=f"📢 Poll by **{ctx.author.name}**:",
+        #     description=f"```❓ {' '.join(poll)}```\n"
+        # )
+
+        # embed.set_footer(text='Vote ✔️ Yes or ❌ No.')
+        # message = await ctx.send(embed=embed)
+
+        # await message.add_reaction("✔️")
+        # return await message.add_reaction("❌")
 
 
 async def setup(client: commands.Bot):
