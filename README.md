@@ -171,13 +171,9 @@ Randomly chooses an option from a list. Use quote marks "" around the options if
 
 Sends a random meme from Reddit.
 
-> **~poll `yes/no question` | ~poll `question` `option a`, `option b`, `option c`** or **/poll `yes/no question`**
+> **~poll `yes/no question`** or **/poll `yes/no question`**
 
 Creates a poll that users can react with yes or no to.<br>
-
-📢 Put quote marks "" around **all** of the arguments if using the prefix command version.<br>     
-
-⚠️ `/poll` does not yet support multiple options.
 
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
