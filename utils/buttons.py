@@ -235,7 +235,7 @@ class DropdownView(discord.ui.View):
     )
     async def submit(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.defer()
-        values = self.drop.words
+        values = [value.lower() for value in self.drop.words]
         id = str(interaction.guild_id)
         if not values:
             print(values)
@@ -394,7 +394,7 @@ class BlacklistRemoveView(discord.ui.View):
     async def submit(self, interaction: discord.Interaction, button: discord.Button):
         await interaction.response.defer()
 
-        values = self.drop.words
+        values = [value.lower() for value in self.drop.words]
         id = str(interaction.guild.id)
 
         if not values:
