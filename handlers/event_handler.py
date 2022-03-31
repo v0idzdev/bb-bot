@@ -105,11 +105,7 @@ class EventHandler(commands.Cog):
         for react in cached.reactions:
             users = [user async for user in react.users()]
 
-            if any({
-                user not in users,
-                user.bot,
-                str(react) == str(reaction.emoji)
-            }):
+            if any({user not in users, user.bot, str(react) == str(reaction.emoji)}):
                 continue
 
             await cached.remove_reaction(react.emoji, user)
@@ -146,7 +142,9 @@ class EventHandler(commands.Cog):
         """
         Executes when the bot has loaded.
         """
-        print(f"LOADED {self.client.user.name} SUCCESSFULLY.\n\n---------- LOGS: ----------\n")
+        print(
+            f"LOADED {self.client.user.name} SUCCESSFULLY.\n\n---------- LOGS: ----------\n"
+        )
 
         task_handler = self.client.cogs.get("TaskHandler")
         tasks = ["change_presence", "clean_json_file"]

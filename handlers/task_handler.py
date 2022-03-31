@@ -29,7 +29,9 @@ class TaskHandler(commands.Cog):
         """
         Automatically removes deleted roles from the JSON file containing reaction roles.
         """
-        cleanup_thread = threading.Thread(target=self.do_process, name="Renove Unwanted", daemon=True)
+        cleanup_thread = threading.Thread(
+            target=self.do_process, name="Renove Unwanted", daemon=True
+        )
         cleanup_thread.start()
 
     @tasks.loop(seconds=30)
@@ -41,11 +43,13 @@ class TaskHandler(commands.Cog):
         activity = next(self.client.possible_status)
         await self.client.change_presence(activity=discord.Game(activity))
 
+
 async def setup(client: commands.Bot):
     """
     Registers the cog with the client.
     """
     await client.add_cog(TaskHandler(client))
+
 
 async def teardown(client: commands.Bot):
     """

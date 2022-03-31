@@ -39,15 +39,15 @@ class MiscCog(commands.Cog, name="Misc"):
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)
-        broad_list = broadcaster_data['data']
+        broad_list = broadcaster_data["data"]
 
         if broad_list:
-            broadcaster_id = broad_list[0]['id']
+            broadcaster_id = broad_list[0]["id"]
 
-            broadcaster_name = broad_list[0]['display_name']
-            json = await client.connect('helix/streams', user_id=str(broadcaster_id))
+            broadcaster_name = broad_list[0]["display_name"]
+            json = await client.connect("helix/streams", user_id=str(broadcaster_id))
 
-            if not json['data']:
+            if not json["data"]:
                 return await ctx.send(
                     f":x: {ctx.author.mention}: {broadcaster_name} isn't live."
                 )
@@ -63,9 +63,15 @@ class MiscCog(commands.Cog, name="Misc"):
             stream_title = stream.stream_title
             started_at = stream.started_at
 
-            on_going_for = humanize.precisedelta(datetime.datetime.utcnow() - started_at, format="%0.0f")
+            on_going_for = humanize.precisedelta(
+                datetime.datetime.utcnow() - started_at, format="%0.0f"
+            )
 
-            embed = discord.Embed(title=stream_title, timestamp=datetime.datetime.utcnow(), url=stream.stream_url)
+            embed = discord.Embed(
+                title=stream_title,
+                timestamp=datetime.datetime.utcnow(),
+                url=stream.stream_url,
+            )
 
             embed.set_image(url="attachment://stream.png")
             embed.set_thumbnail(url=game_cover)
@@ -76,7 +82,9 @@ class MiscCog(commands.Cog, name="Misc"):
 
             return await ctx.send(embed=embed, file=file)
 
-        return await ctx.send(f":x: {ctx.author.mention}: I couldn't find a streamer with the name '{name}'.")
+        return await ctx.send(
+            f":x: {ctx.author.mention}: I couldn't find a streamer with the name '{name}'."
+        )
 
     @commands.command()
     async def choose(self, ctx: commands.Context, *choices: str):
@@ -97,11 +105,15 @@ class MiscCog(commands.Cog, name="Misc"):
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
-            return await ctx.send(f':x: {ctx.author.mention}: You need to give me choices to choose from.')
+            return await ctx.send(
+                f":x: {ctx.author.mention}: You need to give me choices to choose from."
+            )
         if len(choices) == 1:
-            return await ctx.send(f':x: {ctx.author.mention}: I need more than one choice!')
+            return await ctx.send(
+                f":x: {ctx.author.mention}: I need more than one choice!"
+            )
 
-        embed = discord.Embed(title=f'🎲 I choose {random.choice(choices)}')
+        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -145,14 +157,16 @@ class MiscCog(commands.Cog, name="Misc"):
         ```
         """
         if not poll:
-            return await ctx.reply(f':x: {ctx.author.mention}: You need to specify a question.')
+            return await ctx.reply(
+                f":x: {ctx.author.mention}: You need to specify a question."
+            )
 
         embed = discord.Embed(
             title=f"📢 Poll by **{ctx.author.name}**:",
-            description=f"```❓ {' '.join(poll)}```\n"
+            description=f"```❓ {' '.join(poll)}```\n",
         )
 
-        embed.set_footer(text='Vote ✔️ Yes or ❌ No.')
+        embed.set_footer(text="Vote ✔️ Yes or ❌ No.")
         message = await ctx.send(embed=embed)
 
         await message.add_reaction("✔️")
