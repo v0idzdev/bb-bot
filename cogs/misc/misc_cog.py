@@ -129,14 +129,11 @@ class MiscCog(commands.Cog, name="Misc"):
         await ctx.reply(embed=meme)
 
     @commands.command()
-    async def poll(self, ctx: commands.Context, poll: str, *options: str):
+    async def poll(self, ctx: commands.Context, *poll: str):
         """
         🎲 Creates a simple yes or no poll.
 
         ❓ This command is also available as a slash command.
-
-        You can create a simple yes or no poll by simply using `~poll`. You can,
-        however, add up to six options after the question.
 
         Usage:
         ```
@@ -148,44 +145,18 @@ class MiscCog(commands.Cog, name="Misc"):
         ```
         """
         if not poll:
-            return await ctx.send(f':x: {ctx.author.mention}: You need to specify a question.')
+            return await ctx.reply(f':x: {ctx.author.mention}: You need to specify a question.')
 
         embed = discord.Embed(
             title=f"📢 Poll by **{ctx.author.name}**:",
-            description=f"```❓ {poll}```\n"
+            description=f"```❓ {' '.join(poll)}```\n"
         )
 
-        # If the user doesn't specify any options, just make a yes/no poll.
-        if not options:
-            embed.set_footer(text='Vote ✔️ Yes or ❌ No.')
-            message = await ctx.send(embed=embed)
-
-            await message.add_reaction("✔️")
-            return await message.add_reaction("❌")
-
-        if len(options) < 2:
-            return await ctx.reply(f"❌ You need to add more than one option.")
-
-        if len(options) > 6:
-            return await ctx.reply(f"❌ You can't add more than 6 options.")
-
-        key = {
-            "A": "🔴",
-            "B": "🟠",
-            "C": "🟡",
-            "D": "🟢",
-            "E": "🔵",
-            "F": "🟣"
-        }
-
-        # Add fields
-        for (letter, emoji), option in zip(key.items(), options):
-            embed.add_field(name=f'{emoji} Option {letter}:', value=option, inline=False)
-
-        # Send message and add reactions
+        embed.set_footer(text='Vote ✔️ Yes or ❌ No.')
         message = await ctx.send(embed=embed)
-        for (letter, emoji), option in zip(key.items(), options):
-            await message.add_reaction(emoji)
+
+        await message.add_reaction("✔️")
+        return await message.add_reaction("❌")
 
 
 async def setup(client: commands.Bot):
