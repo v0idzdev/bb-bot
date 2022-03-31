@@ -17,12 +17,15 @@
 * Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot%20applications.commands)** to invite BB.Bot to your server.
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 * Click **[here](#-self-hosting)** for self-hosting instructions.
-* Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/contributions.md)** for information about contributing.
+* Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/CONTRIBUTIONS.md)** for information about contributing.
 
 ⚠️ Currently, self-hosting is **not 100% bug-free**. Please self-host at your own risk.
 <br><br>
 
 ## 📢 **Commands List**
+
+* We use `...argument` to denote a **list of arguments**, like `argument a`, `argument b`, etc...
+* We use `argument?` to denote an **optional argument**. You can use the command **with** or **without** one.<br><br>
 
 ### 🧭 Contents
 
@@ -47,15 +50,17 @@ Sends an embed linking to **this page**.
 
 ### 🔑 Admin Commands
 
-> **~clear `number of messages`**
+> **~clear `number of messages?`**
 
-Clears a specified number of messages from a text channel.<br>
+Clears a specified number of messages from a text channel. Using the command on its own will clear **all** messages<br>
 **Requires**: `Manage Messages`
 
 > **~blacklist | ~bladd**
 
 Allows the user to choose words to ban on the server with a dropdown menu.<br>
 **Requires**: `Manage Messages`
+
+❗ Optionally, you can type words after the command if you'd prefer not to use the dropdown.
 
 > **~clearblacklist | ~blclear**
 
@@ -69,12 +74,12 @@ Shows the blacklist for the server.<br>
 
 ⚠️ Other users will be able to see the words on the list. Only use this in an admin/mod-only channel.
 
-> **~blacklistremove | ~blrem `word a` `word b` `word c` `...`**
+> **~blacklistremove | ~blrem `...words?`**
 
-Removes one or more words from the server's blacklist.<br>
+Allows the user to choose words to remove from the blacklist with a dropdown menu.<br>
 **Requires**: `Manage Messages`
 
-❗ We're currently working on updating this command to use a drop-down in the same way `~blacklist` does.<br>
+❗ Optionally, you can type words after the command if you'd prefer not to use the dropdown.
 
 > **~kick `member` `reason?`**
 
@@ -161,7 +166,7 @@ Deletes all reaction role messages for a particular role.<br>
 
 ❓ Currently, we're testing out **[slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)** for this category.
 
-> **~choose `option a` `option b` `option c?` `...`** or **/choose `option a` `option b` `option c?` `...`**
+> **~choose `...options`** or **/choose `...options`**
 
 Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
 
@@ -171,13 +176,9 @@ Randomly chooses an option from a list. Use quote marks "" around the options if
 
 Sends a random meme from Reddit.
 
-> **~poll `yes/no question` | ~poll `question` `option a`, `option b`, `option c`** or **/poll `yes/no question`**
+> **~poll `yes/no question`** or **/poll `yes/no question`**
 
 Creates a poll that users can react with yes or no to.<br>
-
-📢 Put quote marks "" around **all** of the arguments if using the prefix command version.<br>     
-
-⚠️ `/poll` does not yet support multiple options.
 
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
