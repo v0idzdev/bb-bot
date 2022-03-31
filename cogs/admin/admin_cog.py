@@ -11,6 +11,7 @@ from utils.functions import lift_ban, sanction
 
 FILEPATH = "files/blacklist.json"
 
+
 class AdminCog(commands.Cog, name="Admin"):
     """
     ⚙️ Commands for server administrators or moderators.
@@ -33,11 +34,11 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         if isinstance(amount, int) and amount is not None:
             await ctx.channel.purge(limit=amount)
-            return await ctx.send(f'🛠️ Deleted **{amount}** messages.')
+            return await ctx.send(f"🛠️ Deleted **{amount}** messages.")
 
         embed = discord.Embed(
-            title='⚠️ You have not selected a number of messages to clear.',
-            description='❓ Would you like to clear all messages in this channel?',
+            title="⚠️ You have not selected a number of messages to clear.",
+            description="❓ Would you like to clear all messages in this channel?",
         )
 
         view = ClearMessagesView(ctx)
@@ -117,11 +118,13 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         if not words:
             view = DropdownView(ctx)
-            embed = discord.Embed(title="🛠️ Please enter one or more words to blacklist.")
+            embed = discord.Embed(
+                title="🛠️ Please enter one or more words to blacklist."
+            )
             view.message = await ctx.send(embed=embed, view=view)
             return
         id = str(ctx.guild.id)
-        words = [word.lower() for word in words.split(' ')]
+        words = [word.lower() for word in words.split(" ")]
 
         blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
@@ -134,7 +137,9 @@ class AdminCog(commands.Cog, name="Admin"):
         # If the list of words is zero, we know that none of the words
         # can be added. So, send an error message
         if not words_:
-            return await ctx.send(f"❌ {ctx.author.mention}: Sorry. Those words are already in the blacklist.")
+            return await ctx.send(
+                f"❌ {ctx.author.mention}: Sorry. Those words are already in the blacklist."
+            )
 
         # If duplicate words have been removed, add non-duplicates
         # to the list without any error message
@@ -145,11 +150,11 @@ class AdminCog(commands.Cog, name="Admin"):
 
         embed = discord.Embed(
             title=f"🛠️ Words successfully added.",
-            description=' '.join(f'`{word}`' for word in words_)
+            description=" ".join(f"`{word}`" for word in words_),
         )
 
         if len(words) != len(words_):
-            embed.set_footer(text='⚠️ Some words were duplicates and were not added.')
+            embed.set_footer(text="⚠️ Some words were duplicates and were not added.")
 
         await ctx.send(embed=embed)
 
@@ -217,7 +222,7 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         id = str(ctx.guild.id)
-        words = {word.lower() for word in words.split(' ')}
+        words = {word.lower() for word in words.split(" ")}
 
         blacklist = self.client.cache.blacklist
 
@@ -244,11 +249,13 @@ class AdminCog(commands.Cog, name="Admin"):
 
         embed = discord.Embed(
             title=f"🛠️ Words successfully removed.",
-            description=' '.join(f'`{word}`' for word in words_)
+            description=" ".join(f"`{word}`" for word in words_),
         )
 
         if len(words) != len(words_):
-            embed.set_footer(text='⚠️ Some words were not in the blacklist, and were not removed.')
+            embed.set_footer(
+                text="⚠️ Some words were not in the blacklist, and were not removed."
+            )
 
         await ctx.send(embed=embed)
 

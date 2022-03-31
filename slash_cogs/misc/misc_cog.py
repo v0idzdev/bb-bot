@@ -40,15 +40,15 @@ class SlashMiscCog(commands.Cog):
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)
-        broad_list = broadcaster_data['data']
+        broad_list = broadcaster_data["data"]
 
         if broad_list:
-            broadcaster_id = broad_list[0]['id']
+            broadcaster_id = broad_list[0]["id"]
 
-            broadcaster_name = broad_list[0]['display_name']
-            json = await client.connect('helix/streams', user_id=str(broadcaster_id))
+            broadcaster_name = broad_list[0]["display_name"]
+            json = await client.connect("helix/streams", user_id=str(broadcaster_id))
 
-            if not json['data']:
+            if not json["data"]:
                 return await interaction.followup.send(
                     f":x: {interaction.message.author}: {broadcaster_name} isn't live."
                 )
@@ -64,9 +64,15 @@ class SlashMiscCog(commands.Cog):
             stream_title = stream.stream_title
             started_at = stream.started_at
 
-            on_going_for = humanize.precisedelta(datetime.datetime.utcnow() - started_at, format="%0.0f")
+            on_going_for = humanize.precisedelta(
+                datetime.datetime.utcnow() - started_at, format="%0.0f"
+            )
 
-            embed = discord.Embed(title=stream_title, timestamp=datetime.datetime.utcnow(), url=stream.stream_url)
+            embed = discord.Embed(
+                title=stream_title,
+                timestamp=datetime.datetime.utcnow(),
+                url=stream.stream_url,
+            )
 
             embed.set_image(url="attachment://stream.png")
             embed.set_thumbnail(url=game_cover)
@@ -98,15 +104,21 @@ class SlashMiscCog(commands.Cog):
         ~choose <question>
         """
         await interaction.response.defer()
-        choices = choices.split(' ')
+        choices = choices.split(" ")
+
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
-            return await interaction.followup.send(f':x: {interaction.user.mention}: You need to give me choices to choose from.')
-        if len(choices) == 1:
-            return await interaction.followup.send(f':x: {interaction.user.mention}: I need more than one choice!')
+            return await interaction.followup.send(
+                f":x: {interaction.user.mention}: You need to give me choices to choose from."
+            )
 
-        embed = discord.Embed(title=f'🎲 I choose {random.choice(choices)}')
+        if len(choices) == 1:
+            return await interaction.followup.send(
+                f":x: {interaction.user.mention}: I need more than one choice!"
+            )
+
+        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
         await interaction.followup.send(embed=embed)
 
     @app_commands.command()
@@ -133,8 +145,8 @@ class SlashMiscCog(commands.Cog):
         await interaction.followup.send(embed=meme)
 
     @app_commands.command()
-    @app_commands.describe(question="❓ The question to ask the poll for.")
-    async def poll(self, interaction: discord.Interaction, *, question: str):
+    @app_commands.describe(poll="❓ The question to ask the poll for.")
+    async def poll(self, interaction: discord.Interaction, *, poll: str):
         """
         🎲 Creates a simple yes or no poll.
 
@@ -150,18 +162,22 @@ class SlashMiscCog(commands.Cog):
         ```
         """
         await interaction.response.defer()
-        if not question:
-            return await interaction.followup.send(f':x: {interaction.user.mention}: You need to specify a question.')
+
+        if not poll:
+            return await interaction.followup.send(
+                f":x: {interaction.user.mention}: You need to specify a question."
+            )
 
         embed = discord.Embed(
-            title=f"Poll by **{interaction.user.name}**:",
-            description=question
+            title=f"📢 Poll by **{interaction.user.name}**:",
+            description=f"```❓ {poll}```\n",
         )
 
+        embed.set_footer(text="Vote ✔️ Yes or ❌ No.")
         message = await interaction.followup.send(embed=embed)
 
         await message.add_reaction("✔️")
-        await message.add_reaction("❌")
+        return await message.add_reaction("❌")
 
 
 async def setup(client: commands.Bot):

@@ -16,12 +16,14 @@ class TaskHandler(commands.Cog):
         self.client = client
 
     def do_process(self):
-        print(f"[TASK] Running clean_json_file.")
+        print(f"[INFO] Running clean_json_file.\n")
         data = self.client.cache.reactionroles
+
         for guild in self.client.guilds:
             for item in list(filter(lambda item: item["guild_id"] == guild.id, data)):
                 if item["role_id"] not in [role.id for role in guild.roles]:
                     data.remove(item)
+
         self.client.update_json(FILEPATH, data)
 
     @tasks.loop(seconds=60)
@@ -29,7 +31,10 @@ class TaskHandler(commands.Cog):
         """
         Automatically removes deleted roles from the JSON file containing reaction roles.
         """
-        cleanup_thread = threading.Thread(target=self.do_process, name="Renove Unwanted", daemon=True)
+        cleanup_thread = threading.Thread(
+            target=self.do_process, name="Renove Unwanted", daemon=True
+        )
+
         cleanup_thread.start()
 
     @tasks.loop(seconds=30)
@@ -37,15 +42,18 @@ class TaskHandler(commands.Cog):
         """
         Changes the bot's presence every 30 seconds.
         """
-        print(f"[TASK] Running change_presence.")
+        print(f"[INFO] Running change_presence.\n")
         activity = next(self.client.possible_status)
+
         await self.client.change_presence(activity=discord.Game(activity))
+
 
 async def setup(client: commands.Bot):
     """
     Registers the cog with the client.
     """
     await client.add_cog(TaskHandler(client))
+
 
 async def teardown(client: commands.Bot):
     """

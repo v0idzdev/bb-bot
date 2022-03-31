@@ -109,7 +109,9 @@ class MusicCog(commands.Cog, name="Music"):
                     f":x: {ctx.author.mention}: Connecting to channel **{channel}** timed out."
                 )
 
-        embed = discord.Embed(title=f"🔥 Connected!", description=f"Channel: `**{channel}**`")
+        embed = discord.Embed(
+            title=f"🔥 Connected!", description=f"Channel: `**{channel}**`"
+        )
         await ctx.send(embed=embed, delete_after=20)
 
     @commands.command(aliases=["p"])
@@ -241,8 +243,12 @@ class MusicCog(commands.Cog, name="Music"):
         # Grab up to 5 entries from the queue...
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
-        fmt = "\n\n".join(f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming))
-        embed = discord.Embed(title=f"Upcoming: {len(upcoming)} songs.", description=fmt)
+        fmt = "\n\n".join(
+            f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming)
+        )
+        embed = discord.Embed(
+            title=f"Upcoming: {len(upcoming)} songs.", description=fmt
+        )
 
         await ctx.send(embed=embed)
 
@@ -278,7 +284,7 @@ class MusicCog(commands.Cog, name="Music"):
 
         embed = discord.Embed(
             title=f"🎵 **Now Playing:** *{vc.source.title}*",
-            description=f"Requested by: **{vc.source.requester}**"
+            description=f"Requested by: **{vc.source.requester}**",
         )
 
         player.np = await ctx.send(embed=embed)

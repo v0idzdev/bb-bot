@@ -105,11 +105,7 @@ class EventHandler(commands.Cog):
         for react in cached.reactions:
             users = [user async for user in react.users()]
 
-            if any({
-                user not in users,
-                user.bot,
-                str(react) == str(reaction.emoji)
-            }):
+            if any({user not in users, user.bot, str(react) == str(reaction.emoji)}):
                 continue
 
             await cached.remove_reaction(react.emoji, user)
@@ -135,10 +131,12 @@ class EventHandler(commands.Cog):
         entry for that reaction role in the JSON file.
         """
         data = self.client.cache.reactionroles
+
         for item in data:
             if item["msg_id"] == message.id:
                 await message.delete()
                 data.remove(item)
+
         self.client.update_json(FILEPATH, data)
 
     @commands.Cog.listener()
@@ -146,7 +144,9 @@ class EventHandler(commands.Cog):
         """
         Executes when the bot has loaded.
         """
-        print(f"\nLoaded {self.client.user.name} successfully.\n\nLOGS:")
+        print(
+            f"LOADED {self.client.user.name} SUCCESSFULLY.\n\n---------- LOGS: ----------\n"
+        )
 
         task_handler = self.client.cogs.get("TaskHandler")
         tasks = ["change_presence", "clean_json_file"]
