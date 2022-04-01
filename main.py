@@ -13,7 +13,7 @@ import discord
 import dotenv
 
 from discord.ext import commands
-from utils.models import Cache, Twitch
+from utils import Cache, Twitch
 
 
 def get_prefix(bot: commands.Bot, message: discord.Message):

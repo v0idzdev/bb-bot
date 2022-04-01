@@ -4,12 +4,12 @@ Contains miscellaneous commands to be used for fun.
 
 import datetime
 import random
-
 import discord
 import humanize
+
 from discord import app_commands
 from discord.ext import commands
-from utils.models import TwitchBroadcast
+from utils import TwitchBroadcast
 
 
 class SlashMiscCog(commands.Cog):

@@ -9,7 +9,7 @@ import discord
 
 from typing import Optional
 from discord.ext import commands
-from utils.models import TwitchBroadcast
+from utils import TwitchBroadcast
 
 
 class MiscCog(commands.Cog, name="Misc"):

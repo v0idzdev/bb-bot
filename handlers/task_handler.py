@@ -1,6 +1,6 @@
 import threading
-
 import discord
+
 from discord.ext import commands, tasks
 
 # JSON file containing reaction role data

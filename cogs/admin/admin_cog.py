@@ -3,11 +3,10 @@ Contains commands relating to administrator tasks.
 """
 
 import asyncio
-
 import discord
+
 from discord.ext import commands
-from utils.buttons import BlacklistClearButton, BlacklistRemoveView, ClearMessagesView, DropdownView
-from utils.functions import lift_ban, sanction
+from utils import BlacklistClearButton, BlacklistAddView, BlacklistRemoveView, ClearMessagesView, lift_ban, sanction
 
 FILEPATH = "files/blacklist.json"
 
@@ -117,7 +116,7 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         if not words:
-            view = DropdownView(ctx)
+            view = BlacklistAddView(ctx)
             embed = discord.Embed(
                 title="🛠️ Please enter one or more words to blacklist."
             )

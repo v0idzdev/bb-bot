@@ -1,6 +1,4 @@
 import discord
-import json
-
 from discord.ext import commands
 
 
@@ -34,18 +32,5 @@ async def sanction(
             "." if reason is None else f" for **{reason}**."
         )  # Then add the correct ending
 
-    embed_server = discord.Embed(title=message_server)
-    embed_member = discord.Embed(title=message_member)
-
-    await ctx.send(embed=embed_server)
-    await member.send(embed=embed_member)
-
-
-async def lift_ban(ctx: commands.Context, ban_type: str, user: discord.User):
-    """
-    Utility function that unbans a member.
-    """
-    message = f":tools: {ctx.author.mention}: {user.name}'s {ban_type} ban was lifted."
-
-    await ctx.guild.unban(user)
-    await ctx.send(message)
+    await ctx.send(message_server)
+    await member.send(message_member)
