@@ -24,6 +24,9 @@
 
 ## 📢 **Commands List**
 
+* We use `...argument` to denote a **list of arguments**, like `argument a`, `argument b`, etc...
+* We use `argument?` to denote an **optional argument**. You can use the command **with** or **without** one.<br><br>
+
 ### 🧭 Contents
 
 * **[Help Commands](#-help-commands)**
@@ -47,15 +50,17 @@ Sends an embed linking to **this page**.
 
 ### 🔑 Admin Commands
 
-> **~clear `number of messages`**
+> **~clear `number of messages?`**
 
-Clears a specified number of messages from a text channel.<br>
+Clears a specified number of messages from a text channel. Using the command on its own will clear **all** messages<br>
 **Requires**: `Manage Messages`
 
 > **~blacklist | ~bladd**
 
 Allows the user to choose words to ban on the server with a dropdown menu.<br>
 **Requires**: `Manage Messages`
+
+❗ Optionally, you can type words after the command if you'd prefer not to use the dropdown.
 
 > **~clearblacklist | ~blclear**
 
@@ -69,12 +74,12 @@ Shows the blacklist for the server.<br>
 
 ⚠️ Other users will be able to see the words on the list. Only use this in an admin/mod-only channel.
 
-> **~blacklistremove | ~blrem `word a` `word b` `word c` `...`**
+> **~blacklistremove | ~blrem `...words?`**
 
-Removes one or more words from the server's blacklist.<br>
+Allows the user to choose words to remove from the blacklist with a dropdown menu.<br>
 **Requires**: `Manage Messages`
 
-❗ We're currently working on updating this command to use a drop-down in the same way `~blacklist` does.<br>
+❗ Optionally, you can type words after the command if you'd prefer not to use the dropdown.
 
 > **~kick `member` `reason?`**
 
@@ -161,7 +166,7 @@ Deletes all reaction role messages for a particular role.<br>
 
 ❓ Currently, we're testing out **[slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)** for this category.
 
-> **~choose `option a` `option b` `option c?` `...`** or **/choose `option a` `option b` `option c?` `...`**
+> **~choose `...options`** or **/choose `...options`**
 
 Randomly chooses an option from a list. Use quote marks "" around the options if they are longer than one word.
 

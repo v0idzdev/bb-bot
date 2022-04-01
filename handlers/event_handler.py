@@ -71,11 +71,14 @@ class EventHandler(commands.Cog):
         if channel is not None:
             await channel.send(f"👋🏻 Goodbye, **{member.name}**.")
 
-    @commands.Cog.listener()
+    @commands.Cog.listener() # This throws an AttributeError but it isn't really an issue
     async def on_message(self, message: discord.Message):
         """
         Called when a message is sent.
         """
+        if not message.guild:
+            return
+
         blacklist = self.client.cache.blacklist
 
         if (
