@@ -3,8 +3,8 @@ Contains a embedded help command.
 """
 
 import sys
-
 import discord
+
 from discord.ext import commands
 from .help_command import HelpCommand
 
