@@ -20,12 +20,12 @@ When we release a patch version, it means we've fixed an issue with an **existin
 
 ## 🔨 Development Releases
 
-Development releases are created from the **dev** branch. Sometimes, a development release is not made - such as for a patch version.
+Development releases are created from the **dev** branch. Usually, we don't create a development version of a release if it's a patch version.
 
 - **Release candidate versions**
 
-Release candidate versions include an additional `-rc.x` at the end of the version name. We use release candidate versions to denote a **pre-release** version.
+Release candidate versions include an additional `-rc.x` at the end of the version name. We use release candidate versions to denote a **development** version.
 
-- **Alpha & beta versions**
+- **Alpha/beta versions**
 
-Alpha and beta versions, `-alpha.x` or `-beta.x`, are **not used anymore** - we only used them during initial development. We use `-rc` for all pre-releases, to keep things simple.
+We do not use `-alpha.x` or `beta.x` releases - we use `-rc.x` for all **pre-releases** to keep versioning simple.
