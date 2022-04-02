@@ -4,7 +4,7 @@ from discord.ext import commands
 from typing import Optional
 from utils import BlacklistRemoveDropdown, BlacklistRemoveModal
 
-FILEPATH = 'files/blacklist.json'
+FILEPATH = "files/blacklist.json"
 
 
 class BlacklistRemoveView(discord.ui.View):
@@ -69,7 +69,7 @@ class BlacklistRemoveView(discord.ui.View):
         if id not in blacklist.keys():
             return await interaction.followup.send(
                 f"❌ {interaction.user.mention}: This server does not have any words blacklisted.",
-                ephemeral=True
+                ephemeral=True,
             )
 
         print(values)
@@ -96,6 +96,7 @@ class BlacklistRemoveView(discord.ui.View):
             embed.set_footer(text="⚠️ Some words were duplicates and were not added.")
 
         await interaction.followup.send(embed=embed)
+        await self.disable_all_buttons()
 
     @discord.ui.button(label="Abort", style=discord.ButtonStyle.red, emoji="👎🏻")
     async def abort(self, interaction: discord.Interaction, button: discord.Button):
