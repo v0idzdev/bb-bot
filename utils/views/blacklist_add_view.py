@@ -4,7 +4,7 @@ from discord.ext import commands
 from typing import Optional
 from utils import BlacklistAddDropdown, BlacklistAddModal
 
-FILEPATH = 'files/blacklist.json'
+FILEPATH = "files/blacklist.json"
 
 
 class BlacklistAddView(discord.ui.View):
@@ -78,6 +78,7 @@ class BlacklistAddView(discord.ui.View):
         if len(values) > len(words):
             embed.set_footer(text="⚠️ Some words were duplicates and were not added.")
         await interaction.followup.send(embed=embed)
+        await self.disable_all_buttons()
 
     @discord.ui.button(label="Abort", style=discord.ButtonStyle.red, emoji="👎🏻")
     async def abort(self, interaction: discord.Interaction, button: discord.Button):

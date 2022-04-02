@@ -6,7 +6,14 @@ import asyncio
 import discord
 
 from discord.ext import commands
-from utils import BlacklistClearButton, BlacklistAddView, BlacklistRemoveView, ClearMessagesView, lift_ban, sanction
+from utils import (
+    BlacklistClearButton,
+    BlacklistAddView,
+    BlacklistRemoveView,
+    ClearMessagesView,
+    lift_ban,
+    sanction,
+)
 
 FILEPATH = "files/blacklist.json"
 
@@ -106,7 +113,7 @@ class AdminCog(commands.Cog, name="Admin"):
     @commands.command(aliases=["bladd"])
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 2, commands.BucketType.user)
-    async def blacklist(self, ctx: commands.Context, *, words: str=None):
+    async def blacklist(self, ctx: commands.Context, *, words: str = None):
         """
         ⚙️ Bans words from being used.
 
@@ -200,7 +207,7 @@ class AdminCog(commands.Cog, name="Admin"):
         blacklist = self.client.cache.blacklist
         server_id = str(ctx.guild.id)
 
-        if server_id not in blacklist.keys():
+        if server_id not in blacklist.keys() or not blacklist[server_id]:
             return await ctx.send(
                 f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
             )
@@ -212,7 +219,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
     @commands.command(aliases=["blrem"])
     @commands.has_permissions(manage_messages=True)
-    async def blacklistremove(self, ctx: commands.Context, *, words: str=None):
+    async def blacklistremove(self, ctx: commands.Context, *, words: str = None):
         """
         ⚙️ Removes a word from the list of banned words.
 
