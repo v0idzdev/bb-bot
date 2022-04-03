@@ -21,7 +21,7 @@ class MiscCog(commands.Cog, name="Misc"):
         self.client = client
 
     @commands.command()
-    async def twitch(self, ctx: commands.Context, *, name: str):
+    async def twitch(self, ctx: commands.Context, *, name: str = None):
         """
         🎲 Shows information about a Twitch stream.
 
@@ -36,6 +36,11 @@ class MiscCog(commands.Cog, name="Misc"):
         /twitch <streamer name>
         ```
         """
+        if name is None:
+            return await ctx.reply(
+                f":x: You need to specify a streamer name.", delete_after=20
+            )
+
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)

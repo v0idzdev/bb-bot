@@ -37,6 +37,7 @@ class SlashMiscCog(commands.Cog):
         ~choose <streamer name>
         """
         await interaction.response.defer()
+
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)
@@ -49,8 +50,8 @@ class SlashMiscCog(commands.Cog):
             json = await client.connect("helix/streams", user_id=str(broadcaster_id))
 
             if not json["data"]:
-                return await interaction.response.send_message(
-                    f":x: {interaction.message.author}: {broadcaster_name} isn't live.",
+                return await interaction.followup.send(
+                    f":x: {broadcaster_name} isn't live.",
                     ephemeral=True,
                 )
 
@@ -84,7 +85,7 @@ class SlashMiscCog(commands.Cog):
 
             return await interaction.followup.send(embed=embed, file=file)
 
-        return await interaction.response.send_message(
+        return await interaction.followup.send(
             f":x: I couldn't find a streamer with the name '{name}'.", ephemeral=True
         )
 
@@ -110,14 +111,14 @@ class SlashMiscCog(commands.Cog):
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
-            return await interaction.response.send_message(
-                f":x: {interaction.user.mention}: You need to give me choices to choose from.",
+            return await interaction.followup.send(
+                f":x: You need to give me choices to choose from.",
                 ephemeral=True,
             )
 
         if len(choices) == 1:
-            return await interaction.response.send_message(
-                f":x: {interaction.user.mention}: I need more than one choice!",
+            return await interaction.followup.send(
+                f":x: I need more than one choice!",
                 ephemeral=True,
             )
 
@@ -167,8 +168,8 @@ class SlashMiscCog(commands.Cog):
         await interaction.response.defer()
 
         if not poll:
-            return await interaction.response.send_message(
-                f":x: {interaction.user.mention}: You need to specify a question.",
+            return await interaction.followup.send(
+                f":x: You need to specify a question.",
                 ephemeral=True,
             )
 
