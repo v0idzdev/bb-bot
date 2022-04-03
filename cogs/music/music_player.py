@@ -63,7 +63,8 @@ class MusicPlayer:
                     )
                 except Exception as e:
                     await self._channel.send(
-                        f":x: Sorry, I couldn't process your song.\n" + f"\n[{e}]\n"
+                        f":x: Sorry, I couldn't process your song.\n" + f"\n[{e}]\n",
+                        delete_after=20,
                     )
                     continue
 
