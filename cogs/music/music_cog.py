@@ -110,12 +110,13 @@ class MusicCog(commands.Cog, name="Music"):
                 )
 
         embed = discord.Embed(
-            title=f"🎧 Connected!", description=f"```🎶 Channel: {channel}```"
+            title=f"🎧 Successfully Connected", description=f"```🎶 Channel: {channel}```"
         )
-        await ctx.send(embed=embed, delete_after=20)
+        embed.set_footer(text="❓ You can use ~del to kick me at any time.")
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["p"])
-    async def play(self, ctx: commands.Context, *, search: str):
+    async def play(self, ctx: commands.Context, *, search: str = None):
         """
         🎵 Plays a song in a voice channel.
 
@@ -125,6 +126,11 @@ class MusicCog(commands.Cog, name="Music"):
         ```
         """
         await ctx.trigger_typing()
+
+        if not search:
+            return await ctx.send(
+                f":x: {ctx.author.mention}: You need to specify a song to search for."
+            )
 
         vc = ctx.voice_client
 
@@ -160,7 +166,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.pause()
 
-        embed = discord.Embed(title=f"⏸️ **{ctx.author}**: Paused the song.")
+        embed = discord.Embed(
+            title=f"🎧 Paused the Song",
+            description=f"⏸️ Paused by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["r"])
@@ -186,7 +195,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.resume()
 
-        embed = discord.Embed(title=f"▶️ **{ctx.author}**: Resumed the song.")
+        embed = discord.Embed(
+            title=f"🎧 Resumed the Song",
+            description=f"▶️ Resumed by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["s"])
@@ -214,7 +226,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.stop()
 
-        embed = discord.Embed(title=f"⏭️ **{ctx.author}**: Skipped the song.")
+        embed = discord.Embed(
+            title=f"🎧 Skipped the Song",
+            description=f"⏭️ Skipped by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["q", "songs"])
@@ -244,12 +259,14 @@ class MusicCog(commands.Cog, name="Music"):
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
         fmt = "\n\n".join(
-            f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming)
+            f'➡️ **{i + 1}**: *{song["title"]}*' for i, song in enumerate(upcoming)
         )
         embed = discord.Embed(
-            title=f"🎧 Upcoming: {len(upcoming)} songs.", description=fmt
+            title=f"🎧 Music Queue | {len(upcoming)} Songs",
+            description=fmt,
         )
 
+        embed.set_footer(text=f"❓ You can use ~skip to skip to the song at the top.")
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["np"])
@@ -283,8 +300,8 @@ class MusicCog(commands.Cog, name="Music"):
             pass
 
         embed = discord.Embed(
-            title=f"🎵 **Now Playing:** *{vc.source.title}*",
-            description=f"Requested by: **{vc.source.requester}**",
+            title=f"🎧 **Now Playing:** *{vc.source.title}*",
+            description=f"🎵 Requested by: **{vc.source.requester.name}**",
         )
 
         player.np = await ctx.send(embed=embed)
@@ -318,7 +335,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         player.volume = vol / 100
 
-        embed = discord.Embed(title=f"🔊 **{ctx.author}**: Set the volume to *{vol}%*")
+        embed = discord.Embed(
+            title="🎧 Volume Changed",
+            description=f"🔊 **{ctx.author}**: Set the volume to *{vol}%*",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["del"])

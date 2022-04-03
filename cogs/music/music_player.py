@@ -76,8 +76,8 @@ class MusicPlayer:
             )
 
             embed = discord.Embed(
-                title=f"🎵 **Now Playing:** *{source.title}*",
-                description=f"Requested by: **{source.requester}**",
+                title=f"🎧 **Now Playing:** *{source.title}*",
+                description=f"🎵 Requested by: **{source.requester.name}**",
             )
 
             self.np = await self._channel.send(embed=embed)
