@@ -22,7 +22,7 @@ class BlacklistRemoveView(discord.ui.View):
             return True
         else:
             await interaction.response.send_message(
-                f"❌ {interaction.user.mention}: This isn't your interaction!",
+                f"❌ This isn't your interaction!",
                 ephemeral=True,
             )
             return False
@@ -60,7 +60,7 @@ class BlacklistRemoveView(discord.ui.View):
             print(values)
 
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: You need to have at least one word selected!",
+                f"❌ You need to have at least one word selected!",
                 ephemeral=True,
             )
 
@@ -68,7 +68,7 @@ class BlacklistRemoveView(discord.ui.View):
 
         if id not in blacklist.keys():
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: This server does not have any words blacklisted.",
+                f"❌ This server does not have any words blacklisted.",
                 ephemeral=True,
             )
 
@@ -78,7 +78,7 @@ class BlacklistRemoveView(discord.ui.View):
 
         if not words:
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: Sorry. Those words are not in the blacklist.",
+                f"❌ Those words are not in the blacklist.",
                 ephemeral=True,
             )
 
@@ -88,7 +88,7 @@ class BlacklistRemoveView(discord.ui.View):
         interaction.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words successfully removed.",
+            title=f"🛠️ Words Successfully Removed",
             description=" ".join(f"`{word}`" for word in words),
         )
 
@@ -100,7 +100,5 @@ class BlacklistRemoveView(discord.ui.View):
 
     @discord.ui.button(label="Abort", style=discord.ButtonStyle.red, emoji="👎🏻")
     async def abort(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message(
-            f"❌ {interaction.user.mention}: Aborting command!", ephemeral=True
-        )
+        await interaction.response.send_message(f"👍🏻 Aborting command.", ephemeral=True)
         await self.disable_all_buttons(interaction)

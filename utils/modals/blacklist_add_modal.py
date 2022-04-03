@@ -18,8 +18,8 @@ class BlacklistAddModal(discord.ui.Modal):
         self.view = view
         self.drop = drop
 
-        self.text = discord.ui.TextInput( # Takes the user's input
-            label="Word", placeholder="🔑 Enter a word to blacklist:", max_length=100
+        self.text = discord.ui.TextInput(  # Takes the user's input
+            label="Word", placeholder="🔑 Enter a word to blacklist...", max_length=100
         )
 
         self.add_item(self.text)

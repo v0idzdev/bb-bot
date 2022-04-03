@@ -19,7 +19,9 @@ class BlacklistClearButton(discord.ui.View):
         if interaction.user.id == self.ctx.author.id:
             return True
         else:
-            await interaction.response.send_message(":x: This isn't your interaction!")
+            await interaction.response.send_message(
+                ":x: This isn't your interaction!", ephemeral=True
+            )
             return False
 
     async def disable_all_buttons(self, interaction: discord.Interaction = None):
@@ -48,7 +50,7 @@ class BlacklistClearButton(discord.ui.View):
             del self.blacklist[server_id]
 
             interaction.client.update_json("./files/blacklist.json", self.blacklist)
-            embed = discord.Embed(title="🛠️ Blacklist successfully deleted.")
+            embed = discord.Embed(title="🛠️ Blacklist Successfully Deleted")
 
             await interaction.followup.send(embed=embed)
             await self.disable_all_buttons(interaction)
@@ -60,5 +62,5 @@ class BlacklistClearButton(discord.ui.View):
         """
         mention = interaction.user.mention
 
-        await interaction.response.send_message(f":thumbsup: {mention}: Ok!")
+        await interaction.response.send_message(f":thumbsup: Ok!", ephemeral=True)
         await self.disable_all_buttons(interaction)

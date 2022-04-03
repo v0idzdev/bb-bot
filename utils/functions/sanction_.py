@@ -32,5 +32,10 @@ async def sanction(
             "." if reason is None else f" for **{reason}**."
         )  # Then add the correct ending
 
-    await ctx.send(message_server)
-    await member.send(message_member)
+    embed_server = discord.Embed(
+        title="🛠️ User Banned", description=f"⚙️ {message_server}"
+    )
+    embed_member = discord.Embed(title="❌ Banned", description=f"⚠️ {message_member}")
+
+    await ctx.send(embed_server)
+    await member.send(embed_member)
