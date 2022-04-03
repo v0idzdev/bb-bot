@@ -110,7 +110,7 @@ class MusicCog(commands.Cog, name="Music"):
                 )
 
         embed = discord.Embed(
-            title=f"🔥 Connected!", description=f"Channel: `**{channel}**`"
+            title=f"🎧 Connected!", description=f"```🎶 Channel: {channel}```"
         )
         await ctx.send(embed=embed, delete_after=20)
 
@@ -247,7 +247,7 @@ class MusicCog(commands.Cog, name="Music"):
             f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming)
         )
         embed = discord.Embed(
-            title=f"Upcoming: {len(upcoming)} songs.", description=fmt
+            title=f"🎧 Upcoming: {len(upcoming)} songs.", description=fmt
         )
 
         await ctx.send(embed=embed)
