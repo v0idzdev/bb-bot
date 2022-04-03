@@ -48,8 +48,8 @@ class MiscCog(commands.Cog, name="Misc"):
             json = await client.connect("helix/streams", user_id=str(broadcaster_id))
 
             if not json["data"]:
-                return await ctx.send(
-                    f":x: {ctx.author.mention}: {broadcaster_name} isn't live."
+                return await ctx.reply(
+                    f":x: {broadcaster_name} isn't live.", delete_after=20
                 )
 
             stream: TwitchBroadcast = await client.return_information(json)
@@ -82,8 +82,8 @@ class MiscCog(commands.Cog, name="Misc"):
 
             return await ctx.send(embed=embed, file=file)
 
-        return await ctx.send(
-            f":x: {ctx.author.mention}: I couldn't find a streamer with the name '{name}'."
+        return await ctx.reply(
+            f":x: I couldn't find a streamer with the name '{name}'.", delete_after=20
         )
 
     @commands.command()
@@ -105,13 +105,11 @@ class MiscCog(commands.Cog, name="Misc"):
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: You need to give me choices to choose from."
+            return await ctx.reply(
+                f":x: You need to give me choices to choose from.", delete_after=20
             )
         if len(choices) == 1:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I need more than one choice!"
-            )
+            return await ctx.reply(f":x: I need more than one choice!", delete_after=20)
 
         embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
         await ctx.send(embed=embed)
@@ -158,7 +156,7 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         if not poll:
             return await ctx.reply(
-                f":x: {ctx.author.mention}: You need to specify a question."
+                f":x: You need to specify a question.", delete_after=20
             )
 
         embed = discord.Embed(

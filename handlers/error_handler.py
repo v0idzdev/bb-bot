@@ -98,7 +98,7 @@ class ErrorHandler(commands.Cog):
 
                 return
 
-        return await ctx.send(message)
+        return await ctx.reply(message, delete_after=20)
 
 
 async def setup(client: commands.Bot):

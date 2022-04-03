@@ -112,7 +112,7 @@ class RoleCog(commands.Cog, name="Roles"):
                     "An unknown error occurred while creating your reaction role. "
                     + "Please try again later."
                 )
-        await ctx.send(message)
+        await ctx.reply(message, delete_after=20)
 
     @removereactrole.error
     async def removeractrole_error(self, ctx: commands.Context, error):
@@ -149,7 +149,7 @@ class RoleCog(commands.Cog, name="Roles"):
                     + "Please try again later."
                 )
 
-        await ctx.send(message)
+        await ctx.reply(message, delete_after=20)
 
 
 async def setup(client: commands.Bot):
