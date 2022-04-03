@@ -2,4 +2,4 @@
 *.py linguist-vendored=false
 *.json linguist-vendored=false
 *.sh linguist-vendored=false
-*.cmd linguist-vendored=false
+*.cmd linguist-language=PowerShell
