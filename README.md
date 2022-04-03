@@ -55,7 +55,7 @@ Sends an embed linking to **this page**.
 Clears a specified number of messages from a text channel. Using the command on its own will clear **all** messages<br>
 **Requires**: `Manage Messages`
 
-> **~blacklist | ~bladd**
+> **~blacklist | ~bladd `...words?`**
 
 Allows the user to choose words to ban on the server with a dropdown menu.<br>
 **Requires**: `Manage Messages`
