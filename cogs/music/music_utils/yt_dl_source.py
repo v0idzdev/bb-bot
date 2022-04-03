@@ -44,9 +44,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if "entries" in data:  # Get the first item in a playlist
             data = data["entries"][0]
 
-        embed = discord.Embed(
-            title=f'✅ Added {data["title"]} to the Queue.', color=ctx.bot.theme
-        )
+        embed = discord.Embed(title=f'✅ Added {data["title"]} to the Queue.')
 
         await ctx.send(embed=embed, delete_after=15)
 
