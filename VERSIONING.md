@@ -16,7 +16,7 @@ When we release a minor version, it means we've **added a new feature**. This ca
 
 - **Patch versions**
 
-When we release a patch version, it means we've fixed an issue with an **existing feature**, without changing the way it works/what the user interacts with.
+When we release a patch version, it means we've fixed an issue with an **existing feature**, without changing the way it works/what the user interacts with besides minor UI changes for usability.
 
 ## 🔨 Development Releases
 
