@@ -116,7 +116,10 @@ class MiscCog(commands.Cog, name="Misc"):
         if len(choices) == 1:
             return await ctx.reply(f":x: I need more than one choice!", delete_after=20)
 
-        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
+        embed = discord.Embed(
+            title=f"🎲 I Choose",
+            description=f"```{random.choice(choices)}```",
+        )
         await ctx.send(embed=embed)
 
     @commands.command()

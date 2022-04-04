@@ -106,7 +106,7 @@ class SlashMiscCog(commands.Cog):
         ~choose <question>
         """
         await interaction.response.defer()
-        choices = choices.split(" ")
+        choices = [choice.strip().lower() for choice in choices.split(" ")]
 
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
@@ -122,7 +122,10 @@ class SlashMiscCog(commands.Cog):
                 ephemeral=True,
             )
 
-        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
+        embed = discord.Embed(
+            title=f"🎲 I Choose",
+            description=f"```{random.choice(choices)}```",
+        )
         await interaction.followup.send(embed=embed)
 
     @app_commands.command()
