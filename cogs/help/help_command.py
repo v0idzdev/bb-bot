@@ -75,7 +75,7 @@ class HelpCommand(commands.MinimalHelpCommand):
         """
         embed = await self.help_embed(
             title="Bot Commands",
-            description="BB.Bot commands. See our GitHub repository for more information."
+            description="BB.Bot's full command list. See our GitHub repository for more information."
             + f"\n\nUse **~help <command name>** for more information about a command."
             + f"\nUse **~help <cog name>** for more information about a cog.",
             mapping=mapping,

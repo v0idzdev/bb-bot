@@ -38,11 +38,11 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         if name is None:
             return await ctx.reply(
-                f":x: You need to specify a streamer name.", delete_after=20
+                f"❌ You need to specify a streamer name.", delete_after=20
             )
 
         client = self.client.twitch
-        name = name.lower()
+        name = name.strip().lower()
         broadcaster_data = await client.connect("helix/users", login=name)
         broad_list = broadcaster_data["data"]
 
@@ -54,7 +54,7 @@ class MiscCog(commands.Cog, name="Misc"):
 
             if not json["data"]:
                 return await ctx.reply(
-                    f":x: {broadcaster_name} isn't live.", delete_after=20
+                    f"❌ **{broadcaster_name}** isn't live.", delete_after=20
                 )
 
             stream: TwitchBroadcast = await client.return_information(json)
