@@ -22,20 +22,8 @@ async def sanction(
             await member.kick()
             action = "kicked"
 
-    for (
-        message
-    ) in (  # Generate the start of a message to send to the user and the server
-        message_server := f":tools: **{ctx.author.name}** was {action}",
-        message_member := f":x: You were {action} from **{ctx.guild.name}**",
-    ):
-        message += (
-            "." if reason is None else f" for **{reason}**."
-        )  # Then add the correct ending
+    message = f":tools: **{ctx.author.name}** was {action}"
+    message += "." if reason is None else f" for **{reason}**."
 
-    embed_server = discord.Embed(
-        title="🛠️ User Banned", description=f"⚙️ {message_server}"
-    )
-    embed_member = discord.Embed(title="❌ Banned", description=f"⚠️ {message_member}")
-
-    await ctx.send(embed_server)
-    await member.send(embed_member)
+    embed = discord.Embed(title="🛠️ User Sanctioned", description=f"⚙️ {message}")
+    await ctx.send(embed=embed)
