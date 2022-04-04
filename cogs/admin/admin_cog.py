@@ -86,6 +86,8 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         ⚙️ Temporarily bans a member from a server.
 
+        ❓ If a number of days is not specified, the user is kicked for 1 day.
+
         Usage:
         ```
         ~softban <member> [days] [reason]

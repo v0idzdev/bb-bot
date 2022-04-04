@@ -20,7 +20,7 @@ async def sanction(
         await member.kick()
         action = "kicked"
 
-    message = f":tools: **{ctx.author.name}** was {action}"
+    message = f"⚖️ **{ctx.author.name}** was {action}"
     message + "." if reason is None else f" for **{reason}**."
 
     embed = discord.Embed(title="🛠️ User Sanctioned", description=f"⚙️ {message}")
