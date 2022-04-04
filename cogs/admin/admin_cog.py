@@ -39,13 +39,7 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         if isinstance(amount, int) and amount is not None:
-            await ctx.channel.purge(limit=amount)
-            embed = discord.Embed(
-                title="🛠️ Messages Successfully Deleted",
-                description=f"⚙️ Deleted **{amount}** messages.",
-            )
-
-            return await ctx.send(embed=embed)
+            return await ctx.channel.purge(limit=amount)
 
         embed = discord.Embed(
             title="⚠️ You Have Not Selected a Number of Messages to Clear",
