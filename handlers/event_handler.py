@@ -24,19 +24,20 @@ class EventHandler(commands.Cog):
         Adds or removes a role from a user.
         """
         guild: discord.Guild = client.get_guild(payload.guild_id)
-        roles = guild.roles
 
-        match type:
-            case "add":
-                member = payload.member
-                action = member.add_roles
-            case "remove":
-                member: discord.Member = guild.get_member(payload.user_id)
-                action = member.remove_roles
+        if type == "add":
+            member = payload.member
+            action = member.add_roles
+
+        if type == "remove":
+            member: discord.Member = guild.get_member(payload.user_id)
+            action = member.remove_roles
 
         if member.bot:
             return
+
         data = self.client.cache.reactionroles
+        roles = guild.roles
 
         for item in data:
             # Check if the reaction emoji and message are the ones used to give a user
