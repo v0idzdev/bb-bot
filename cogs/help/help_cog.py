@@ -50,10 +50,6 @@ class HelpCommandCog(commands.Cog, name="Help"):
             icon_url="https://imagemagick.org/image/convex-hull.png",
         )
 
-        embed.set_thumbnail(
-            url="https://media.istockphoto.com/vectors/robot-avatar-icon-vector-id908807494?k=20&m=908807494&s=612x612&w=0&h=N050SIC8pgzsf_LaJT-ZyEE6HHMXLU5PYfMpixuinas="
-        )
-
         embed.set_footer(
             text="Contribute to the open source Beep Boop Bot GitHub repository."
         )
