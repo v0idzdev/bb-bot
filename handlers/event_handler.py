@@ -71,12 +71,12 @@ class EventHandler(commands.Cog):
         if channel is not None:
             await channel.send(f"👋🏻 Goodbye, **{member.name}**.")
 
-    @commands.Cog.listener() # This throws an AttributeError but it isn't really an issue
+    @commands.Cog.listener()  # This throws an AttributeError but it isn't really an issue
     async def on_message(self, message: discord.Message):
         """
         Called when a message is sent.
         """
-        if not message.guild:
+        if not message.guild or message.author.bot:
             return
 
         blacklist = self.client.cache.blacklist
@@ -87,7 +87,9 @@ class EventHandler(commands.Cog):
         ):
             return
         for wordlist in (
-            words_msg := set(message.content.split(" ")),  # Words in the message
+            words_msg := set(
+                msg.lower() for msg in message.content.split(" ")
+            ),  # Words in the message
             words_ban := set(blacklist.get(id)),  # Words blacklisted in the server
         ):
             wordlist = {word.strip().lower() for word in wordlist}

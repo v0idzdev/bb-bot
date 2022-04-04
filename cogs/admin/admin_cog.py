@@ -132,7 +132,9 @@ class AdminCog(commands.Cog, name="Admin"):
             return
 
         id = str(ctx.guild.id)
-        words = [word.lower() for word in words.split(" ")]
+        words = {word.strip().lower() for word in words.split(" ")} - {
+            ""
+        }  # Remove empty strings ''
 
         blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
@@ -140,7 +142,7 @@ class AdminCog(commands.Cog, name="Admin"):
 
         # Remove words that are already in the blacklist from the words to add.
         # Make a copy so we can add a footer if any words were removed
-        words_ = set(words) - set(blacklist[id])
+        words_ = words - set(blacklist[id])
 
         # If the list of words is zero, we know that none of the words
         # can be added. So, send an error message
@@ -236,7 +238,9 @@ class AdminCog(commands.Cog, name="Admin"):
             return
 
         id = str(ctx.guild.id)
-        words = {word.lower() for word in words.split(" ")}
+        words = {word.strip().lower() for word in words.split(" ")} - {
+            ""
+        }  # Remove empty strings ''
 
         blacklist = self.client.cache.blacklist
 
