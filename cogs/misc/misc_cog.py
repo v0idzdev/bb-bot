@@ -21,7 +21,7 @@ class MiscCog(commands.Cog, name="Misc"):
         self.client = client
 
     @commands.command()
-    async def twitch(self, ctx: commands.Context, *, name: str):
+    async def twitch(self, ctx: commands.Context, *, name: str = None):
         """
         🎲 Shows information about a Twitch stream.
 
@@ -36,8 +36,13 @@ class MiscCog(commands.Cog, name="Misc"):
         /twitch <streamer name>
         ```
         """
+        if name is None:
+            return await ctx.reply(
+                f"❌ You need to specify a streamer name.", delete_after=20
+            )
+
         client = self.client.twitch
-        name = name.lower()
+        name = name.strip().lower()
         broadcaster_data = await client.connect("helix/users", login=name)
         broad_list = broadcaster_data["data"]
 
@@ -48,8 +53,8 @@ class MiscCog(commands.Cog, name="Misc"):
             json = await client.connect("helix/streams", user_id=str(broadcaster_id))
 
             if not json["data"]:
-                return await ctx.send(
-                    f":x: {ctx.author.mention}: {broadcaster_name} isn't live."
+                return await ctx.reply(
+                    f"❌ **{broadcaster_name}** isn't live.", delete_after=20
                 )
 
             stream: TwitchBroadcast = await client.return_information(json)
@@ -82,8 +87,8 @@ class MiscCog(commands.Cog, name="Misc"):
 
             return await ctx.send(embed=embed, file=file)
 
-        return await ctx.send(
-            f":x: {ctx.author.mention}: I couldn't find a streamer with the name '{name}'."
+        return await ctx.reply(
+            f":x: I couldn't find a streamer with the name '{name}'.", delete_after=20
         )
 
     @commands.command()
@@ -105,15 +110,16 @@ class MiscCog(commands.Cog, name="Misc"):
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: You need to give me choices to choose from."
+            return await ctx.reply(
+                f":x: You need to give me choices to choose from.", delete_after=20
             )
         if len(choices) == 1:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I need more than one choice!"
-            )
+            return await ctx.reply(f":x: I need more than one choice!", delete_after=20)
 
-        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
+        embed = discord.Embed(
+            title=f"🎲 I Choose",
+            description=f"```{random.choice(choices)}```",
+        )
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -158,7 +164,7 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         if not poll:
             return await ctx.reply(
-                f":x: {ctx.author.mention}: You need to specify a question."
+                f":x: You need to specify a question.", delete_after=20
             )
 
         embed = discord.Embed(

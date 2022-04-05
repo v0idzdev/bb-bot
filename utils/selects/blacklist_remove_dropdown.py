@@ -10,10 +10,10 @@ class BlacklistRemoveDropdown(discord.ui.Select):
         self.words = []
 
         super().__init__(
-            placeholder="📃 Choose words to remove from the blacklist...",
+            placeholder="📃 Choose the words to remove from the blacklist...",
             min_values=1,
             max_values=len(options),
-            options=options
+            options=options,
         )
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
@@ -24,7 +24,7 @@ class BlacklistRemoveDropdown(discord.ui.Select):
             return True
         else:
             await interaction.response.send_message(
-                f"❌ {interaction.user.mention}: This isn't your interaction!",
+                f"❌ This isn't your interaction!",
                 ephemeral=True,
             )
             return False
@@ -34,7 +34,7 @@ class BlacklistRemoveDropdown(discord.ui.Select):
 
         if not self.values:
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: You need to select one or more than one words to remove from the blacklist!",
+                f"❌ You need to select one or more than one words to remove from the blacklist!",
                 ephemeral=True,
             )
 

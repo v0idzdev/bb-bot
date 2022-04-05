@@ -39,11 +39,10 @@ class AdminCog(commands.Cog, name="Admin"):
         ```
         """
         if isinstance(amount, int) and amount is not None:
-            await ctx.channel.purge(limit=amount)
-            return await ctx.send(f"🛠️ Deleted **{amount}** messages.")
+            return await ctx.channel.purge(limit=amount)
 
         embed = discord.Embed(
-            title="⚠️ You have not selected a number of messages to clear.",
+            title="⚠️ You Have Not Selected a Number of Messages to Clear",
             description="❓ Would you like to clear all messages in this channel?",
         )
 
@@ -87,6 +86,8 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         ⚙️ Temporarily bans a member from a server.
 
+        ❓ If a number of days is not specified, the user is kicked for 1 day.
+
         Usage:
         ```
         ~softban <member> [days] [reason]
@@ -125,13 +126,15 @@ class AdminCog(commands.Cog, name="Admin"):
         if not words:
             view = BlacklistAddView(ctx)
             embed = discord.Embed(
-                title="🛠️ Please enter one or more words to blacklist."
+                title="🛠️ Please Enter One or More Words to Blacklist"
             )
             view.message = await ctx.send(embed=embed, view=view)
             return
 
         id = str(ctx.guild.id)
-        words = [word.lower() for word in words.split(" ")]
+        words = {word.strip().lower() for word in words.split(" ")} - {
+            ""
+        }  # Remove empty strings ''
 
         blacklist = self.client.cache.blacklist
         if id not in blacklist.keys():
@@ -139,13 +142,13 @@ class AdminCog(commands.Cog, name="Admin"):
 
         # Remove words that are already in the blacklist from the words to add.
         # Make a copy so we can add a footer if any words were removed
-        words_ = set(words) - set(blacklist[id])
+        words_ = words - set(blacklist[id])
 
         # If the list of words is zero, we know that none of the words
         # can be added. So, send an error message
         if not words_:
-            return await ctx.send(
-                f"❌ {ctx.author.mention}: Sorry. Those words are already in the blacklist."
+            return await ctx.reply(
+                f"❌ Those words are already in the blacklist.", delete_after=20
             )
 
         # If duplicate words have been removed, add non-duplicates
@@ -156,7 +159,7 @@ class AdminCog(commands.Cog, name="Admin"):
         self.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words successfully added.",
+            title=f"🛠️ Words Successfully Added",
             description=" ".join(f"`{word}`" for word in words_),
         )
 
@@ -178,15 +181,14 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         id = str(ctx.guild.id)
         blacklist = self.client.cache.blacklist
-        mention = ctx.author.mention
 
         if id not in blacklist.keys():
-            return await ctx.send(
-                f"❌ {mention}: This server does not have any words blacklisted."
+            return await ctx.reply(
+                f"❌ This server does not have any words blacklisted.", delete_after=20
             )
 
         embed = discord.Embed(
-            title=f"⚠️ Are you sure you'd like to clear your server's blacklist?\n",
+            title=f"⚠️ Are You Sure You'd Like to Clear Your Server's Blacklist?\n",
             description=f"❗ This action cannot be undone.",
         )
 
@@ -208,11 +210,11 @@ class AdminCog(commands.Cog, name="Admin"):
         server_id = str(ctx.guild.id)
 
         if server_id not in blacklist.keys() or not blacklist[server_id]:
-            return await ctx.send(
-                f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
+            return await ctx.reply(
+                f"❌ This server does not have any words blacklisted.", delete_after=20
             )
 
-        embed = discord.Embed(title="⛔ Blacklist:")
+        embed = discord.Embed(title="⛔ Blacklist")
         embed.description = "".join([f" `{word}` " for word in blacklist[server_id]])
 
         await ctx.send(embed=embed)
@@ -230,21 +232,21 @@ class AdminCog(commands.Cog, name="Admin"):
         """
         if not words:
             view = BlacklistRemoveView(ctx)
-            embed = discord.Embed(
-                title="🛠️ Please enter one or more words to remove from the blacklist."
-            )
+            embed = discord.Embed(title="🛠️ Please Enter One or More Words to Remove")
 
             view.message = await ctx.send(embed=embed, view=view)
             return
 
         id = str(ctx.guild.id)
-        words = {word.lower() for word in words.split(" ")}
+        words = {word.strip().lower() for word in words.split(" ")} - {
+            ""
+        }  # Remove empty strings ''
 
         blacklist = self.client.cache.blacklist
 
         if id not in blacklist.keys():
-            return await ctx.send(
-                f"❌ {ctx.author.mention}: This server does not have any words blacklisted."
+            return await ctx.reply(
+                f"❌ This server does not have any words blacklisted.", delete_after=20
             )
 
         # Only remove words that are already in the blacklist from the words to remove.
@@ -252,8 +254,8 @@ class AdminCog(commands.Cog, name="Admin"):
         words_ = words & set(blacklist[id])
 
         if not words_:
-            return await ctx.send(
-                f"❌ {ctx.author.mention}: Sorry. Those words are not in the blacklist."
+            return await ctx.reply(
+                f"❌ Those words are not in the blacklist.", delete_after=20
             )
 
         # If duplicate words have been removed, remove non-duplicates
@@ -264,7 +266,7 @@ class AdminCog(commands.Cog, name="Admin"):
         self.client.update_json(FILEPATH, blacklist)
 
         embed = discord.Embed(
-            title=f"🛠️ Words successfully removed.",
+            title=f"🛠️ Words Successfully Removed",
             description=" ".join(f"`{word}`" for word in words_),
         )
 

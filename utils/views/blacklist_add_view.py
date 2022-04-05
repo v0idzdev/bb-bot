@@ -22,7 +22,7 @@ class BlacklistAddView(discord.ui.View):
             return True
         else:
             await interaction.response.send_message(
-                f"❌ {interaction.user.mention}: This isn't your interaction!",
+                f"❌ This isn't your interaction!",
                 ephemeral=True,
             )
             return False
@@ -57,7 +57,7 @@ class BlacklistAddView(discord.ui.View):
         if not values:
             print(values)
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: You need to have at least one word selected!",
+                f"❌ You need to have at least one word selected!",
                 ephemeral=True,
             )
         blacklist = interaction.client.cache.blacklist
@@ -66,13 +66,13 @@ class BlacklistAddView(discord.ui.View):
         words = set(values) - set(blacklist[id])
         if not words:
             return await interaction.followup.send(
-                f"❌ {interaction.user.mention}: Sorry. Those words are already in the blacklist.",
+                f"❌ Those words are already in the blacklist.",
                 ephemeral=True,
             )
         blacklist[id].extend(words)
         interaction.client.update_json(FILEPATH, blacklist)
         embed = discord.Embed(
-            title=f"🛠️ Words successfully added.",
+            title=f"🛠️ Words Successfully Added",
             description=" ".join(f"`{word}`" for word in words),
         )
         if len(values) > len(words):
@@ -82,7 +82,5 @@ class BlacklistAddView(discord.ui.View):
 
     @discord.ui.button(label="Abort", style=discord.ButtonStyle.red, emoji="👎🏻")
     async def abort(self, interaction: discord.Interaction, button: discord.Button):
-        await interaction.response.send_message(
-            f"❌ {interaction.user.mention}: Aborting command!", ephemeral=True
-        )
+        await interaction.response.send_message(f"👍🏻 Aborting command.", ephemeral=True)
         await self.disable_all_buttons(interaction)

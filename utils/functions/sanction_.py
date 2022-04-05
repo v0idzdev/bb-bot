@@ -6,31 +6,22 @@ async def sanction(
     ctx: commands.Context, punishment: str, member: discord.Member, reason=None
 ):
     """
-    Utility function that bans or kicks a member.
+    Utility function that kicks, bans, or softbans a member and sends a message.
     """
-    match punishment:
+    if punishment == "ban":
+        await member.ban()
+        action = "permanently banned"
 
-        case "ban":
-            await member.ban()
-            action = "permanently banned"
+    if punishment == "softban":
+        await member.ban()
+        action = "temporarily banned"
 
-        case "softban":
-            await member.ban()
-            action = "temporarily banned"
+    if punishment == "kick":
+        await member.kick()
+        action = "kicked"
 
-        case "kick":
-            await member.kick()
-            action = "kicked"
+    message = f"⚖️ **{ctx.author.name}** was {action}"
+    message + "." if reason is None else f" for **{reason}**."
 
-    for (
-        message
-    ) in (  # Generate the start of a message to send to the user and the server
-        message_server := f":tools: **{ctx.author.name}** was {action}",
-        message_member := f":x: You were {action} from **{ctx.guild.name}**",
-    ):
-        message += (
-            "." if reason is None else f" for **{reason}**."
-        )  # Then add the correct ending
-
-    await ctx.send(message_server)
-    await member.send(message_member)
+    embed = discord.Embed(title="🛠️ User Sanctioned", description=f"⚙️ {message}")
+    await ctx.send(embed=embed)

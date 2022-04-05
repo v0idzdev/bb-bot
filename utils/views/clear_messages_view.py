@@ -34,7 +34,9 @@ class ClearMessagesView(discord.ui.View):
         if interaction.user.id == self.ctx.author.id:
             return True
         else:
-            await interaction.response.send_message(":x: This isn't your interaction!")
+            await interaction.response.send_message(
+                ":x: This isn't your interaction!", ephemeral=True
+            )
             return False
 
     @discord.ui.button(label="Yes", style=discord.ButtonStyle.green, emoji="👍🏻")
@@ -58,5 +60,5 @@ class ClearMessagesView(discord.ui.View):
         """
         Callback method for the no button.
         """
-        await interaction.response.send_message("👍🏻 Aborting command!")
+        await interaction.response.send_message("👍🏻 Aborting command.", ephemeral=True)
         await self.disable_all_buttons(interaction)

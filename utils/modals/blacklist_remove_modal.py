@@ -7,14 +7,16 @@ class BlacklistRemoveModal(discord.ui.Modal):
         view: discord.ui.View,
         drop: discord.ui.Select,
         *,
-        title: str="🔒 Remove a Word From the Blacklist"
+        title: str = "🔒 Remove a Word From the Blacklist"
     ):
         super().__init__(title=title)
 
         self.view = view
         self.drop = drop
         self.text = discord.ui.TextInput(
-            label="Word", placeholder="🔑 Enter a word to remove from the blacklist:", max_length=100
+            label="Word",
+            placeholder="🔑 Enter a word to remove from the blacklist...",
+            max_length=100,
         )
 
         self.add_item(self.text)

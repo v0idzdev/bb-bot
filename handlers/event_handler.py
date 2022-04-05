@@ -3,6 +3,8 @@ Contains all of the events that the client will listen to.
 """
 
 import discord
+import asyncio
+
 from discord.ext import commands
 
 # This is the filepath for the reaction roles data
@@ -24,19 +26,20 @@ class EventHandler(commands.Cog):
         Adds or removes a role from a user.
         """
         guild: discord.Guild = client.get_guild(payload.guild_id)
-        roles = guild.roles
 
-        match type:
-            case "add":
-                member = payload.member
-                action = member.add_roles
-            case "remove":
-                member: discord.Member = guild.get_member(payload.user_id)
-                action = member.remove_roles
+        if type == "add":
+            member = payload.member
+            action = member.add_roles
+
+        if type == "remove":
+            member: discord.Member = guild.get_member(payload.user_id)
+            action = member.remove_roles
 
         if member.bot:
             return
+
         data = self.client.cache.reactionroles
+        roles = guild.roles
 
         for item in data:
             # Check if the reaction emoji and message are the ones used to give a user
@@ -71,12 +74,12 @@ class EventHandler(commands.Cog):
         if channel is not None:
             await channel.send(f"👋🏻 Goodbye, **{member.name}**.")
 
-    @commands.Cog.listener() # This throws an AttributeError but it isn't really an issue
+    @commands.Cog.listener()  # This throws an AttributeError but it isn't really an issue
     async def on_message(self, message: discord.Message):
         """
         Called when a message is sent.
         """
-        if not message.guild:
+        if not message.guild or message.author.bot:
             return
 
         blacklist = self.client.cache.blacklist
@@ -87,7 +90,9 @@ class EventHandler(commands.Cog):
         ):
             return
         for wordlist in (
-            words_msg := set(message.content.split(" ")),  # Words in the message
+            words_msg := set(
+                msg.lower() for msg in message.content.split(" ")
+            ),  # Words in the message
             words_ban := set(blacklist.get(id)),  # Words blacklisted in the server
         ):
             wordlist = {word.strip().lower() for word in wordlist}
@@ -100,18 +105,32 @@ class EventHandler(commands.Cog):
         """
         Prevents users from voting more than once on a poll.
         """
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
-
-        if user.id == self.client.user.id:
+        if user.bot:
             return
 
-        for react in cached.reactions:
-            users = [user async for user in react.users()]
+        message: discord.Message = discord.utils.find(
+            lambda cached_message: reaction.message == cached_message,
+            self.client.cached_messages,
+        )
 
-            if any({user not in users, user.bot, str(react) == str(reaction.emoji)}):
-                continue
+        for existing_reaction in message.reactions:
+            users = {user async for user in existing_reaction.users()}
 
-            await cached.remove_reaction(react.emoji, user)
+            if user in users and str(existing_reaction) != str(reaction):
+                await message.remove_reaction(existing_reaction.emoji, user)
+
+        # # Get the message that the reaction was used on
+        # cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
+
+        # for react in cached.reactions:
+        #     users = [user async for user in react.users()]  # List of users who reacted
+
+        #     # We don't have to remove the reaction if the user doesn't currently have a reaction on the message
+        #     if user not in users or str(react) == str(reaction.emoji):
+        #         continue
+
+        #     # Changed this to run asynchronously instead of waiting until finished
+        #     asyncio.create_task(cached.remove_reaction(react.emoji, user))
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
@@ -133,14 +152,13 @@ class EventHandler(commands.Cog):
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
         """
-        data = self.client.cache.reactionroles
+        reaction_roles = self.client.cache.reactionroles
 
-        for item in data:
-            if item["msg_id"] == message.id:
-                await message.delete()
-                data.remove(item)
+        for reaction_role in reaction_roles:
+            if reaction_role["msg_id"] == message.id:
+                reaction_roles.remove(reaction_role)
 
-        self.client.update_json(FILEPATH, data)
+        self.client.update_json(FILEPATH, reaction_roles)
 
     @commands.Cog.listener()
     async def on_ready(self):

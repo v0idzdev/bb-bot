@@ -78,7 +78,7 @@ class RoleCog(commands.Cog, name="Roles"):
         Error handler for the reactrole command.
         """
         error = getattr(error, "original", error)
-        message = f":x: {ctx.author.mention}: "
+        message = f"❌ "
 
         match error.__class__:
             case commands.RoleNotFound:
@@ -112,15 +112,15 @@ class RoleCog(commands.Cog, name="Roles"):
                     "An unknown error occurred while creating your reaction role. "
                     + "Please try again later."
                 )
-        await ctx.send(message)
+        await ctx.reply(message, delete_after=20)
 
     @removereactrole.error
-    async def removeractrole_error(self, ctx: commands.Context, error):
+    async def removereactrole_error(self, ctx: commands.Context, error):
         """
         Error handler for the removereactrole command.
         """
         error = getattr(error, "original", error)
-        message = f":x: {ctx.author.mention}: "
+        message = f"❌ "
 
         match error.__class__:
 
@@ -149,7 +149,7 @@ class RoleCog(commands.Cog, name="Roles"):
                     + "Please try again later."
                 )
 
-        await ctx.send(message)
+        await ctx.reply(message, delete_after=20)
 
 
 async def setup(client: commands.Bot):

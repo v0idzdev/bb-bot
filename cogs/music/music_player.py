@@ -63,7 +63,8 @@ class MusicPlayer:
                     )
                 except Exception as e:
                     await self._channel.send(
-                        f":x: Sorry, I couldn't process your song.\n" + f"\n[{e}]\n"
+                        f":x: Sorry, I couldn't process your song.\n" + f"\n[{e}]\n",
+                        delete_after=20,
                     )
                     continue
 
@@ -76,8 +77,8 @@ class MusicPlayer:
             )
 
             embed = discord.Embed(
-                title=f"🎵 **Now Playing:** *{source.title}*",
-                description=f"Requested by: **{source.requester}**",
+                title=f"🎧 **Now Playing:** *{source.title}*",
+                description=f"🎵 Requested by: **{source.requester.name}**",
             )
 
             self.np = await self._channel.send(embed=embed)
@@ -85,7 +86,20 @@ class MusicPlayer:
             await self.next.wait()
 
             # Make sure the FFmpeg process is cleaned up.
-            source.cleanup()
+            try:
+                source.cleanup()
+            except ValueError as ex:
+                error_embed = discord.Embed(
+                    title="👎 Discord.py Error",
+                    description=f"🐍 Discord.py encountered an internal error.\n{ex.args}",
+                )
+
+                error_embed.set_footer(
+                    text="❓ This may be because we are using Discord.py V2.0.0-alpha."
+                )
+
+                await self._channel.send(embed=error_embed)
+
             self.current = None
 
             try:

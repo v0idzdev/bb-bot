@@ -46,15 +46,17 @@ class MusicCog(commands.Cog, name="Music"):
         """
         if isinstance(error, commands.NoPrivateMessage):
             try:
-                return await ctx.send(
-                    f":x: {ctx.author.mention}: You can't play music in a private message channel."
+                return await ctx.reply(
+                    f":x: You can't play music in a private message channel.",
+                    delete_after=20,
                 )
             except discord.HTTPException:
                 pass
         elif isinstance(error, InvalidVC):
-            await ctx.send(
-                f":x: {ctx.author.mention}: Couldn't connect to a VC."
-                + "Please make sure you're in a VC or provide me with one."
+            await ctx.reply(
+                f":x: Couldn't connect to a VC. "
+                + "Please make sure you're in a VC or provide me with one.",
+                delete_after=20,
             )
 
     def get_player(self, ctx: commands.Context):
@@ -85,9 +87,11 @@ class MusicCog(commands.Cog, name="Music"):
             try:
                 channel = ctx.author.voice.channel
             except AttributeError:
-                error_msg = f":x: {ctx.author.mention}: No channel to join. Specify a channel or join one yourself."
+                error_msg = (
+                    f":x: No channel to join. Specify a channel or join one yourself."
+                )
 
-                await ctx.send(error_msg)
+                await ctx.reply(error_msg, delete_after=20)
                 raise AttributeError(error_msg)
 
         vc = ctx.voice_client
@@ -99,23 +103,22 @@ class MusicCog(commands.Cog, name="Music"):
                 await vc.move_to(channel)
             except asyncio.TimeoutError:
                 raise VCError(
-                    f":x: {ctx.author.mention}: Moving to channel **{channel}** timed out."
+                    f":x: Moving to channel **{channel}** timed out.",
                 )
         else:
             try:
                 await channel.connect()
             except asyncio.TimeoutError:
-                raise VCError(
-                    f":x: {ctx.author.mention}: Connecting to channel **{channel}** timed out."
-                )
+                raise VCError(f":x: Connecting to channel **{channel}** timed out.")
 
         embed = discord.Embed(
-            title=f"🔥 Connected!", description=f"Channel: `**{channel}**`"
+            title=f"🎧 Successfully Connected", description=f"```🎶 Channel: {channel}```"
         )
-        await ctx.send(embed=embed, delete_after=20)
+        embed.set_footer(text="❓ You can use ~del to kick me at any time.")
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=["p"])
-    async def play(self, ctx: commands.Context, *, search: str):
+    async def play(self, ctx: commands.Context, *, search: str = None):
         """
         🎵 Plays a song in a voice channel.
 
@@ -125,6 +128,12 @@ class MusicCog(commands.Cog, name="Music"):
         ```
         """
         await ctx.trigger_typing()
+
+        if not search:
+            return await ctx.reply(
+                f":x: You need to specify a song to search for.",
+                delete_after=20,
+            )
 
         vc = ctx.voice_client
 
@@ -151,8 +160,8 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_playing():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything.",
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
                 delete_after=20,
             )
         elif vc.is_paused():
@@ -160,7 +169,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.pause()
 
-        embed = discord.Embed(title=f"⏸️ **{ctx.author}**: Paused the song.")
+        embed = discord.Embed(
+            title=f"🎧 Paused the Song",
+            description=f"⏸️ Paused by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["r"])
@@ -176,8 +188,8 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything.",
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
                 delete_after=20,
             )
 
@@ -186,7 +198,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.resume()
 
-        embed = discord.Embed(title=f"▶️ **{ctx.author}**: Resumed the song.")
+        embed = discord.Embed(
+            title=f"🎧 Resumed the Song",
+            description=f"▶️ Resumed by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["s"])
@@ -202,8 +217,8 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything.",
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
                 delete_after=20,
             )
 
@@ -214,7 +229,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         vc.stop()
 
-        embed = discord.Embed(title=f"⏭️ **{ctx.author}**: Skipped the song.")
+        embed = discord.Embed(
+            title=f"🎧 Skipped the Song",
+            description=f"⏭️ Skipped by **{ctx.author.name}**",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["q", "songs"])
@@ -230,26 +248,27 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not connected to VC.", delete_after=20
-            )
+            return await ctx.reply(f":x: I'm not connected to VC.", delete_after=20)
 
         player = self.get_player(ctx)
         if player.queue.empty():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: There are no more queued songs."
+            return await ctx.reply(
+                f":x: There are no more queued songs.",
+                delete_after=20,
             )
 
         # Grab up to 5 entries from the queue...
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
         fmt = "\n\n".join(
-            f'➡️ **{i + 1}**: *{j["title"]}*' for i, j in enumerate(upcoming)
+            f'➡️ **{i + 1}**: *{song["title"]}*' for i, song in enumerate(upcoming)
         )
         embed = discord.Embed(
-            title=f"Upcoming: {len(upcoming)} songs.", description=fmt
+            title=f"🎧 Music Queue | {len(upcoming)} Songs",
+            description=fmt,
         )
 
+        embed.set_footer(text=f"❓ You can use ~skip to skip to the song at the top.")
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["np"])
@@ -265,15 +284,16 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything.",
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
                 delete_after=20,
             )
 
         player = self.get_player(ctx)
         if not player.current:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything."
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
+                delete_after=20,
             )
 
         try:
@@ -283,8 +303,8 @@ class MusicCog(commands.Cog, name="Music"):
             pass
 
         embed = discord.Embed(
-            title=f"🎵 **Now Playing:** *{vc.source.title}*",
-            description=f"Requested by: **{vc.source.requester}**",
+            title=f"🎧 **Now Playing:** *{vc.source.title}*",
+            description=f"🎵 Requested by: **{vc.source.requester.name}**",
         )
 
         player.np = await ctx.send(embed=embed)
@@ -302,13 +322,12 @@ class MusicCog(commands.Cog, name="Music"):
         vc: discord.VoiceProtocol = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not connected to VC.", delete_after=20
-            )
+            return await ctx.reply(f":x: I'm not connected to VC.", delete_after=20)
 
         if not 0 < vol < 101:
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I can only set the volume between 1 and 100."
+            return await ctx.reply(
+                f":x: I can only set the volume between 1 and 100.",
+                delete_after=20,
             )
 
         player = self.get_player(ctx)
@@ -318,7 +337,10 @@ class MusicCog(commands.Cog, name="Music"):
 
         player.volume = vol / 100
 
-        embed = discord.Embed(title=f"🔊 **{ctx.author}**: Set the volume to *{vol}%*")
+        embed = discord.Embed(
+            title="🎧 Volume Changed",
+            description=f"🔊 **{ctx.author}**: Set the volume to *{vol}%*",
+        )
         await ctx.send(embed=embed)
 
     @commands.command(aliases=["del"])
@@ -334,8 +356,8 @@ class MusicCog(commands.Cog, name="Music"):
         vc = ctx.voice_client
 
         if not vc or not vc.is_connected():
-            return await ctx.send(
-                f":x: {ctx.author.mention}: I'm not currently playing anything.",
+            return await ctx.reply(
+                f":x: I'm not currently playing anything.",
                 delete_after=20,
             )
 

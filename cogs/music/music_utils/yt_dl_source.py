@@ -44,9 +44,11 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if "entries" in data:  # Get the first item in a playlist
             data = data["entries"][0]
 
-        embed = discord.Embed(title=f'✅ Added {data["title"]} to the Queue.')
+        embed = discord.Embed(
+            title=f"🎧 Song Added to the Queue", description=f'🎹 {data["title"]}'
+        )
 
-        await ctx.send(embed=embed, delete_after=15)
+        await ctx.send(embed=embed)
 
         if download:
             source = ytdl.prepare_filename(data)

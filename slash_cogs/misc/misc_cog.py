@@ -37,6 +37,7 @@ class SlashMiscCog(commands.Cog):
         ~choose <streamer name>
         """
         await interaction.response.defer()
+
         client = self.client.twitch
         name = name.lower()
         broadcaster_data = await client.connect("helix/users", login=name)
@@ -50,7 +51,8 @@ class SlashMiscCog(commands.Cog):
 
             if not json["data"]:
                 return await interaction.followup.send(
-                    f":x: {interaction.message.author}: {broadcaster_name} isn't live."
+                    f":x: {broadcaster_name} isn't live.",
+                    ephemeral=True,
                 )
 
             stream: TwitchBroadcast = await client.return_information(json)
@@ -84,7 +86,7 @@ class SlashMiscCog(commands.Cog):
             return await interaction.followup.send(embed=embed, file=file)
 
         return await interaction.followup.send(
-            f":x: I couldn't find a streamer with the name '{name}'."
+            f":x: I couldn't find a streamer with the name '{name}'.", ephemeral=True
         )
 
     @app_commands.command()
@@ -104,21 +106,26 @@ class SlashMiscCog(commands.Cog):
         ~choose <question>
         """
         await interaction.response.defer()
-        choices = choices.split(" ")
+        choices = [choice.strip().lower() for choice in choices.split(" ")]
 
         # Display some error messages if the user's input is invalid.
         # This is because it's kinda awkward to do this in the on_command_error event.
         if len(choices) < 1:
             return await interaction.followup.send(
-                f":x: {interaction.user.mention}: You need to give me choices to choose from."
+                f":x: You need to give me choices to choose from.",
+                ephemeral=True,
             )
 
         if len(choices) == 1:
             return await interaction.followup.send(
-                f":x: {interaction.user.mention}: I need more than one choice!"
+                f":x: I need more than one choice!",
+                ephemeral=True,
             )
 
-        embed = discord.Embed(title=f"🎲 I choose {random.choice(choices)}")
+        embed = discord.Embed(
+            title=f"🎲 I Choose",
+            description=f"```{random.choice(choices)}```",
+        )
         await interaction.followup.send(embed=embed)
 
     @app_commands.command()
@@ -165,7 +172,8 @@ class SlashMiscCog(commands.Cog):
 
         if not poll:
             return await interaction.followup.send(
-                f":x: {interaction.user.mention}: You need to specify a question."
+                f":x: You need to specify a question.",
+                ephemeral=True,
             )
 
         embed = discord.Embed(
