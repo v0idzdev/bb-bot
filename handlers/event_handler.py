@@ -108,18 +108,29 @@ class EventHandler(commands.Cog):
         if user.bot:
             return
 
-        # Get the message that the reaction was used on
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
+        message: discord.Message = discord.utils.find(
+            lambda cached_message: reaction.message == cached_message,
+            self.client.cached_messages,
+        )
 
-        for react in cached.reactions:
-            users = [user async for user in react.users()]  # List of users who reacted
+        for existing_reaction in message.reactions:
+            users = {user async for user in existing_reaction.users()}
 
-            # We don't have to remove the reaction if the user doesn't currently have a reaction on the message
-            if user not in users or str(react) == str(reaction.emoji):
-                continue
+            if user in users and str(existing_reaction) != str(reaction):
+                await message.remove_reaction(existing_reaction.emoji, user)
 
-            # Changed this to run asynchronously instead of waiting until finished
-            asyncio.create_task(cached.remove_reaction(react.emoji, user))
+        # # Get the message that the reaction was used on
+        # cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
+
+        # for react in cached.reactions:
+        #     users = [user async for user in react.users()]  # List of users who reacted
+
+        #     # We don't have to remove the reaction if the user doesn't currently have a reaction on the message
+        #     if user not in users or str(react) == str(reaction.emoji):
+        #         continue
+
+        #     # Changed this to run asynchronously instead of waiting until finished
+        #     asyncio.create_task(cached.remove_reaction(react.emoji, user))
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
