@@ -152,14 +152,13 @@ class EventHandler(commands.Cog):
         Deletes reaction role messages that correspond to a deleted role. Removes the
         entry for that reaction role in the JSON file.
         """
-        data = self.client.cache.reactionroles
+        reaction_roles = self.client.cache.reactionroles
 
-        for item in data:
-            if item["msg_id"] == message.id:
-                await message.delete()
-                data.remove(item)
+        for reaction_role in reaction_roles:
+            if reaction_role["msg_id"] == message.id:
+                reaction_roles.remove(reaction_role)
 
-        self.client.update_json(FILEPATH, data)
+        self.client.update_json(FILEPATH, reaction_roles)
 
     @commands.Cog.listener()
     async def on_ready(self):

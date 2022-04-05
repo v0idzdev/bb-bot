@@ -78,7 +78,7 @@ class RoleCog(commands.Cog, name="Roles"):
         Error handler for the reactrole command.
         """
         error = getattr(error, "original", error)
-        message = f":x: {ctx.author.mention}: "
+        message = f"❌ "
 
         match error.__class__:
             case commands.RoleNotFound:
@@ -115,12 +115,12 @@ class RoleCog(commands.Cog, name="Roles"):
         await ctx.reply(message, delete_after=20)
 
     @removereactrole.error
-    async def removeractrole_error(self, ctx: commands.Context, error):
+    async def removereactrole_error(self, ctx: commands.Context, error):
         """
         Error handler for the removereactrole command.
         """
         error = getattr(error, "original", error)
-        message = f":x: {ctx.author.mention}: "
+        message = f"❌ "
 
         match error.__class__:
 
