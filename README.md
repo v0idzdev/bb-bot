@@ -208,4 +208,4 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
 4. **Create a file** in the **root directory** called `.env`.
     * **Edit** the file. Enter `TOKEN=example`, replacing 'example' with your bot's token.
     * **Save** the file and **exit**.<br>
-5. Run `start.cmd` if you're using **Windows**, or `start.sh` if you're using **Linux**.
+5. Run `start.bat` if you're using **Windows**, or `start.sh` if you're using **Linux**.
