@@ -201,11 +201,23 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
     * `Administrator` permissions
     * `bot` and `applications.commands` scopes.<br><br>
 
-### ⏳ How to Install
+### ⏳ Installing
 
 1. Install a **.ZIP** from the **[releases](https://github.com/matthewflegg/bb-bot/releases)** page.<br>
 3. **Extract it** to your preferred file location.<br>
 4. **Create a file** in the **root directory** called `.env`.
     * **Edit** the file. Enter `TOKEN=example`, replacing 'example' with your bot's token.
-    * **Save** the file and **exit**.<br>
-5. Run `start.bat` if you're using **Windows**, or `start.sh` if you're using **Linux**.
+    * **Save** the file and **exit**.
+<br><br>
+
+### 🔌 Running
+
+##### 🐧 Linux/UNIX
+* Go to the **root directory** and run `chmod +x start.sh`.
+* Then **run the script** using `./start.sh`.
+
+##### 🏠 Windows
+* Press **Windows + X**.
+* Choose **Windows PowerShell (Admin)**.
+* Go to the **root directory** and run `Set-ExecutionPolicy ByPass`.
+* Finally, **run** `.\start.ps1`.
