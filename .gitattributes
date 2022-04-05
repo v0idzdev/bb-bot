@@ -1,2 +1,4 @@
 *.json linguist-detectable=true
+
+*.cmd linguist-detectable=true
 *.cmd linguist-language=PowerShell
