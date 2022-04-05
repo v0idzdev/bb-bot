@@ -6,7 +6,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force;
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 # Install Python 3.10.x
-choco install python --version=3.10.0
+choco install python
 
 # Configure project
 py -m pip install virtualenv
