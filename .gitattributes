@@ -1,3 +1,5 @@
 *.py linguist-detectable=true
 *.sh linguist-detectable=true
+
 *.bat linguist-detectable=true
+*.bat linguist-language=Batchfile
