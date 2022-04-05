@@ -16,7 +16,8 @@ py -m venv venv
 . venv\Scripts\activate.bat
 
 # Installing dependencies
-pip install -r requirements.txt
+py -m pip install python-dotenv
+py -m pip install -r requirements.txt
 
 # Starting script
 py main.py
