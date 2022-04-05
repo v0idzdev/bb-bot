@@ -1,5 +1,4 @@
-* linguist-vendored
-*.py linguist-vendored=false
-*.sh linguist-vendored=false
-*.json linguist-vendored=false
-*.bat linguist-vendored=false
+*.py linguist-detectable=true
+*.sh linguist-detectable=true
+*.json linguist-detectable=true
+*.bat linguist-detectable=true
