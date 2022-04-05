@@ -1,6 +1,5 @@
 <p align="center">
-  <img src="https://live.staticflickr.com/65535/51937767187_4b2929a455_c.jpg">
-</p>
+  <img src="https://i.postimg.cc/vm6mgHK3/Banner.png" alt="BB.Bot's banner image."><br>
 <h1 align="center">🤖 BB.Bot</h1>
 <h3 align="center">🔒 Moderation | 🎵 HQ Music Streaming | 😆 Memes | ⭐ Reaction Roles | ❓ Polls</h3>
 <h4 align="center">Powered by discord.py and GCP, BB.Bot is the bot for you.</h4>
