@@ -1,2 +1,5 @@
-*.cmd linguist-detectable=true
-*.cmd linguist-language=PowerShell
+* linguist-vendored
+*.py linguist-vendored=false
+*.sh linguist-vendored=false
+*.json linguist-vendored=false
+*.bat linguist-vendored=false
