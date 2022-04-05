@@ -3,6 +3,8 @@ Contains all of the events that the client will listen to.
 """
 
 import discord
+import asyncio
+
 from discord.ext import commands
 
 # This is the filepath for the reaction roles data
@@ -103,18 +105,21 @@ class EventHandler(commands.Cog):
         """
         Prevents users from voting more than once on a poll.
         """
-        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
-
-        if user.id == self.client.user.id:
+        if user.bot:
             return
 
-        for react in cached.reactions:
-            users = [user async for user in react.users()]
+        # Get the message that the reaction was used on
+        cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
 
-            if any({user not in users, user.bot, str(react) == str(reaction.emoji)}):
+        for react in cached.reactions:
+            users = [user async for user in react.users()]  # List of users who reacted
+
+            # We don't have to remove the reaction if the user doesn't currently have a reaction on the message
+            if user not in users or str(react) == str(reaction.emoji):
                 continue
 
-            await cached.remove_reaction(react.emoji, user)
+            # Changed this to run asynchronously instead of waiting until finished
+            asyncio.create_task(cached.remove_reaction(react.emoji, user))
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
