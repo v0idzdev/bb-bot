@@ -261,7 +261,7 @@ class MusicCog(commands.Cog, name="Music"):
         upcoming = list(itertools.islice(player.queue._queue, 0, 5))
 
         fmt = "\n\n".join(
-            f'➡️ **{i + 1}**: *{song["title"]}*' for i, song in enumerate(upcoming)
+            f'➡️ **{i + 1}**: {song["title"]}' for i, song in enumerate(upcoming)
         )
         embed = discord.Embed(
             title=f"🎧 Music Queue | {len(upcoming)} Songs",
@@ -339,7 +339,7 @@ class MusicCog(commands.Cog, name="Music"):
 
         embed = discord.Embed(
             title="🎧 Volume Changed",
-            description=f"🔊 **{ctx.author}**: Set the volume to *{vol}%*",
+            description=f"🔊 **{ctx.author.name}**: Set the volume to *{vol}%*",
         )
         await ctx.send(embed=embed)
 
