@@ -1,0 +1,18 @@
+{
+    "extension_paths": [
+        "cogs.admin.admin_cog",
+        "cogs.music.music_cog",
+        "cogs.help.help_cog",
+        "cogs.misc.misc_cog",
+        "cogs.role.role_cog"
+    ],
+    "handler_paths": [
+        "handlers.error_handler",
+        "handlers.event_handler",
+        "handlers.task_handler"
+    ],
+    "database_paths": {
+        "blacklist": "files/blacklist.json",
+        "reactionroles": "files/reactionroles.json"
+    }
+}
