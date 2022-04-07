@@ -10,7 +10,6 @@ from client import Client, get_prefix
 
 dotenv.load_dotenv(".env")
 
-# Load the paths used for cogs, handlers, and databases
 with open("config.json", "r") as file:
     config = json.load(file)
 
@@ -21,11 +20,6 @@ with open("config.json", "r") as file:
 # Change TEST_GUILD_ID to your guild in ./.env if you're working on BB.Bot's development
 TEST_GUILD_ID = int(os.getenv("TEST_GUILD_ID"))
 
-# Configure intents and statuses, and create a client.client_class.Client() instance
-#
-# Pass in the cog, handler, and database filepaths as well as
-# the command prefix function, intents, and a case insensitivity setting.
-# Change these in config.json if you need to.
 intents = discord.Intents.all()
 status = itertools.cycle(["❓ ~help", "🎵 ~play", "📢 ~twitch"])
 client = Client(
