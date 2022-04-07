@@ -4,7 +4,9 @@
         "cogs.music.music_cog",
         "cogs.help.help_cog",
         "cogs.misc.misc_cog",
-        "cogs.role.role_cog"
+        "cogs.role.role_cog",
+        "cogs.info.info_cog",
+        "slash_cogs.misc.misc_cog"
     ],
     "handler_paths": [
         "handlers.error_handler",
