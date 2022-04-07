@@ -5,6 +5,7 @@ Contains commands relating to administrator tasks.
 import asyncio
 import discord
 
+from client import Client
 from discord.ext import commands
 from utils import (
     BlacklistClearButton,
@@ -15,16 +16,15 @@ from utils import (
     sanction,
 )
 
-FILEPATH = "files/blacklist.json"
-
 
 class AdminCog(commands.Cog, name="Admin"):
     """
     ⚙️ Commands for server administrators or moderators.
     """
 
-    def __init__(self, client: commands.Bot):
+    def __init__(self, client: Client):
         self.client = client
+        self.blacklist_database_filepath = client.database_paths["blacklist"]
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -156,7 +156,7 @@ class AdminCog(commands.Cog, name="Admin"):
         for word in words_:
             blacklist[id].append(word)
 
-        self.client.update_json(FILEPATH, blacklist)
+        self.client.update_json(self.blacklist_database_filepath, blacklist)
 
         embed = discord.Embed(
             title=f"🛠️ Words Successfully Added",
@@ -263,7 +263,7 @@ class AdminCog(commands.Cog, name="Admin"):
         for word in words_:
             blacklist[id].remove(word)
 
-        self.client.update_json(FILEPATH, blacklist)
+        self.client.update_json(self.blacklist_database_filepath, blacklist)
 
         embed = discord.Embed(
             title=f"🛠️ Words Successfully Removed",

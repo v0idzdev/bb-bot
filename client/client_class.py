@@ -32,26 +32,33 @@ class Client(commands.Bot):
         self.twitch_client_id = os.getenv("TWITCH_CLIENT_ID")
         self.twitch_client_secret = os.getenv("TWITCH_CLIENT_SECRET")
 
-        self.extension_paths = extension_paths
-        self.handler_paths = handler_paths
-        self.database_paths = database_paths
-        self.test_guild_id = test_guild_id
+        self._extension_paths = extension_paths
+        self._handler_paths = handler_paths
+        self._database_paths = database_paths
+        self._test_guild_id = test_guild_id
 
         self._fill_cache()
 
-    def _fill_cache(self, filepath, data) -> None:
+    @property
+    def database_paths(self):
+        """
+        Returns a dictionary containing the paths to JSON database files.
+        """
+        return self._database_paths
+
+    def _fill_cache(self) -> None:
         """
         Loads JSON database files and stores their data as a Cache object in self.cache.
         """
         temporary_cache = {}
 
-        for (key, filepath) in self.database_paths.values():
+        for key, filepath in self._database_paths.items():
             with open(filepath, "r") as file:
                 temporary_cache[key] = json.load(file)
 
         self.cache = Cache(**temporary_cache)
 
-    def update_json(self, filename, payload):
+    def update_json(self, filename, payload) -> None:
         """
         Updates a modified Cache attribute and stores it in a JSON file.
         """
@@ -67,20 +74,20 @@ class Client(commands.Bot):
 
             return await super().start(*args, **kwargs)
 
-    async def sync(self):
+    async def sync(self) -> None:
         """
         Syncs all application commands with Discord.
         """
         await self.wait_until_ready()
 
-        if self.test_guild_id:
-            await self.tree.sync(guild=discord.Object(id=self.test_guild_id))
+        if self._test_guild_id:
+            await self.tree.sync(guild=discord.Object(id=self._test_guild_id))
 
         await self.tree.sync()
 
-    async def load(self):
+    async def load(self) -> None:
         """
         Initializes the cogs, handlers, and slash cogs that the bot will use.
         """
-        for module in self.extension_paths + self.handler_paths:
+        for module in self._extension_paths + self._handler_paths:
             await self.load_extension(module)

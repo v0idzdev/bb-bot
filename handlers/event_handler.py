@@ -5,10 +5,8 @@ Contains all of the events that the client will listen to.
 import discord
 import asyncio
 
+from client import Client
 from discord.ext import commands
-
-# This is the filepath for the reaction roles data
-FILEPATH = "files/reactionroles.json"
 
 
 class EventHandler(commands.Cog):
@@ -16,8 +14,9 @@ class EventHandler(commands.Cog):
     Responsible for handling all events that the bot will listen to.
     """
 
-    def __init__(self, client: commands.Bot) -> None:
+    def __init__(self, client: Client) -> None:
         self.client = client
+        self.reactionroles_database_filepath = client.database_paths["reactionroles"]
 
     async def _add_or_remove_role(
         self, payload: discord.RawReactionActionEvent, client: commands.Bot, type: str
@@ -119,19 +118,6 @@ class EventHandler(commands.Cog):
             if user in users and str(existing_reaction) != str(reaction):
                 await message.remove_reaction(existing_reaction.emoji, user)
 
-        # # Get the message that the reaction was used on
-        # cached = discord.utils.get(self.client.cached_messages, id=reaction.message.id)
-
-        # for react in cached.reactions:
-        #     users = [user async for user in react.users()]  # List of users who reacted
-
-        #     # We don't have to remove the reaction if the user doesn't currently have a reaction on the message
-        #     if user not in users or str(react) == str(reaction.emoji):
-        #         continue
-
-        #     # Changed this to run asynchronously instead of waiting until finished
-        #     asyncio.create_task(cached.remove_reaction(react.emoji, user))
-
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
         """
@@ -158,16 +144,14 @@ class EventHandler(commands.Cog):
             if reaction_role["msg_id"] == message.id:
                 reaction_roles.remove(reaction_role)
 
-        self.client.update_json(FILEPATH, reaction_roles)
+        self.client.update_json(self.reactionroles_database_filepath, reaction_roles)
 
     @commands.Cog.listener()
     async def on_ready(self):
         """
         Executes when the bot has loaded.
         """
-        print(
-            f"LOADED {self.client.user.name} SUCCESSFULLY.\n\n---------- LOGS: ----------\n"
-        )
+        print(f"Loaded\nName: {self.client.user.name} // ID: {self.client.user.id}")
 
         task_handler = self.client.cogs.get("TaskHandler")
         tasks = ["change_presence", "clean_json_file"]

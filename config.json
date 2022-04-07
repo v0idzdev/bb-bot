@@ -12,7 +12,7 @@
         "handlers.task_handler"
     ],
     "database_paths": {
-        "blacklist": "files/blacklist.json",
-        "reactionroles": "files/reactionroles.json"
+        "blacklist": "database/blacklist.json",
+        "reactionroles": "database/reactionroles.json"
     }
 }

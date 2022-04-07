@@ -5,9 +5,8 @@ Contains a cog that handles reaction roles/self roles.
 import discord
 import json
 
+from client import Client
 from discord.ext import commands
-
-FILEPATH = "files/reactionroles.json"  # JSON file containing reaction role data
 
 
 class RoleCog(commands.Cog, name="Roles"):
@@ -15,8 +14,9 @@ class RoleCog(commands.Cog, name="Roles"):
     🏷️ Contains role commands.
     """
 
-    def __init__(self, client: commands.Bot):
+    def __init__(self, client: Client):
         self.client = client
+        self.reactionroles_database_filepath = client.database_paths["reactionroles"]
 
     @commands.command(aliases=["crr"])
     @commands.has_permissions(manage_roles=True)
@@ -29,7 +29,7 @@ class RoleCog(commands.Cog, name="Roles"):
         Usage:
         ```
         ~reactrole | ~crr <emoji> <@role> <message>
-        ``` 
+        ```
         """
         embed = discord.Embed(description=message)
         msg = await ctx.channel.send(embed=embed)
@@ -46,7 +46,7 @@ class RoleCog(commands.Cog, name="Roles"):
         }
 
         data.append(react_role)
-        self.client.update_json(FILEPATH, data)
+        self.client.update_json(self.reactionroles_database_filepath, data)
 
     @commands.command(aliases=["rrr"])
     @commands.has_permissions(manage_roles=True)
@@ -68,7 +68,7 @@ class RoleCog(commands.Cog, name="Roles"):
             msg = ctx.channel.get_partial_message(instance["msg_id"])
             await msg.delete()
             data.remove(instance)
-        self.client.update_json(FILEPATH, data)
+        self.client.update_json(self.reactionroles_database_filepath, data)
         embed = discord.Embed(title="👍🏻 Done.", description=f"🔧 Removed '{role.name}'.")
         await ctx.send(embed=embed)
 
