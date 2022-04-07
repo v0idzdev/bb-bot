@@ -29,7 +29,7 @@ class RoleCog(commands.Cog, name="Roles"):
         Usage:
         ```
         ~reactrole | ~crr <emoji> <@role> <message>
-        ```
+        ``` 
         """
         embed = discord.Embed(description=message)
         msg = await ctx.channel.send(embed=embed)
