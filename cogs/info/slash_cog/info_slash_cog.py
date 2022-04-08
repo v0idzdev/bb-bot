@@ -77,6 +77,24 @@ class InfoSlashCog(commands.Cog):
         """
         await perms_callback(interaction, member)
 
+    @app_commands.command()
+    async def botinfo(self, interaction: discord.Interaction):
+        """
+        💡 Shows information about the bot.
+
+        ❓ This will change depending on whether the bot is self-hosted.
+
+        Usage:
+        ```
+        ~botinfo [@member]
+        ```
+        Or:
+        ```
+        /botinfo [@member]
+        ```
+        """
+        await botinfo_callback(interaction, self.client)
+
 
 async def setup(client: commands.Bot):
     """
