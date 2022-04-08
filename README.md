@@ -183,6 +183,7 @@ Creates a poll that users can react with yes or no to.<br>
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
 Gets information about a Twitch stream if the streamer is currently streaming.
+<br><br>  
 
 ### 💡 Info Commands
 
