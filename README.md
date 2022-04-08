@@ -17,8 +17,6 @@
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 * Click **[here](#-self-hosting)** for self-hosting instructions.
 * Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/CONTRIBUTIONS.md)** for information about contributing.
-
-⚠️ Currently, self-hosting is **not 100% bug-free**. Please self-host at your own risk.
 <br><br>
 
 ## 📢 **Commands List**
@@ -218,24 +216,28 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
     * **All** priveleged gateway intents
     * `Administrator` permissions
     * `bot` and `applications.commands` scopes.<br><br>
+* A **Twitch application**, with a client secret and client ID.
 
 ### ⏳ Installing
 
 1. Install a **.ZIP** from the **[releases](https://github.com/matthewflegg/bb-bot/releases)** page.<br>
 3. **Extract it** to your preferred file location.<br>
-4. **Create a file** in the **root directory** called `.env`.
-    * **Edit** the file. Enter `TOKEN=example`, replacing 'example' with your bot's token.
-    * **Save** the file and **exit**.
-<br><br>
+4. **Create a file** in the **root directory** called `.env`. It should look like this:
+```
+TOKEN=<Your Discord Bot Token>
+TEST_GUILD_ID=<Your Server's ID. This is optional>
+TWITCH_CLIENT_ID=<Your Twitch Client ID>
+TWITCH_CLIENT_SECRET=<Your Twitch Client Secret>
+```
 
 ### 🔌 Running
 
 ##### 🐧 Linux/UNIX
-* Go to the **root directory** and run `chmod +x start.sh`.
-* Then **run the script** using `./start.sh`.
+* Go to the **root directory** and run `chmod +x scripts/start.sh`.
+* Then **run the script** using `./scripts/start.sh`.
 
 ##### 🏠 Windows
 * Press **Windows + X**.
 * Choose **Windows PowerShell (Admin)**.
-* Go to the **root directory** and run `Set-ExecutionPolicy ByPass`.
-* Finally, **run** `.\start.ps1`.
+* Go to the **root directory** and run `Set-ExecutionPolicy Bypass`.
+* Finally, **run** `.\scripts\start.ps1`.
