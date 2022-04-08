@@ -33,6 +33,7 @@
 * **[Music Commands](#-music-commands)**
 * **[Role Commands](#-role-commands)**
 * **[Misc Commands](#-misc-commands)**
+* **[Info Commands](#-info-commands)**
 <br><br>  
 
 ### 🔖 Help Commands
@@ -182,6 +183,22 @@ Creates a poll that users can react with yes or no to.<br>
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
 Gets information about a Twitch stream if the streamer is currently streaming.
+
+### 💡 Info Commands
+
+❓ Just like misc commands, we're also testing out **[slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)** for this category.
+
+> **~joined `@member?`** or **/joined `@member?`**
+
+Shows the join date of a member on a server. If no member is specified, it shows your join date.
+
+> **~toprole `@member?`** or **/toprole `@member?`**
+
+Shows a member's highest ranking role on a server. If no member is specified, it shows your top role.
+
+> **~permissions | ~perms `@member?`** or **/permissions `@member?`**
+
+Shows the permissions a member has on a server. If no member is specified, it shows your permissions.
 <br><br>
 
 ## 🚀 Self Hosting
