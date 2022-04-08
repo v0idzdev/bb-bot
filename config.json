@@ -5,7 +5,8 @@
         "cogs.help.help_cog",
         "cogs.misc.misc_cog",
         "cogs.role.role_cog",
-        "cogs.info.info_cog",
+        "cogs.info.prefix_cog.info_cog",
+        "cogs.info.slash_cog.info_slash_cog",
         "slash_cogs.misc.misc_cog"
     ],
     "handler_paths": [
