@@ -27,9 +27,12 @@ async def joined_callback(
     if member is None:  # if no user is provided, show info about the member
         member = ctx.user if is_interaction else ctx.author
 
+    date = member.joined_at.strftime("%d/%m/%Y")
+    time = member.joined_at.strftime("%I:%M %p")
+
     embed = discord.Embed(
         title=f"💡 Join Date",
-        description=f"👋🏻 **{member.joined_at}**",  # Fix timestamp
+        description=f"👋🏻 **{date}** | *{time}*",
     )
 
     embed.set_author(icon_url=member.avatar.url, name=member.display_name)
