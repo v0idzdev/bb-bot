@@ -147,7 +147,7 @@ class MiscCog(commands.Cog, name="Misc"):
         await ctx.reply(embed=meme)
 
     @commands.command()
-    async def poll(self, ctx: commands.Context, *poll: str):
+    async def poll(self, ctx: commands.Context, *, poll: str):
         """
         🎲 Creates a simple yes or no poll.
 
@@ -177,6 +177,54 @@ class MiscCog(commands.Cog, name="Misc"):
 
         await message.add_reaction("✔️")
         return await message.add_reaction("❌")
+
+    @commands.command()
+    async def echo(self, ctx: commands.Context, *, message: str):
+        """
+        🎲 Repeats what you say.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~echo <message>
+        ```
+        Or:
+        ```
+        /echo <message>
+        ```
+        """
+        if message is None:
+            return await ctx.reply(
+                f":x: You need to tell me what to say.",
+                delete_after=20
+            )
+
+        await ctx.message.delete()
+        await ctx.send(message)
+
+    @commands.command()
+    async def ping(self, ctx: commands.Context):
+        """
+        🎲 Shows your current latency.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~ping
+        ```
+        Or:
+        ```
+        /ping
+        ```
+        """
+        embed = discord.Embed(
+            title="🏓 Pong!",
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms."
+        )
+
+        await ctx.send(embed=embed)
 
 
 async def setup(client: commands.Bot):

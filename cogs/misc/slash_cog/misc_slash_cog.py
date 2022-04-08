@@ -187,6 +187,59 @@ class MiscSlashCog(commands.Cog):
         await message.add_reaction("✔️")
         return await message.add_reaction("❌")
 
+    @app_commands.command()
+    @app_commands.describe(message="❓ The phrase you want the bot to repeat.")
+    async def echo(self, interaction: discord.Interaction, *, message: str):
+        """
+        🎲 Repeats what you say.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~echo <message>
+        ```
+        Or:
+        ```
+        /echo <message>
+        ```
+        """
+        await interaction.response.defer()
+
+        if message is None:
+            return await interaction.followup.send(
+                f":x: You need to tell me what to say.",
+                ephemeral=True
+            )
+
+        await interaction.followup.send(message)
+
+
+    @app_commands.command()
+    async def ping(self, interaction: discord.Interaction):
+        """
+        🎲 Shows your current latency.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~ping
+        ```
+        Or:
+        ```
+        /ping
+        ```
+        """
+        await interaction.response.defer()
+
+        embed = discord.Embed(
+            title="🏓 Pong!",
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms."
+        )
+
+        await interaction.followup.send(embed=embed)
+
 
 async def setup(client: commands.Bot):
     """

@@ -108,6 +108,7 @@ async def botinfo_callback(ctx: discord.Interaction | commands.Context, client: 
     repo = Repo(".")
     tags = [str(tag)[3: -1] for tag in tag_list(repo)] # Remove b'v and ' from b'v1.1.5' etc
 
+    # ! bad code, just a test
     is_stable_version_regex = re.compile(r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)") # x.x.x
     is_stable_version = lambda tag: is_stable_version_regex.match(tag) is not None and len(tag) == 5 # bad
 
