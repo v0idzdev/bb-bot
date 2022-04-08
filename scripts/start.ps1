@@ -1,5 +1,3 @@
-Set-Location ..
-
 $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Description."
 $cancel = New-Object System.Management.Automation.Host.ChoiceDescription "&Cancel", "Description."
 $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $cancel)
