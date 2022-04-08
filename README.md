@@ -207,16 +207,18 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
 
 * Click **[here](https://realpython.com/installing-python/)** for more information on **installing Python**.
 * Click **[here](https://discordpy.readthedocs.io/en/stable/discord.html)** for more information on **setting up a Discord bot** using the **Discord Developer Portal**.
+* Click **[here](https://dev.twitch.tv/docs/authentication/register-app)** for more information on **registering a Twitch API application**.
 <br><br>
 
 ### 🔖 Prerequisites
 
 * **Python** 3.10+<br>
-* A **Discord bot** with:<br>
+* A **Discord API application with a Bot user**, with:<br>
     * **All** priveleged gateway intents
     * `Administrator` permissions
-    * `bot` and `applications.commands` scopes.<br><br>
-* A **Twitch application**, with a client secret and client ID.
+    * `bot` and `applications.commands` scopes.
+* A registered **Twitch API application**.
+<br><br>
 
 ### ⏳ Installing
 
