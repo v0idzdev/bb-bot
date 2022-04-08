@@ -19,7 +19,7 @@ class Client(commands.Bot):
         extension_paths: list[str],
         handler_paths: list[str],
         database_paths: dict[str, str],
-        test_guild_id: int = None,
+        test_guild_id: int,
         **kwargs
     ) -> None:
         super().__init__(**kwargs)

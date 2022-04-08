@@ -24,10 +24,10 @@ intents = discord.Intents.all()
 status = itertools.cycle(["❓ ~help", "🎵 ~play", "📢 ~twitch"])
 client = Client(
     status,
-    extension_paths=EXTENSION_PATHS,
-    handler_paths=HANDLER_PATHS,
-    database_paths=DATABASE_PATHS,
-    test_guild_id=TEST_GUILD_ID,
+    EXTENSION_PATHS,
+    HANDLER_PATHS,
+    DATABASE_PATHS,
+    TEST_GUILD_ID,
     command_prefix=get_prefix,
     intents=intents,
     case_insensitive=True,
