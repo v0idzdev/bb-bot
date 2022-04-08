@@ -16,7 +16,7 @@ switch ($result) {
     } 
     
     1 {
-        Write-Hose "Exiting setup."
+        Write-Host "Exiting setup."
         Exit
     }
 }
