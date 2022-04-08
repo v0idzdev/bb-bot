@@ -181,6 +181,14 @@ Creates a poll that users can react with yes or no to.<br>
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
 Gets information about a Twitch stream if the streamer is currently streaming.
+
+> **~echo `text`** or **/echo `text`**
+
+Repeats a message in a text channel.
+
+> **~ping** or **/ping**
+
+Shows your current ping/latency in milliseconds.
 <br><br>  
 
 ### 💡 Info Commands
