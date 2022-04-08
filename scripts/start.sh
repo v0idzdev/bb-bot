@@ -1,5 +1,3 @@
-cd ..
-
 which python3
 
 # If not, then install it
