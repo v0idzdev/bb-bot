@@ -62,7 +62,7 @@ class InfoSlashCog(commands.Cog):
         self, interaction: discord.Interaction, *, member: discord.Member = None
     ):
         """
-        💡 Shows the top role for a member.
+        💡 Shows the permissions for a member.
 
         ❓ If no member is specified, the bot will show your permissions.
 

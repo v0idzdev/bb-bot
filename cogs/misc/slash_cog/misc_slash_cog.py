@@ -12,7 +12,7 @@ from discord.ext import commands
 from utils import TwitchBroadcast
 
 
-class SlashMiscCog(commands.Cog):
+class MiscSlashCog(commands.Cog):
     """
     🎲 Contains miscellaneous commands.
     """
@@ -192,11 +192,11 @@ async def setup(client: commands.Bot):
     """
     Registers the cog with the client.
     """
-    await client.add_cog(SlashMiscCog(client))
+    await client.add_cog(MiscSlashCog(client))
 
 
 async def teardown(client: commands.Bot):
     """
     Un-registers the cog with the client.
     """
-    await client.remove_cog(SlashMiscCog(client))
+    await client.remove_cog(MiscSlashCog(client))
