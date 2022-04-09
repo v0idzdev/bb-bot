@@ -9,7 +9,9 @@ import humanize
 
 from discord import app_commands
 from discord.ext import commands
-from utils import TwitchBroadcast
+from utils import TwitchBroadcast, ViewYoutubeButton
+
+from ..misc_utils import fetch_from_youtube
 
 
 class MiscSlashCog(commands.Cog):
@@ -208,12 +210,10 @@ class MiscSlashCog(commands.Cog):
 
         if message is None:
             return await interaction.followup.send(
-                f":x: You need to tell me what to say.",
-                ephemeral=True
+                f":x: You need to tell me what to say.", ephemeral=True
             )
 
         await interaction.followup.send(message)
-
 
     @app_commands.command()
     async def ping(self, interaction: discord.Interaction):
@@ -235,10 +235,45 @@ class MiscSlashCog(commands.Cog):
 
         embed = discord.Embed(
             title="🏓 Pong!",
-            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms."
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms.",
         )
 
         await interaction.followup.send(embed=embed)
+
+    @app_commands.command()
+    @app_commands.describe(search="❓ The YouTube video to search for.")
+    async def youtube(self, interaction: discord.Interaction, *, search: str):
+        """
+        🎲 Searches for a video on youtube and sends the link.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~youtube <search>
+        ```
+        Or:
+        ```
+        /youtube <search>
+        ```
+        """
+        await interaction.response.defer()
+
+        if search is None:
+            return await interaction.followup.send(
+                f":x: You need to tell me what to search for.", ephemeral=True
+            )
+
+        embed, url = await fetch_from_youtube(search)
+        await interaction.followup.send(embed=embed)
+
+        # Ask if they would like to view the video in Discord
+        embed = discord.Embed(
+            title="🎲 View in Discord?",
+            description="❓ Click View In Discord to view the video in this text channel.",
+        )
+        view = ViewYoutubeButton(url, interaction, timeout=60)
+        view.message = await interaction.followup.send(embed=embed, view=view)
 
 
 async def setup(client: commands.Bot):
