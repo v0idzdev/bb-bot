@@ -101,23 +101,33 @@ async def botinfo_callback(ctx: discord.Interaction | commands.Context, client: 
     embed = discord.Embed(
         title="💡 Bot Information",
         description="❓ Some information about BB.Bot.",
-        timestamp=datetime.datetime.utcnow()
+        timestamp=datetime.datetime.utcnow(),
     )
 
     # Find the current stable + dev release names
     repo = Repo(".")
-    tags = [str(tag)[3: -1] for tag in tag_list(repo)] # Remove b'v and ' from b'v1.1.5' etc
+    tags = [
+        str(tag)[3:-1] for tag in tag_list(repo)
+    ]  # Remove b'v and ' from b'v1.1.5' etc
 
     # ! bad code, just a test
-    is_stable_version_regex = re.compile(r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)") # x.x.x
-    is_stable_version = lambda tag: is_stable_version_regex.match(tag) is not None and len(tag) == 5 # bad
+    is_stable_version_regex = re.compile(
+        r"^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)"
+    )  # x.x.x
+    is_stable_version = (
+        lambda tag: is_stable_version_regex.match(tag) is not None and len(tag) == 5
+    )  # bad
 
     stable_version = list(filter(is_stable_version, tags))[-1]
     development_version = tags[-1]
 
-    embed.set_footer(text=f'➕ BB.Bot is running on {len(client.guilds)} servers.')
-    embed.add_field(name='🎁 Versions', value=f'Stable: **{stable_version}** | Development: **{development_version}**', inline=False)
-    embed.add_field(name='🌍 Language', value='Python **3.10.2**', inline=False)
+    embed.set_footer(text=f"➕ BB.Bot is running on {len(client.guilds)} servers.")
+    embed.add_field(
+        name="🎁 Versions",
+        value=f"Stable: **{stable_version}** | Development: **{development_version}**",
+        inline=False,
+    )
+    embed.add_field(name="🌍 Language", value="Python **3.10.2**", inline=False)
     embed.set_author(
         name="Matthew Flegg",
         url="https://github.com/matthewflegg",

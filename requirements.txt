@@ -29,3 +29,5 @@ humanize
 black
 jishaku @ git+https://github.com/Gorialis/jishaku#
 gitpython
+dulwich
+bs4

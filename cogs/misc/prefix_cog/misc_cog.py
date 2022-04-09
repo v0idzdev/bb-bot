@@ -4,12 +4,18 @@ Contains miscellaneous commands to be used for fun.
 
 import datetime
 import random
+import re
 import humanize
 import discord
+import requests
 
 from typing import Optional
 from discord.ext import commands
-from utils import TwitchBroadcast
+from utils import TwitchBroadcast, ViewYoutubeButton
+from urllib import parse, request
+from bs4 import BeautifulSoup
+
+from ..misc_utils import fetch_from_youtube
 
 
 class MiscCog(commands.Cog, name="Misc"):
@@ -196,8 +202,7 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         if message is None:
             return await ctx.reply(
-                f":x: You need to tell me what to say.",
-                delete_after=20
+                f":x: You need to tell me what to say.", delete_after=20
             )
 
         await ctx.message.delete()
@@ -221,10 +226,42 @@ class MiscCog(commands.Cog, name="Misc"):
         """
         embed = discord.Embed(
             title="🏓 Pong!",
-            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms."
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms.",
         )
 
         await ctx.send(embed=embed)
+
+    @commands.command(aliases=["yt"])
+    async def youtube(self, ctx: commands.Context, *, search: str = None):
+        """
+        🎲 Searches for a video on youtube and sends the link.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~youtube <search>
+        ```
+        Or:
+        ```
+        /youtube <search>
+        ```
+        """
+        if search is None:
+            return await ctx.reply(
+                f":x: You need to tell me what to search for.", delete_after=20
+            )
+
+        embed, url = await fetch_from_youtube(search)
+        await ctx.send(embed=embed)
+
+        # Ask if they would like to view the video in Discord
+        embed = discord.Embed(
+            title="🎲 View in Discord?",
+            description="❓ Click View In Discord to view the video in this text channel.",
+        )
+        view = ViewYoutubeButton(url, ctx, timeout=60)
+        view.message = await ctx.send(embed=embed, view=view)
 
 
 async def setup(client: commands.Bot):
