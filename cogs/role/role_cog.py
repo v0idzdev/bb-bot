@@ -35,18 +35,19 @@ class RoleCog(commands.Cog, name="Roles"):
         msg = await ctx.channel.send(embed=embed)
 
         await msg.add_reaction(emoji)
-        data = self.client.cache.reactionroles
 
-        react_role = {  # Create a dictionary to store in the JSON file
-            "guild_id": ctx.guild.id,
-            "name": role.name,
-            "role_id": role.id,
-            "emoji": emoji,
-            "msg_id": msg.id,
-        }
+        database = self.client.cache.reactionroles
+        database.append(
+            {
+                "guild_id": ctx.guild.id,
+                "name": role.name,
+                "role_id": role.id,
+                "emoji": emoji,
+                "msg_id": msg.id,
+            }
+        )
 
-        data.append(react_role)
-        self.client.update_json(self.reactionroles_database_filepath, data)
+        self.client.update_json(self.reactionroles_database_filepath, database)
 
     @commands.command(aliases=["rrr"])
     @commands.has_permissions(manage_roles=True)
@@ -80,38 +81,31 @@ class RoleCog(commands.Cog, name="Roles"):
         error = getattr(error, "original", error)
         message = f"❌ "
 
-        match error.__class__:
-            case commands.RoleNotFound:
-                message += "That role does not exist. Please create the role first."
-            case commands.EmojiNotFound:
-                message += "Sorry, that emoji was not found. Please try again."
-            case commands.UserInputError:
-                message += (
-                    "Invalid input, please try again. "
-                    + "Use `~help crr` for more information."
-                )
-            case commands.MissingRequiredArgument:
-                message += (
-                    "Please enter all the required arguments. "
-                    + "Use `~help crr` for more information."
-                )
-            case discord.HTTPException:  # An invalid emoji raises a HTTP exception
-                if (
-                    "Unknown Emoji" in error.__str__()
-                ):  # Prevents this handler from catching unrelated errors
-                    await ctx.channel.purge(limit=1)
-                    message += "Sorry, that emoji is invalid."
-            case discord.Forbidden:
-                message += (
-                    "BB.Bot is forbidden from assigning/removing this role. "
-                    + "Try moving this role above the reaction role."
-                )
-            case _:
-                print(error.args, error.__traceback__)
-                message += (
-                    "An unknown error occurred while creating your reaction role. "
-                    + "Please try again later."
-                )
+        if isinstance(error, commands.RoleNotFound):
+            message += "The role you specified was not found."
+
+        if isinstance(error, commands.EmojiNotFound):
+            message += "The emoji you specified was not found."
+
+        if isinstance(error, commands.UserInputError):
+            message += "Invalid input, please try again."
+
+        if isinstance(error, commands.MissingRequiredArgument):
+            message += "Please enter all the required arguments."
+
+        if isinstance(error, discord.Forbidden):
+            message += (
+                "BB.Bot is forbidden from assigning/removing this role. "
+                + "Try moving this role above the reaction role."
+            )
+
+        if (
+            isinstance(error, discord.HTTPException)
+            and "Unknown Emoji" in error.__str__()
+        ):
+            await ctx.channel.purge(limit=1)
+            message += "Sorry, that emoji is invalid."
+
         await ctx.reply(message, delete_after=20)
 
     @removereactrole.error
@@ -122,32 +116,14 @@ class RoleCog(commands.Cog, name="Roles"):
         error = getattr(error, "original", error)
         message = f"❌ "
 
-        match error.__class__:
+        if isinstance(error, commands.RoleNotFound):
+            message += "The role you specified was not found."
 
-            case commands.RoleNotFound:
-                role = (
-                    error.__str__().removeprefix('Role "').removesuffix('" not found.')
-                )  # Role "Test" not found, => Test
-                message += f"**{role}** either doesn't exist, or isn't a reaction role on this server."
+        if isinstance(error, commands.UserInputError):
+            message += "Invalid input, please try again."
 
-            case commands.UserInputError:
-                message += (
-                    "Invalid input, please try again. "
-                    + "Use `~help crr` for more information."
-                )
-
-            case commands.MissingRequiredArgument:
-                message += (
-                    "Please enter all the required arguments. "
-                    + "Use `~help crr` for more information."
-                )
-
-            case _:
-                print(error.args, error.__traceback__)
-                message += (
-                    "An unknown error occurred while creating your reaction role. "
-                    + "Please try again later."
-                )
+        if isinstance(error, commands.MissingRequiredArgument):
+            message += "Please enter all the required arguments."
 
         await ctx.reply(message, delete_after=20)
 
