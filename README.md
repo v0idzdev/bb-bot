@@ -189,6 +189,10 @@ Repeats a message in a text channel.
 > **~ping** or **/ping**
 
 Shows your current ping/latency in milliseconds.
+
+> **~youtube | ~yt `search term`** or **/youtube `search term`**
+
+Searches YouTube for a video and sends you a link to it. You can choose to view it on YouTube or in Discord.
 <br><br>  
 
 ### 💡 Info Commands
