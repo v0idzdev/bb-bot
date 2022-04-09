@@ -73,6 +73,35 @@ class RoleCog(commands.Cog, name="Roles"):
         embed = discord.Embed(title="👍🏻 Done.", description=f"🔧 Removed '{role.name}'.")
         await ctx.send(embed=embed)
 
+    @commands.command(alias=["roles"])
+    async def viewreactroles(self, ctx: commands.Context):
+        """
+        🏷️ Shows all of the reaction roles in a server.
+
+        Usage:
+        ```
+        ~removereactrole | ~rrr <@role>
+        ```
+        """
+        roles = []
+        db = self.client.cache.reactionroles
+
+        for reaction_role_message in db:
+            if reaction_role_message["guild_id"] != ctx.guild.id:
+                continue
+
+            role_id = int(reaction_role_message["role_id"])
+            role = ctx.guild.get_role(role_id)
+
+            roles.append(f"{role.name}")
+
+        embed = discord.Embed(
+            title=f"🏷️ Found {len(roles)} Reaction {'Roles' if len(roles) != 1 else 'Role'}",
+            description=" ".join(f"`{role}`" for role in roles),
+        )
+
+        await ctx.send(embed=embed)
+
     @reactrole.error
     async def reactrole_error(self, ctx: commands.Context, error):
         """
