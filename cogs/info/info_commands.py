@@ -151,3 +151,14 @@ async def avatar_callback(
     embed = discord.Embed(title=f"💡 {member.name}'s Avatar")
     embed.set_image(url=member.avatar.url)
     return await send_embed(is_interaction, embed, ctx)
+
+
+async def servericon_callback(ctx: discord.Interaction | commands.Context):
+    is_interaction = isinstance(ctx, discord.Interaction)
+
+    if is_interaction:
+        await ctx.response.defer()
+
+    embed = discord.Embed(title=f"💡 {ctx.guild.name}'s Icon")
+    embed.set_image(url=ctx.guild.icon.url)
+    return await send_embed(is_interaction, embed, ctx)
