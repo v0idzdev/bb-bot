@@ -95,6 +95,27 @@ class InfoSlashCog(commands.Cog):
         """
         await botinfo_callback(interaction, self.client)
 
+    @app_commands.command()
+    @app_commands.describe(member="💡 Choose a user to display the avatar of.")
+    async def avatar(
+        self, interaction: discord.Interaction, *, member: discord.Member = None
+    ):
+        """
+        💡 Shows a member's avatar. If no member is specified, it shows yours.
+
+        ❓ This will change depending on whether the bot is self-hosted.
+
+        Usage:
+        ```
+        ~avatar [@member]
+        ```
+        Or:
+        ```
+        /avatar [@member]
+        ```
+        """
+        await avatar_callback(interaction, member)
+
 
 async def setup(client: commands.Bot):
     """
