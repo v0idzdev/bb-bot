@@ -1,10 +1,8 @@
 import threading
 import discord
 
+from client import Client
 from discord.ext import commands, tasks
-
-# JSON file containing reaction role data
-FILEPATH = "files/reactionroles.json"
 
 
 class TaskHandler(commands.Cog):
@@ -12,11 +10,11 @@ class TaskHandler(commands.Cog):
     Manages and schedules timed async background tasks.
     """
 
-    def __init__(self, client: commands.Bot):
+    def __init__(self, client: Client):
         self.client = client
+        self.reactionroles_database_filepath = client.database_paths["reactionroles"]
 
     def do_process(self):
-        print(f"[INFO] Running clean_json_file.\n")
         data = self.client.cache.reactionroles
 
         for guild in self.client.guilds:
@@ -24,7 +22,7 @@ class TaskHandler(commands.Cog):
                 if item["role_id"] not in [role.id for role in guild.roles]:
                     data.remove(item)
 
-        self.client.update_json(FILEPATH, data)
+        self.client.update_json(self.reactionroles_database_filepath, data)
 
     @tasks.loop(seconds=60)
     async def clean_json_file(self):
@@ -42,20 +40,18 @@ class TaskHandler(commands.Cog):
         """
         Changes the bot's presence every 30 seconds.
         """
-        print(f"[INFO] Running change_presence.\n")
         activity = next(self.client.possible_status)
-
         await self.client.change_presence(activity=discord.Game(activity))
 
 
-async def setup(client: commands.Bot):
+async def setup(client: Client):
     """
     Registers the cog with the client.
     """
     await client.add_cog(TaskHandler(client))
 
 
-async def teardown(client: commands.Bot):
+async def teardown(client: Client):
     """
     Un-registers the cog with the client.
     """

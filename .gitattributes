@@ -1,4 +1,0 @@
-* linguist-vendored
-*.py linguist-vendored=false
-*.sh linguist-vendored=false
-*.ps1 linguist-vendored=false

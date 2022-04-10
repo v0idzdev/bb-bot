@@ -17,8 +17,6 @@
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 * Click **[here](#-self-hosting)** for self-hosting instructions.
 * Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/CONTRIBUTIONS.md)** for information about contributing.
-
-⚠️ Currently, self-hosting is **not 100% bug-free**. Please self-host at your own risk.
 <br><br>
 
 ## 📢 **Commands List**
@@ -33,6 +31,7 @@
 * **[Music Commands](#-music-commands)**
 * **[Role Commands](#-role-commands)**
 * **[Misc Commands](#-misc-commands)**
+* **[Info Commands](#-info-commands)**
 <br><br>  
 
 ### 🔖 Help Commands
@@ -182,6 +181,35 @@ Creates a poll that users can react with yes or no to.<br>
 > **~twitch `streamer name`** or **/twitch `streamer name`**
 
 Gets information about a Twitch stream if the streamer is currently streaming.
+
+> **~echo `text`** or **/echo `text`**
+
+Repeats a message in a text channel.
+
+> **~ping** or **/ping**
+
+Shows your current ping/latency in milliseconds.
+
+> **~youtube | ~yt `search term`** or **/youtube `search term`**
+
+Searches YouTube for a video and sends you a link to it. You can choose to view it on YouTube or in Discord.
+<br><br>  
+
+### 💡 Info Commands
+
+❓ Just like misc commands, we're also testing out **[slash commands](https://support.discord.com/hc/en-us/articles/1500000368501-Slash-Commands-FAQ)** for this category.
+
+> **~joined `@member?`** or **/joined `@member?`**
+
+Shows the join date of a member on a server. If no member is specified, it shows your join date.
+
+> **~toprole `@member?`** or **/toprole `@member?`**
+
+Shows a member's highest ranking role on a server. If no member is specified, it shows your top role.
+
+> **~permissions | ~perms `@member?`** or **/permissions `@member?`**
+
+Shows the permissions a member has on a server. If no member is specified, it shows your permissions.
 <br><br>
 
 ## 🚀 Self Hosting
@@ -191,33 +219,39 @@ How to set up **BB.Bot** for self-hosting, step by step.<br>
 
 * Click **[here](https://realpython.com/installing-python/)** for more information on **installing Python**.
 * Click **[here](https://discordpy.readthedocs.io/en/stable/discord.html)** for more information on **setting up a Discord bot** using the **Discord Developer Portal**.
+* Click **[here](https://dev.twitch.tv/docs/authentication/register-app)** for more information on **registering a Twitch API application**.
 <br><br>
 
 ### 🔖 Prerequisites
 
 * **Python** 3.10+<br>
-* A **Discord bot** with:<br>
+* A **Discord API application with a Bot user**, with:<br>
     * **All** priveleged gateway intents
     * `Administrator` permissions
-    * `bot` and `applications.commands` scopes.<br><br>
+    * `bot` and `applications.commands` scopes.
+* A registered **Twitch API application**.
+<br><br>
 
 ### ⏳ Installing
 
 1. Install a **.ZIP** from the **[releases](https://github.com/matthewflegg/bb-bot/releases)** page.<br>
 3. **Extract it** to your preferred file location.<br>
-4. **Create a file** in the **root directory** called `.env`.
-    * **Edit** the file. Enter `TOKEN=example`, replacing 'example' with your bot's token.
-    * **Save** the file and **exit**.
-<br><br>
+4. **Create a file** in the **root directory** called `.env`. It should look like this:
+```
+TOKEN=<Your Discord Bot Token>
+TEST_GUILD_ID=<Your Server's ID. This is optional>
+TWITCH_CLIENT_ID=<Your Twitch Client ID>
+TWITCH_CLIENT_SECRET=<Your Twitch Client Secret>
+```
 
 ### 🔌 Running
 
 ##### 🐧 Linux/UNIX
-* Go to the **root directory** and run `chmod +x start.sh`.
-* Then **run the script** using `./start.sh`.
+* Go to the **root directory** and run `chmod +x scripts/start.sh`.
+* Then **run the script** using `./scripts/start.sh`.
 
 ##### 🏠 Windows
 * Press **Windows + X**.
 * Choose **Windows PowerShell (Admin)**.
-* Go to the **root directory** and run `Set-ExecutionPolicy ByPass`.
-* Finally, **run** `.\start.ps1`.
+* Go to the **root directory** and run `Set-ExecutionPolicy Bypass`.
+* Finally, **run** `.\scripts\start.ps1`.

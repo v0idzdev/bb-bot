@@ -91,7 +91,7 @@ class MusicPlayer:
             except ValueError as ex:
                 error_embed = discord.Embed(
                     title="👎 Discord.py Error",
-                    description=f"🐍 Discord.py encountered an internal error.\n`{ex.args}`",
+                    description=f"🐍 Discord.py encountered an internal error.\n```{ex.args}```",
                 )
 
                 error_embed.set_footer(

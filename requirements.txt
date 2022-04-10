@@ -27,4 +27,7 @@ youtube-dl==2021.12.17
 pillow==9.0.1
 humanize
 black
-jishaku @ git+https://github.com/Gorialis/jishaku
+jishaku @ git+https://github.com/Gorialis/jishaku#
+gitpython
+dulwich
+bs4
