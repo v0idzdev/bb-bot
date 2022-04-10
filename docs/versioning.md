@@ -1,6 +1,7 @@
 # ⚙️ Versioning
 
 This is a guide explaining our versioning system, which may help developers better understand how we make releases, and where their changes will end up.
+<br><br>
 
 ## 🔧 Stable Releases
 
@@ -17,15 +18,18 @@ When we release a minor version, it means we've **added a new feature**. This ca
 - **Patch versions**
 
 When we release a patch version, it means we've fixed an issue with an **existing feature**, without changing the way it works/what the user interacts with besides minor UI changes for usability.
+<br><br>
 
 ## 🔨 Development Releases
 
 Development releases are created from the **dev** branch. Usually, we don't create a development version of a release if it's a patch version.
 
-- **Release candidate versions**
-
-Release candidate versions include an additional `-rc.x` at the end of the version name. We use release candidate versions to denote a **development** version.
-
 - **Alpha/beta versions**
 
-We do not use `-alpha.x` or `beta.x` releases - we use `-rc.x` for all **pre-releases** to keep versioning simple.
+We use `-alpha.x` for **development** releases in which new features may be **added/removed at any time**, and where the code is **not considered stable**. Alpha releases usually involve **developing new features**.
+
+We use `beta.x` for **development** releases in which new features are **unlikely to be added**, and where the code is **partially stable**. Beta releases usually involve **bug fixing** and **performance improvements**.
+
+- **Release candidate versions**
+
+We use `-rc.x` for **development** releases in which the code in **mostly stable**, and where new features will **not be added**. Release candidate versions usually involve **minor tweaks** and **code refactoring**.
