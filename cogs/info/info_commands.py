@@ -135,3 +135,19 @@ async def botinfo_callback(ctx: discord.Interaction | commands.Context, client: 
     )
 
     return await send_embed(is_interaction, embed, ctx)
+
+
+async def avatar_callback(
+    ctx: discord.Interaction | commands.Context, member: discord.Member
+):
+    is_interaction = isinstance(ctx, discord.Interaction)
+
+    if is_interaction:
+        await ctx.response.defer()
+
+    if member is None:
+        member = ctx.user if is_interaction else ctx.author
+
+    embed = discord.Embed(title=f"💡 {member.name}'s Avatar")
+    embed.set_image(url=member.avatar.url)
+    return await send_embed(is_interaction, embed, ctx)

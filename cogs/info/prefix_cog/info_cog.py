@@ -16,9 +16,7 @@ class InfoCog(commands.Cog, name="Info"):
 
     @commands.command()
     @commands.guild_only()
-    async def joined(
-        self, interaction: discord.Interaction, *, member: discord.Member = None
-    ):
+    async def joined(self, ctx: commands.Context, *, member: discord.Member = None):
         """
         💡 Shows when a member joined the server.
 
@@ -33,13 +31,11 @@ class InfoCog(commands.Cog, name="Info"):
         /joined [@member]
         ```
         """
-        await joined_callback(interaction, member)
+        await joined_callback(ctx, member)
 
     @commands.command()
     @commands.guild_only()
-    async def toprole(
-        self, interaction: discord.Interaction, *, member: discord.Member = None
-    ):
+    async def toprole(self, ctx: commands.Context, *, member: discord.Member = None):
         """
         💡 Shows the top role for a member.
 
@@ -54,12 +50,12 @@ class InfoCog(commands.Cog, name="Info"):
         /toprole [@member]
         ```
         """
-        await toprole_callback(interaction, member)
+        await toprole_callback(ctx, member)
 
     @commands.command(alias=["perms"])
     @commands.guild_only()
     async def permissions(
-        self, interaction: discord.Interaction, *, member: discord.Member = None
+        self, ctx: commands.Context, *, member: discord.Member = None
     ):
         """
         💡 Shows the permissions for a member.
@@ -75,11 +71,11 @@ class InfoCog(commands.Cog, name="Info"):
         /permissions [@member]
         ```
         """
-        await perms_callback(interaction, member)
+        await perms_callback(ctx, member)
 
     @commands.command()
     @commands.guild_only()
-    async def botinfo(self, interaction: discord.Interaction):
+    async def botinfo(self, ctx: commands.Context):
         """
         💡 Shows information about the bot.
 
@@ -94,8 +90,25 @@ class InfoCog(commands.Cog, name="Info"):
         /botinfo [@member]
         ```
         """
-        await botinfo_callback(interaction, self.client)
+        await botinfo_callback(ctx, self.client)
 
+    @commands.command()
+    async def avatar(self, ctx: commands.Context, *, member: discord.Member = None):
+        """
+        💡 Shows a member's avatar. If no member is specified, it shows yours.
+
+        ❓ This will change depending on whether the bot is self-hosted.
+
+        Usage:
+        ```
+        ~avatar [@member]
+        ```
+        Or:
+        ```
+        /avatar [@member]
+        ```
+        """
+        await avatar_callback(ctx, member)
 
 
 async def setup(client: commands.Bot):
