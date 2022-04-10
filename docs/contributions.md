@@ -12,11 +12,11 @@ This guide assumes you know how to **use pip** from the command line, create and
 	- Optionally, you can run this from a **[virtual environment](https://docs.python.org/3/library/venv.html)**, which is recommended.
 	- Please avoid using **pipenv**.
 4. Make some changes.
-	- Only make changes on the **dev** branch.
-	 - You can create other branches and merge them into **dev**, if you choose to.
-	 - When creating branches, it is recommended to create them from **dev**.
+	- Only make changes on the **develop** branch.
+	 - You can create other branches and merge them into **develop**, if you choose to.
+	 - When creating branches, it is recommended to create them from **develop**.
 	 - Any pull requests where **master** has been changed will **be rejected**.
-5. When you've finished making changes, submit a pull request from **your dev branch** into **dev**.
+5. When you've finished making changes, submit a pull request from **your develop branch** into **develop**.
 	- Try to add a few bullet points about what you've changed.
 	- Keep the title concise, if possible.
 
