@@ -28,8 +28,8 @@ $result = $host.ui.PromptForChoice($title, $message, $options, 1)
 switch ($result) {
     0 {
         py -m pip install virtualenv
-        py -m venv venv
-        . venv\Scripts\activate.bat
+        py -m venv .venv
+        . .venv\Scripts\activate.bat
     } 
     
     1 {
