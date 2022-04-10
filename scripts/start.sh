@@ -30,8 +30,8 @@ read -r -p "[Optional] Creating a virtualenv. Continue? [Y/n] " input
 case $input in
     [yY][eE][sS]|[yY])
             python3 -m pip install virtualenv
-            python3 -m venv venv
-            . venv/bin/activate
+            python3 -m venv .venv
+            . .venv/bin/activate
             ;;
     [nN][oO]|[nN])
             echo "Skipping virtualenv creation."
