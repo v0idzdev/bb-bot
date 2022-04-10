@@ -116,6 +116,24 @@ class InfoSlashCog(commands.Cog):
         """
         await avatar_callback(interaction, member)
 
+    @app_commands.command()
+    async def servericon(self, interaction: discord.Interaction):
+        """
+        💡 Shows the server's icon.
+
+        ❓ This command is also available as a prefix command.
+
+        Usage:
+        ```
+        ~avatar [@member]
+        ```
+        Or:
+        ```
+        /avatar [@member]
+        ```
+        """
+        await servericon_callback(interaction)
+
 
 async def setup(client: commands.Bot):
     """

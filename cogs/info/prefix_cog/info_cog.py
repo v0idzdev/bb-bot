@@ -95,9 +95,9 @@ class InfoCog(commands.Cog, name="Info"):
     @commands.command()
     async def avatar(self, ctx: commands.Context, *, member: discord.Member = None):
         """
-        💡 Shows a member's avatar. If no member is specified, it shows yours.
+        💡 Shows a member's avatar.
 
-        ❓ This will change depending on whether the bot is self-hosted.
+        ❓ If no member is specified, it shows yours.
 
         Usage:
         ```
@@ -109,6 +109,24 @@ class InfoCog(commands.Cog, name="Info"):
         ```
         """
         await avatar_callback(ctx, member)
+
+    @commands.command()
+    async def servericon(self, ctx: commands.Context):
+        """
+        💡 Shows the server's icon.
+
+        ❓ This command is also available as a slash command.
+
+        Usage:
+        ```
+        ~avatar [@member]
+        ```
+        Or:
+        ```
+        /avatar [@member]
+        ```
+        """
+        await servericon_callback(ctx)
 
 
 async def setup(client: commands.Bot):
