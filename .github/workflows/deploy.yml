@@ -5,8 +5,16 @@ on:
       - main
 jobs:
   setup-build-publish-deploy:
+    environment:
+      name: Deployment
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      TEST_GUILD_ID: ${{ secrets.TEST_GUILD_ID }}
+      TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+      TWITCH_CLIENT_SECRET: ${{ secrets.TWITCH_CLIENT_SECRET }}
+
     steps:
     - name: Checkout
       uses: actions/checkout@master
