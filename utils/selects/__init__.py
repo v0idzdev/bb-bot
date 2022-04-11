@@ -1,2 +1,0 @@
-from .blacklist_add_dropdown import BlacklistAddDropdown
-from .blacklist_remove_dropdown import BlacklistRemoveDropdown
