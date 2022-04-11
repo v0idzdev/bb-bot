@@ -11,7 +11,7 @@ import math
 import sys
 
 from discord.ext import commands
-
+from discord import app_commands
 
 class ErrorHandler(commands.Cog):
     """
@@ -58,45 +58,36 @@ class ErrorHandler(commands.Cog):
             return
 
         error = getattr(error, "original", error)
-        message = f":x: {ctx.author.mention}: "
+        message = f":x: "
 
-        match error.__class__:
+        if isinstance(error, commands.CommandNotFound):
+            message += "That command does not exist."
 
-            case commands.CommandNotFound:
-                message += "That command does not exist."
+        elif isinstance(error, commands.BotMissingPermissions) or isinstance(error, commands.MissingPermissions):
+            message += await self.handle_missing_perms(ctx, error)
 
-            case commands.BotMissingPermissions:
-                message += await self.handle_missing_perms(ctx, error)
+        elif isinstance(error, commands.DisabledCommand):
+            message += "This command has been disabled."
 
-            case commands.MissingPermissions:
-                message += await self.handle_missing_perms(ctx, error)
+        elif isinstance(error, commands.CommandOnCooldown):
+            message += f"This command is on cooldown. Try again after {math.ceil(error.retry_after)} seconds.."
 
-            case commands.DisabledCommand:
-                message += "This command has been disabled."
+        elif isinstance(error, commands.UserInputError):
+            message += "Sorry, that input is invalid."
 
-            case commands.CommandOnCooldown:
-                message += (
-                    "This command is on cooldown. Try again after "
-                    + f"{math.ceil(error.retry_after)}s."
-                )
-
-            case commands.UserInputError:
-                message += "Sorry, that input is invalid."
-
-            case commands.NoPrivateMessage:
-                try:
-                    message += "You can't use this command in private messages."
-
-                except discord.Forbidden:
-                    return
-
-            case _:
-                print(f"Ignoring exceptions in command {ctx.command}.", file=sys.stderr)
-                traceback.print_exception(
-                    type(error), error, error.__traceback__, file=sys.stderr
-                )
-
+        elif isinstance(error, commands.NoPrivateMessage):
+            try:
+                message += "You can't use this command in private messages."
+            except discord.Forbidden:
                 return
+
+        else:
+            print(f"Ignoring exceptions in command {ctx.command}.", file=sys.stderr)
+            traceback.print_exception(
+                type(error), error, error.__traceback__, file=sys.stderr
+            )
+
+            return
 
         return await ctx.reply(message, delete_after=20)
 

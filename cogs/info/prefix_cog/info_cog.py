@@ -111,6 +111,7 @@ class InfoCog(commands.Cog, name="Info"):
         await avatar_callback(ctx, member)
 
     @commands.command()
+    @commands.guild_only()
     async def servericon(self, ctx: commands.Context):
         """
         💡 Shows the server's icon.
