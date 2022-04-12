@@ -33,7 +33,7 @@ async def start_application(client: Client):
         await client.start(TOKEN)
 
 
-if __name__ == "__main__":
+def main():
     """
     This is the main entry point of the application. This is where
     filepaths are loaded, environment variables and retrieved from
@@ -64,3 +64,7 @@ if __name__ == "__main__":
     )
 
     asyncio.run(start_application(client))
+
+
+if __name__ == "__main__":
+    main()
