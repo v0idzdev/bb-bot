@@ -7,7 +7,7 @@ import aiohttp
 import datetime
 import decorators
 
-from utils import TwitchBroadcast
+from apis.twitch import TwitchBroadcast
 from typing import Any, Optional, Final
 from io import BytesIO
 from PIL import Image

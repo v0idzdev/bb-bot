@@ -10,7 +10,7 @@ import discord
 
 from discord.ext import commands
 from utils import TwitchClient
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient # Async Mongo client
 
 
 class Client(commands.Bot):
@@ -101,8 +101,8 @@ class Client(commands.Bot):
         create TwitchClient and MongoClient instances. Use this method to start the bot.
         """
         async with aiohttp.ClientSession() as self.__session:
-            self._twitch_client = TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
-            self._mongo_client = AsyncIOMotorClient(self.__mongo_connection_url)
+            self._twitch_client = self.__create_twitch_client()
+            self._mongo_client = self.__create_mongo_client()
 
             return await super().start(*args, **kwargs)
 
@@ -127,3 +127,15 @@ class Client(commands.Bot):
         """
         for module in self._extension_filepaths + self._handler_filepaths:
             await self.load_extension(module)
+
+    async def __create_twitch_client(self) -> TwitchClient:
+        """
+        Internal method that returns an instance of TwitchClient.
+        """
+        return TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
+
+    async def __create_mongo_client(self) -> AsyncIOMotorClient:
+        """
+        Internal method that returns an instance of AsyncIOMotorClient.
+        """
+        return AsyncIOMotorClient(self.__mongo_connection_url)
