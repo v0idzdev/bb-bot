@@ -3,7 +3,6 @@ Module `document` contains the `Document` class, which aims to
 hide lower-level details of interacting with MongoDB. It provides
 a simple API we can use in other files.
 """
-
 import logging
 import collections.abc
 

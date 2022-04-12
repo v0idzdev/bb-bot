@@ -2,7 +2,6 @@
 Module `decorators` contains wrapper functions to be used on
 methods in the `Twitch` class, that assist its functionality.
 """
-
 import asyncio
 import functools
 

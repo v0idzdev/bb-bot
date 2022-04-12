@@ -3,7 +3,6 @@ Module `client` contains the `Client` class, which is responsible
 for loading extensions, syncing application commands against the
 Discord API, and starting the bot.
 """
-
 import itertools
 import aiohttp
 import discord

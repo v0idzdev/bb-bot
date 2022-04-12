@@ -4,7 +4,6 @@ from __future__ import annotations
 Module `twitch_client` contains the `TwitchClient` class, which is used to
 interact with the Twitch API to fetch and process data from it.
 """
-
 import aiohttp
 import datetime
 

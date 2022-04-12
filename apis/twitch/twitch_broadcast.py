@@ -6,7 +6,6 @@ is used to store a Twitch API response in a way that makes it easier
 to work with, by accessing data as an attribute of the class instead
 of working with a Dictionary.
 """
-
 import datetime
 
 from io import BytesIO
