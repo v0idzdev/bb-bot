@@ -9,7 +9,7 @@ import aiohttp
 import discord
 
 from discord.ext import commands
-from utils import TwitchClient
+from apis import TwitchClient
 from motor.motor_asyncio import AsyncIOMotorClient # Async Mongo client
 
 

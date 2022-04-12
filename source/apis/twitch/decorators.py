@@ -5,6 +5,7 @@ methods in the `Twitch` class, that assist its functionality.
 
 import asyncio
 import functools
+from io import BytesIO
 
 from typing import Coroutine, Callable
 
@@ -41,18 +42,18 @@ def authorization_check(coroutine) -> Coroutine:
     return __inner
 
 
-def executor(func):
+def executor(function) -> Callable:
     """
     Decorator function for `Twitch` methods that ensures that
     the method is called using loop.run_in_executor.
     """
-    def __inner(*args, **kwargs):
+    def __inner(*args, **kwargs) -> Callable:
         """
         Internal wrapper function for the `Twitch` method
         decorated by @executor.
         """
         loop = asyncio.get_event_loop()
-        partial = functools.partial(func, *args, **kwargs)
+        partial = functools.partial(function, *args, **kwargs)
 
         return loop.run_in_executor(None, partial)
 

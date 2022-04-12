@@ -5,4 +5,4 @@ error handlers, and utility functions and classes.
 """
 
 from .apis import *
-from .utils import *
+from .client import Client
