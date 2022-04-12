@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Module `twitch_client` contains the `TwitchClient` class, which is used to
 interact with the Twitch API to fetch and process data from it.
@@ -5,14 +7,11 @@ interact with the Twitch API to fetch and process data from it.
 
 import aiohttp
 import datetime
-import decorators
 
-from apis.twitch import TwitchBroadcast
+from apis import twitch
 from typing import Any, Optional, Final
 from io import BytesIO
 from PIL import Image
-
-from __future__ import annotations
 
 
 class TwitchClient:
@@ -48,8 +47,8 @@ class TwitchClient:
         self.authorized: dict[str, Any] = None
         self._session = session
 
-    @decorators.session_check
-    @decorators.authorization_check
+    @twitch.decorators.session_check
+    @twitch.decorators.authorization_check
     async def connect(self, endpoint: str, **params: dict) -> dict:
         """
         Connects to a Twitch API endpoint that we can use to get data
@@ -75,8 +74,8 @@ class TwitchClient:
 
         return json
 
-    @decorators.session_check
-    async def get_broadcast(self, json: dict) -> TwitchBroadcast:
+    @twitch.decorators.session_check
+    async def get_broadcast(self, json: dict) -> twitch.TwitchBroadcast:
         """
         Creates a `TwitchBroadcast` instance containing information returned
         from a Twitch API response. See the documentation for `TwitchBroadcast`
@@ -88,9 +87,9 @@ class TwitchClient:
         bytes = BytesIO(await image.read())
         image = await self.__process_image(bytes)
 
-        return TwitchBroadcast.from_dictionary(json, image)
+        return twitch.TwitchBroadcast.from_dictionary(json, image)
 
-    @decorators.session_check
+    @twitch.decorators.session_check
     async def __aenter__(self) -> TwitchClient:
         """
         Dunder method that defines what happens when an async with
@@ -114,7 +113,7 @@ class TwitchClient:
         if not self._session:
             self._session = aiohttp.ClientSession()
 
-    @decorators.executor
+    @twitch.decorators.executor
     def __process_image(self, image: BytesIO) -> BytesIO:
         """
         Internal method that processes a Twitch stream's thumbnail by
@@ -137,7 +136,7 @@ class TwitchClient:
 
         return buffer
 
-    @decorators.session_check
+    @twitch.decorators.session_check
     async def __authorize(self) -> None:
         """
         Internal method that uses the `TwitchClient` instance's API application

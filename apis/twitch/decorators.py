@@ -5,7 +5,6 @@ methods in the `Twitch` class, that assist its functionality.
 
 import asyncio
 import functools
-from io import BytesIO
 
 from typing import Coroutine, Callable
 

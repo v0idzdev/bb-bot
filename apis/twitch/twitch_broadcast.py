@@ -1,18 +1,16 @@
+from __future__ import annotations
+
 """
 Module `twitch_broadcast` includes class `TwitchBroadcast`, which
 is used to store a Twitch API response in a way that makes it easier
 to work with, by accessing data as an attribute of the class instead
 of working with a Dictionary.
-
-Module originally written by @BubblegumZen.
 """
 
 import datetime
 
 from io import BytesIO
-from dataclasses import dataclass
-
-from __future__ import annotations
+from dataclasses import dataclass, field
 
 
 @dataclass(slots=True, repr=True, kw_only=True)
@@ -48,30 +46,6 @@ class TwitchBroadcast:
     is_mature: bool
 
     @classmethod
-    def __generate_stream_url(cls, user_name: str) -> str:
-        """
-        Internal method that returns a URL that users can use to watch the
-        stream described by an instance of this class.
-        """
-        return "https://www.twitch.tv/" + user_name
-
-    @classmethod
-    def __generate_stream_start(cls, started_at: str) -> datetime:
-        """
-        Internal method that processes the start time for the stream returned
-        by the Twitch API in ISO format. Returns a datetime object.
-        """
-        return datetime.datetime.fromisoformat(started_at[:-1])
-
-    @classmethod
-    def __generate_thumbnail(cls, game_id: str) -> str:
-        """
-        Internal method that returns a URL where the game image is hosted. We
-        can use this image to generate an image in a Discord message or embed.
-        """
-        return "https://static-cdn.jtvnw.net/ttv-boxart/" + game_id + "-285x380.jpg"
-
-    @classmethod
     def from_dictionary(cls, response: dict, image: BytesIO) -> TwitchBroadcast:
         """
         Creates an instance of `TwitchBroadcast` from a JSON document returned
@@ -95,8 +69,32 @@ class TwitchBroadcast:
                 arguments[key] = value
 
         # Some attributes need to be processed first, so do that here.
-        thumbnail = cls.__generate_thumbnail(response["game_id"])
-        stream_link = cls.__generate_stream_url(response["user_name"])
-        stream_start = cls.__generate_stream_start(response["started_at"])
+        arguments["thumbnail"] = cls.__generate_thumbnail(response["game_id"])
+        arguments["stream_link"] = cls.__generate_stream_url(response["user_name"])
+        arguments["stream_start"] = cls.__generate_stream_start(response["started_at"])
 
         return cls(**arguments)
+
+    @staticmethod
+    def __generate_stream_url(user_name: str) -> str:
+        """
+        Internal method that returns a URL that users can use to watch the
+        stream described by an instance of this class.
+        """
+        return "https://www.twitch.tv/" + user_name
+
+    @staticmethod
+    def __generate_stream_start(started_at: str) -> datetime:
+        """
+        Internal method that processes the start time for the stream returned
+        by the Twitch API in ISO format. Returns a datetime object.
+        """
+        return datetime.datetime.fromisoformat(started_at[:-1])
+
+    @staticmethod
+    def __generate_thumbnail(game_id: str) -> str:
+        """
+        Internal method that returns a URL where the game image is hosted. We
+        can use this image to generate an image in a Discord message or embed.
+        """
+        return "https://static-cdn.jtvnw.net/ttv-boxart/" + game_id + "-285x380.jpg"

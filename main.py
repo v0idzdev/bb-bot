@@ -60,6 +60,7 @@ def main():
         mongo_connection_url,
         twitch_client_id,
         twitch_client_secret,
+        command_prefix='~',
         intents=intents
     )
 

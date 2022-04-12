@@ -4,5 +4,5 @@ external applications more easily. This includes a Twitch API
 wrapper, and a MongoDB document API.
 """
 
-from .mongo import *
-from .twitch import *
+from .mongo import Document
+from .twitch import TwitchClient, TwitchBroadcast
