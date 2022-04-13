@@ -1,14 +1,14 @@
 import abc
 import discord
-import bot
+import base
 
 from typing import Awaitable
 
 
-class BlacklistView(bot.abc.View):
+class BlacklistView(base.View):
     """
-    Class `BlacklistView` defines an abstract class that inherits from ui.abc.View,
-    and defines abstract send_modal, submit, and abort methods for common button callbacks.
+    Class `BlacklistView` defines an abstract class that inherits from `utils.views.abc.View`, and
+    defines abstract `send_modal`, `submit`, and `abort` methods for common button callbacks.
     """
     @abc.abstractmethod
     async def send_modal(self, interaction: discord.Interaction, button: discord.Button) -> Awaitable:

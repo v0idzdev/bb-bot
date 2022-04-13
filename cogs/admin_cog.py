@@ -1,11 +1,11 @@
 """
-Module `admin_cog` contains the `Admin` cog, which implements
+Module `cogs.admin_cog` contains the `Admin` class, which implements
 admin commands for BB.Bot.
 """
 import asyncio
 import discord
 import bot
-import ui
+import utils
 
 from typing import List, Optional, Any
 from discord.ext import commands
@@ -46,7 +46,7 @@ class AdminCog(commands.Cog, app_commands.Group, name="admin"):
             description="❓ Would you like to clear all messages in this channel?",
         )
 
-        view = ui.ClearMessages(command_author=interaction.user)
+        view = utils.views.ClearMessages(command_author=interaction.user)
         return await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 
 

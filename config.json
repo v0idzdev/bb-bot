@@ -1,6 +1,6 @@
 {
     "extension_filepaths": [
-        "bot.cogs.admin.admin_cog"
+        "cogs.admin_cog"
     ],
 
     "handler_filepaths": []

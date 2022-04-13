@@ -5,11 +5,11 @@ text channel.
 
 Used in `bot.commands.admin`. Created using the `/admin clear` command.
 """
-import ui
+import base
 import discord
 
 
-class ClearMessages(ui.abc.View):
+class ClearMessages(base.View):
     """
     Class `ClearMessages` provides yes/no buttons when the user
     is prompted to clear all messages from a channel.

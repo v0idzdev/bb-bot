@@ -1,9 +1,8 @@
 """
-Module `view` contains the view class, which is inherited by
+Module `utils.views.abc.view` contains the view class, which is inherited by
 view subclasses that BB.Bot uses.
 """
 import discord
-import abc
 
 from typing import Union
 
@@ -19,8 +18,8 @@ class View(discord.ui.View):
     """
     def __init__(self, command_author: Union[discord.User, discord.Member], *args, **kwargs) -> None:
         """
-        Creates a `bot.abc.View` object that is a subclass of `discord.ui.View`. This
-        class overrides discord.ui.View by implementing interaction_check differently,
+        Creates a `utils.views.abc.View` object that is a subclass of `discord.ui.View`.
+        This class overrides discord.ui.View by implementing interaction_check differently,
         and implementing a disable_all_buttons method.
 
         Params:
@@ -29,7 +28,7 @@ class View(discord.ui.View):
          - **kwargs (tuple): Any keyword arguments that are to be passed into super().__init__.
 
         Returns:
-         - A `source.abc.View` instance.
+         - A `utils.views.abc.View` instance.
         """
         super().__init__(*args, **kwargs)
 
@@ -47,7 +46,7 @@ class View(discord.ui.View):
     async def on_timeout(self) -> None:
         """
         This method is called when the view times out. By default, this will call
-        `bot.abc.View.disable_all_buttons`.
+        `utils.views.abc.View.disable_all_buttons`.
         """
         await self.disable_all_buttons()
 
