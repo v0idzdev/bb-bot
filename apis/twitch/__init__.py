@@ -1,5 +1,5 @@
 """
-Module `twitch` contains classes and functions used used to
+Module `apis.twitch` contains classes and functions used used to
 interact with the Twitch API.
 """
 from .decorators import *

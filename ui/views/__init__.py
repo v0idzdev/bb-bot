@@ -1,6 +1,5 @@
 """
-Module `views` contains view classes for UI components that the
-bot will use. All classes in this module inherit from `bot.ui.View`
-or a subclass of it.
+Module `ui.views` contains UI components. These are instances
+of either `ui.abc.View` or any of its subclasses.
 """
-from .clear_messages_view import ClearMessagesView
+from .clear_messages import ClearMessages

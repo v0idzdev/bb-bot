@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 """
-Module `twitch_broadcast` includes class `TwitchBroadcast`, which
-is used to store a Twitch API response in a way that makes it easier
-to work with, by accessing data as an attribute of the class instead
-of working with a Dictionary.
+Module `aps.twitch.twitch_broadcast` includes class `TwitchBroadcast`,
+which is used to store a Twitch API response in a way that makes it easier
+to work with, by accessing data as an attribute of the class instead of
+working with a Dictionary.
 """
 import datetime
 

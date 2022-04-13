@@ -5,9 +5,9 @@ import bot
 from typing import Awaitable
 
 
-class BlacklistView(bot.abc.View, abc.ABC):
+class BlacklistView(bot.abc.View):
     """
-    Class `BlacklistView` defines an abstract class that inherits from bot.abc.View,
+    Class `BlacklistView` defines an abstract class that inherits from ui.abc.View,
     and defines abstract send_modal, submit, and abort methods for common button callbacks.
     """
     @abc.abstractmethod

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 """
-Module `twitch_client` contains the `TwitchClient` class, which is used to
-interact with the Twitch API to fetch and process data from it.
+Module `apis.twitch.twitch_client` contains the `TwitchClient` class, which is
+used to interact with the Twitch API to fetch and process data from it.
 """
 import aiohttp
 import datetime
@@ -79,6 +79,9 @@ class TwitchClient:
         Creates a `TwitchBroadcast` instance containing information returned
         from a Twitch API response. See the documentation for `TwitchBroadcast`
         for more information.
+
+        Params:
+         - json (dict): The Twitch response to create a `TwitchBroadcast` instance from.
         """
         url = json["data"][0]["thumbnail_url"].format(width=1890, height=1050)
 

@@ -1,9 +1,6 @@
 """
-Module `ui` contains user interface components for the admin
-cogs. These are subclasses relevant classes in `source.abc`.
-
-This module is separate from `bot` because it simply provides
-a client-side interface. Some pieces of logic are, however,
-executed within callbacks.
+Module `components` provides user interface components
+that the bot will use.
 """
 from .views import *
+from .abc import *

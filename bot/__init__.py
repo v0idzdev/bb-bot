@@ -1,6 +1,5 @@
 """
-Module `source` contains discord-related classes and functions.
-This module provides the main code that BB.Bot runs on.
+Module `bot` contains the discord client class that we will
+use to interact with the discord API and manage commands.
 """
 from .client import Client
-from .cogs import *

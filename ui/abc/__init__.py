@@ -1,5 +1,5 @@
 """
-Module `abc` contains abstract base classes for UI components that
+Module `ui.abc` contains abstract base classes for UI components that
 the bot uses. This stops certain methods from being repeated.
 
 Classes within this module should not be used directly, and must

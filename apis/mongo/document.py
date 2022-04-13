@@ -1,6 +1,6 @@
 """
-Module `document` contains the `Document` class, which aims to
-hide lower-level details of interacting with MongoDB. It provides
+Module `apis.mongo.document` contains the `Document` class, which aims
+to hide lower-level details of interacting with MongoDB. It provides
 a simple API we can use in other files.
 """
 import logging
@@ -9,8 +9,8 @@ import collections.abc
 
 class Document:
     """
-    Class`Document` aims to make using mongo easier, and abstracts
-    lower-level details. Pass in the db instance on initialization and
+    Class `Document` aims to make using mongo easier, and abstracts
+    lower level details. Pass in the db instance on initialization and
     add the document to create an instance of.
     """
     def __init__(self, connection, document_name) -> None:

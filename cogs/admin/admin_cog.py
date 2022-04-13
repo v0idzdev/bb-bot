@@ -2,8 +2,10 @@
 Module `admin_cog` contains the `Admin` cog, which implements
 admin commands for BB.Bot.
 """
+import asyncio
 import discord
 import bot
+import ui
 
 from typing import List, Optional, Any
 from discord.ext import commands
@@ -30,16 +32,22 @@ class AdminCog(commands.Cog, app_commands.Group, name="admin"):
         /admin clear [amount]
         ```
         """
+        await interaction.response.defer()
+
         if not amount:
-            return await interaction.message.channel.purge(limit=None)
+            embed = discord.Embed(title=f"🛠️ Successfully Deleted {amount} messages.")
+            await interaction.followup.send(embed=embed, ephemeral=True)
+            await asyncio.sleep(3)
+
+            return await interaction.channel.purge(limit=None)
 
         embed = discord.Embed(
             title="⚠️ You Have Not Selected a Number of Messages to Clear",
             description="❓ Would you like to clear all messages in this channel?",
         )
 
-        view = bot.ClearMessagesView(command_author=interaction.user)
-        return await interaction.response.send_message(embed=embed, view=view)
+        view = ui.ClearMessages(command_author=interaction.user)
+        return await interaction.followup.send(embed=embed, view=view, ephemeral=True)
 
 
 async def setup(client: bot.Client) -> None:
