@@ -6,10 +6,10 @@ Discord API, and starting the bot.
 import itertools
 import aiohttp
 import discord
+import motor.motor_asyncio
+import apis
 
 from discord.ext import commands
-from apis import TwitchClient
-from motor.motor_asyncio import AsyncIOMotorClient # Async Mongo client
 
 
 class Client(commands.Bot):
@@ -53,8 +53,8 @@ class Client(commands.Bot):
         # Read-only attributes
         self._extension_filepaths = extension_filepaths
         self._handler_filepaths = handler_filepaths
-        self._twitch_client: TwitchClient = None
-        self._mongo_client: AsyncIOMotorClient = None
+        self._twitch_client: apis.twitch.TwitchClient = None
+        self._mongo_client: motor.motor_asyncio.AsyncIOMotorClient = None
 
         # Strictly private attributes
         self.__testing_guild_ids = testing_guild_ids
@@ -63,7 +63,7 @@ class Client(commands.Bot):
         self.__mongo_connection_url = mongo_connection_url
 
     @property
-    def extension_filepaths(self):
+    def extension_filepaths(self) -> list[str]:
         """
         Returns the value of self._extension_filepaths. This stops the value
         being set from outside the `Client` class.
@@ -71,7 +71,7 @@ class Client(commands.Bot):
         return self._extension_filepaths
 
     @property
-    def handler_filepaths(self):
+    def handler_filepaths(self) -> list[str]:
         """
         Returns the value of self.handler_filepaths. This stops the value
         being set from outside the `Client` class.
@@ -79,15 +79,19 @@ class Client(commands.Bot):
         return self._handler_filepaths
 
     @property
-    def mongo_client(self):
+    def mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
         """
         Returns the value of self._mongo_client. This stops the value
-        being set from outside the `Client` class.
+        being set from outside the `Client` class. Access databases the
+        client has access to by using self.mongo_client["database_name"].
+
+        To use this with the module `apis.mongo.collection` (i.e, to edit
+        a table), use apis.mongo.Collection[self.mongo_client["name"], "table"]
         """
         return self._mongo_client
 
     @property
-    def twitch_client(self):
+    def twitch_client(self) -> apis.twitch.TwitchClient:
         """
         Returns the value of self._twitch_client. This stops the value
         being set from outside the `Client` class.
@@ -127,14 +131,14 @@ class Client(commands.Bot):
         for module in self._extension_filepaths + self._handler_filepaths:
             await self.load_extension(module)
 
-    async def __create_twitch_client(self) -> TwitchClient:
+    async def __create_twitch_client(self) -> apis.twitch.TwitchClient:
         """
         Internal method that returns an instance of TwitchClient.
         """
-        return TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
+        return apis.twitch.TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
 
-    async def __create_mongo_client(self) -> AsyncIOMotorClient:
+    async def __create_mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
         """
         Internal method that returns an instance of AsyncIOMotorClient.
         """
-        return AsyncIOMotorClient(self.__mongo_connection_url)
+        return motor.motor_asyncio.AsyncIOMotorClient(self.__mongo_connection_url)

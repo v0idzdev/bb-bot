@@ -18,9 +18,9 @@ class View(discord.ui.View):
     """
     def __init__(self, command_author: Union[discord.User, discord.Member], *args, **kwargs) -> None:
         """
-        Creates a `utils.views.abc.View` object that is a subclass of `discord.ui.View`.
-        This class overrides discord.ui.View by implementing interaction_check differently,
-        and implementing a disable_all_buttons method.
+        Creates a `base.View` object that is a subclass of `discord.ui.View`. This class
+        overrides discord.ui.View by implementing interaction_check differently, and implements
+        a disable_all_buttons method.
 
         Params:
          - command_author (discord.User): The user who invoked the command.
@@ -77,5 +77,5 @@ class View(discord.ui.View):
         if interaction.user.id == self._command_author.id:
             return True
 
-        await interaction.response.send_message("❌ This isn't your interaction!", ephemeral=True)
+        await interaction.response.send_message("❌ You can't use this view!", ephemeral=True)
         return False

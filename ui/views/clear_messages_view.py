@@ -1,15 +1,13 @@
 """
-Module `clear_messages` contains class `ClearMessages`, which is a UI component
+Module `clear_messages_view` contains class `ClearMessages`, which is a UI component
 that prompts the user to continue/abort when asked to delete all messages in a
-text channel.
-
-Used in `bot.commands.admin`. Created using the `/admin clear` command.
+text channel. Used in `bot.cogs.admin_cog`. Created using the `/admin clear` command.
 """
 import base
 import discord
 
 
-class ClearMessages(base.View):
+class ClearMessagesView(base.View):
     """
     Class `ClearMessages` provides yes/no buttons when the user
     is prompted to clear all messages from a channel.

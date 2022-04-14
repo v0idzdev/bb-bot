@@ -1,11 +1,11 @@
 """
-Module `cogs.admin_cog` contains the `Admin` class, which implements
+Module `admin_cog` contains the `Admin` class, which implements
 admin commands for BB.Bot.
 """
-import asyncio
 import discord
 import bot
-import utils
+import ui
+import apis
 
 from typing import List, Optional, Any
 from discord.ext import commands
@@ -18,6 +18,8 @@ class AdminCog(commands.Cog, app_commands.Group, name="admin"):
     """
     def __init__(self, client: bot.Client):
         self.client = client
+        self._blacklist = apis.mongo.Collection(client.mongo_client["bb_bot"], "blacklist")
+
         super().__init__()
 
     @app_commands.command()
@@ -34,11 +36,7 @@ class AdminCog(commands.Cog, app_commands.Group, name="admin"):
         """
         await interaction.response.defer()
 
-        if not amount:
-            embed = discord.Embed(title=f"🛠️ Successfully Deleted {amount} messages.")
-            await interaction.followup.send(embed=embed, ephemeral=True)
-            await asyncio.sleep(3)
-
+        if amount is not None:
             return await interaction.channel.purge(limit=None)
 
         embed = discord.Embed(
@@ -46,8 +44,23 @@ class AdminCog(commands.Cog, app_commands.Group, name="admin"):
             description="❓ Would you like to clear all messages in this channel?",
         )
 
-        view = utils.views.ClearMessages(command_author=interaction.user)
+        view = ui.views.ClearMessagesView(command_author=interaction.user)
         return await interaction.followup.send(embed=embed, view=view, ephemeral=True)
+
+    @app_commands.command()
+    @app_commands.describe(user="❓ The user to mute.")
+    @app_commands.checks.has_permissions(ban_members=True)
+    async def blacklist(self, interaction: discord.Interaction, *, member: discord.Member) -> None:
+        """
+        ⚙️ Allows you to enter words to blacklist.
+
+        Usage:
+        ```
+        /admin blacklist [amount]
+        ```
+        """
+        server_id, member_id = interaction.guild.id, member.id
+        server_blacklist: list[int] = self._blacklist.find(server_id)
 
 
 async def setup(client: bot.Client) -> None:

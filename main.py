@@ -12,7 +12,6 @@ import os
 import discord
 import dotenv
 
-from discord.ext import commands
 from bot import Client
 
 
