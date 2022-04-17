@@ -1,7 +1,4 @@
 {
-    "extension_filepaths": [
-        "bot.cogs.admin.admin_cog"
-    ],
-
+    "extension_filepaths": [],
     "handler_filepaths": []
 }

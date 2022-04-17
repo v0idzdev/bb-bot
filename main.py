@@ -9,13 +9,16 @@ import asyncio
 import itertools
 import json
 import os
-import discord
 import dotenv
+import discord
 
-from bot import Client
+from core import (
+    DiscordClient,
+    DiscordClientFactory
+)
 
 
-async def start_application(client: Client):
+async def start_application(client: DiscordClient):
     """
     This function starts the application by calling the relevant
     methods of a `Client` instance.
@@ -50,7 +53,8 @@ def main():
     intents = discord.Intents.all()
     status = itertools.cycle(["/"])
 
-    client = Client(
+    client_factory = DiscordClientFactory()
+    client = client_factory.create_discord_client(
         status,
         extension_filepaths,
         handler_filepaths,

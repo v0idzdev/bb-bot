@@ -1,35 +1,43 @@
 """
-Module `client` contains the `Client` class, which is responsible
-for loading extensions, syncing application commands against the
-Discord API, and starting the bot.
+Module `discord_client` contains the `DiscordClient` class, which is
+responsible for loading extensions, syncing application commands against
+the Discord API, and starting the bot.
 """
-import itertools
 import aiohttp
 import discord
-import motor.motor_asyncio
-import apis
+import itertools
+from core.utils.aliases import MongoClient
 
 from discord.ext import commands
+from typing import (
+    List,
+    Dict,
+    Any
+)
+
+from core.apis import (
+    TwitchClient
+)
 
 
-class Client(commands.Bot):
+class DiscordClient(commands.Bot):
     """
-    Class `Client` creates an instance of BB.Bot that loads
+    Class `DiscordClient` creates an instance of BB.Bot that loads
     extensions, syncs application commands, and starts the bot.
     """
     def __init__(
        self,
        possible_statuses: itertools.cycle,
-       extension_filepaths: list[str],
-       handler_filepaths: list[str],
-       testing_guild_ids: list[int],
+       extension_filepaths: List[str],
+       handler_filepaths: List[str],
+       testing_guild_ids: List[int],
        twitch_client_id: str,
        twitch_client_secret: str,
        mongo_connection_url: str,
-        **kwargs
+        **kwargs: Dict[str, Any]
     ) -> None:
         """
-        Creates an instance of `Client` that is used to interact with
+        Creates an instance of `DiscordClient` that is used to interact with
         Discord, and is responsible for loading & starting the bot, and
         syncing slash commands.
 
@@ -43,7 +51,7 @@ class Client(commands.Bot):
          - twitch_client_secret (str): The Twitch API application's secret.
 
         Returns:
-         - A `Client` instance.
+         - A `DiscordClient` instance.
         """
         super().__init__(**kwargs)
 
@@ -53,8 +61,8 @@ class Client(commands.Bot):
         # Read-only attributes
         self._extension_filepaths = extension_filepaths
         self._handler_filepaths = handler_filepaths
-        self._twitch_client: apis.twitch.TwitchClient = None
-        self._mongo_client: motor.motor_asyncio.AsyncIOMotorClient = None
+        self._twitch_client: TwitchClient = None
+        self._mongo_client: MongoClient = None
 
         # Strictly private attributes
         self.__testing_guild_ids = testing_guild_ids
@@ -79,7 +87,7 @@ class Client(commands.Bot):
         return self._handler_filepaths
 
     @property
-    def mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
+    def mongo_client(self) -> MongoClient:
         """
         Returns the value of self._mongo_client. This stops the value
         being set from outside the `Client` class. Access databases the
@@ -91,7 +99,7 @@ class Client(commands.Bot):
         return self._mongo_client
 
     @property
-    def twitch_client(self) -> apis.twitch.TwitchClient:
+    def twitch_client(self) -> TwitchClient:
         """
         Returns the value of self._twitch_client. This stops the value
         being set from outside the `Client` class.
@@ -131,14 +139,14 @@ class Client(commands.Bot):
         for module in self._extension_filepaths + self._handler_filepaths:
             await self.load_extension(module)
 
-    async def __create_twitch_client(self) -> apis.twitch.TwitchClient:
+    async def __create_twitch_client(self) -> TwitchClient:
         """
         Internal method that returns an instance of TwitchClient.
         """
-        return apis.twitch.TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
+        return TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
 
-    async def __create_mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
+    async def __create_mongo_client(self) -> MongoClient:
         """
         Internal method that returns an instance of AsyncIOMotorClient.
         """
-        return motor.motor_asyncio.AsyncIOMotorClient(self.__mongo_connection_url)
+        return MongoClient(self.__mongo_connection_url)

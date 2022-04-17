@@ -3,10 +3,14 @@ Module `apis.mongo.collection` contains the `Collection` class, which
 aims to hide lower-level details of interacting with MongoDB. It provides
 a simple API we can use in other files.
 """
-import collections.abc
-import motor.motor_asyncio
-
-from typing import Any
+from typing import Any, List
+from core.utils.aliases import (
+    MongoClient,
+    MongoDatabase,
+    MongoCollectionID,
+    MongoCollection,
+    JSONCompatible,
+)
 
 
 class Collection:
@@ -15,7 +19,7 @@ class Collection:
     lower level details. Pass in the db instance on initialization and
     add the collection to create an instance of.
     """
-    def __init__(self, database: motor.motor_asyncio.AsyncIOMotorDatabase, collection_name: str) -> None:
+    def __init__(self, database: MongoClient, collection_name: str) -> None:
         """
         Creates an instance of the specified collection. A collection is
         a file containing documents, which act like individual rows. A
@@ -28,10 +32,10 @@ class Collection:
         Returns:
          - A `Document` instance.
         """
-        self._collection: motor.motor_asyncio.AsyncIOMotorCollection = database[collection_name]
+        self._collection: MongoCollection = database[collection_name]
 
     @property
-    def collection(self) -> motor.motor_asyncio.AsyncIOMotorCollection:
+    def collection(self) -> MongoCollection:
         """
         Returns the AsyncIOMotorCollection object associated with this instance.
         It is recommended to use methods within this class as opposed to accessing
@@ -39,7 +43,7 @@ class Collection:
         """
         return self._collection
 
-    async def update(self, dict: collections.abc.Mapping) -> None:
+    async def update(self, dict: JSONCompatible) -> None:
         """
         For when a document already exists in the collection
         and you want to update something in it.
@@ -54,7 +58,7 @@ class Collection:
          - TypeError if `dict` is not a dictionary.
          - KeyError if _id was not found.
         """
-        if not isinstance(dict, collections.abc.Mapping):
+        if not isinstance(dict, JSONCompatible):
             raise TypeError("Expected a dictionary.")
 
         if not dict["_id"]:
@@ -66,7 +70,7 @@ class Collection:
         dict.pop("_id")
         await self._collection.update_one({"_id": dict["_id"]}, {"$set": dict})
 
-    async def find(self, id: Any):
+    async def find(self, id: MongoCollectionID) -> Any:
         """
         Returns the data found under `id`.
 
@@ -79,7 +83,7 @@ class Collection:
         """
         return await self._collection.find_one({"_id": id})
 
-    async def delete(self, id: Any):
+    async def delete(self, id: MongoCollectionID) -> None:
         """
         Deletes all items found with _id: `id`.
 
@@ -91,7 +95,7 @@ class Collection:
 
         await self._collection.delete_many({"_id": id})
 
-    async def insert(self, dict: collections.abc.Mapping):
+    async def insert(self, dict: JSONCompatible) -> None:
         """
         Inserts a document into the collection.
 
@@ -102,7 +106,7 @@ class Collection:
          - TypeError if `dict` is not a dictionary.
          - KeyError if _id was not found.
         """
-        if not isinstance(dict, collections.abc.Mapping):
+        if not isinstance(dict, JSONCompatible):
             raise TypeError("Expected a dictionary.")
 
         if not dict["_id"]:
@@ -110,7 +114,7 @@ class Collection:
 
         await self._collection.insert_one(dict)
 
-    async def upsert(self, dict: collections.abc.Mapping):
+    async def upsert(self, dict: JSONCompatible) -> None:
         """
         Creates a new document in the collection, if it already
         exists it will update that item instead.
@@ -128,7 +132,7 @@ class Collection:
         else:
             await self._collection.insert_one(dict)
 
-    async def unset(self, dict: collections.abc.Mapping):
+    async def unset(self, dict: JSONCompatible) -> None:
         """
         For when you want to remove a field from a pre-existing
         document in the collection.
@@ -143,7 +147,7 @@ class Collection:
          - TypeError if `dict` is not a dictionary.
          - KeyError if _id was not found.
         """
-        if not isinstance(dict, collections.abc.Mapping):
+        if not isinstance(dict, JSONCompatible):
             raise TypeError("Expected a dictionary.")
 
         if not dict["_id"]:
@@ -155,7 +159,7 @@ class Collection:
         dict.pop("_id")
         await self._collection.update_one({"_id": id}, {"$unset": dict})
 
-    async def increment(self, id: Any, field: Any, amount: int):
+    async def increment(self, id: MongoCollectionID, field: Any, amount: int) -> None:
         """
         Increment a given `field` by `amount`.
 
@@ -169,7 +173,7 @@ class Collection:
 
         self._collection.update_one({"_id": id}, {"$inc": {field: amount}})
 
-    async def get_all(self):
+    async def get_all(self) -> List:
         """
         Returns a list of all data in the document.
 
@@ -184,7 +188,7 @@ class Collection:
         return data
 
     # Private methods
-    async def __get_raw(self, id: Any):
+    async def __get_raw(self, id: MongoCollectionID) -> Any:
         """
         Internal method used to evaluate certain checks within
         other methods that require the actual data.
