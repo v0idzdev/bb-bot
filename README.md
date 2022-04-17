@@ -15,21 +15,16 @@
 
 * Click **[here](https://discord.com/api/oauth2/authorize?client_id=947593856839458916&permissions=8&scope=bot%20applications.commands)** to invite BB.Bot to your server.
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
-* Click **[here](#-self-hosting)** for self-hosting instructions.
-* Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/CONTRIBUTIONS.md)** for information about contributing.
 
-You are currently viewing the documentation for BB.Bot V2.0.0 Alpha. This version is in a primitive stage, and has only been in development for a short amount of time. Please switch to the `master` branch for documentation for BB.Bot 1.2.0, the currently active version.
-<br><br>
+## ❓ What's Changing in Version 2?
 
-## 📢 **Commands List**
+### ❌ Deprecated Features
 
-* We use `...argument` to denote a **list of arguments**, like `argument a`, `argument b`, etc...
-* We use `argument?` to denote an **optional argument**. You can use the command **with** or **without** one.
-<br><br>             
+* **Self-hosting support**.
+* **Prefix commands**.
 
-### 🔑 Admin Commands
+### 🆕 New Features
 
-> **/admin clear `number of messages?`**
-
-Clears a specified number of messages from a text channel. Using the command on its own will clear **all** messages<br>
-**Requires**: `Manage Messages`
+* **BB.Bot Core**.
+  * BB.Bot Core is a **standalone Discord client** with built-in **MongoDB** and **Twitch API** integration.
+  * Simply create a **`DiscordClient**` and **add your own extensions**.
