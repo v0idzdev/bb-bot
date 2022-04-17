@@ -1,5 +1,5 @@
 """
-Module `mod` contains the `mod` cog, which implements
+Module `mod` contains the `mod` cog/group, which implements
 server moderation commands for BB.Bot.
 """
 import asyncio

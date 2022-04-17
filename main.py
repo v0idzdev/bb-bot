@@ -43,7 +43,7 @@ def main():
     dotenv.load_dotenv(".env")
 
     with open("config.json", "r") as config:
-        extension_filepaths, handler_filepaths = json.load(config).values()
+        extension_filepaths = json.load(config)["extension_filepaths"]
 
     testing_guild_ids = [953054451999072276]
     twitch_client_id = os.getenv("TWITCH_CLIENT_ID")
@@ -57,7 +57,6 @@ def main():
     client = client_factory.create_discord_client(
         status,
         extension_filepaths,
-        handler_filepaths,
         testing_guild_ids,
         mongo_connection_url,
         twitch_client_id,

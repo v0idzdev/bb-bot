@@ -29,7 +29,6 @@ class DiscordClient(commands.Bot):
        self,
        possible_statuses: itertools.cycle,
        extension_filepaths: List[str],
-       handler_filepaths: List[str],
        testing_guild_ids: List[int],
        twitch_client_id: str,
        twitch_client_secret: str,
@@ -43,8 +42,7 @@ class DiscordClient(commands.Bot):
 
         Params:
          - possible_statuses (itertools.Cycle): A list of statuses the bot will cycle through.
-         - extension_filepaths (list[str]): The filepaths of cogs the bot will use.
-         - handler_filepaths (list[str]): The filepaths of handlers the bot will use.
+         - extension_filepaths (list[str]): The filepaths of extensions the bot will use.
          - testing_guild_ids (list[int]): The IDs of testing guilds the bot is in.
          - mongo_connection_url (str): The URL used to connect to a MongoDB database.
          - twitch_client_id (str): The Twitch API application's ID.
@@ -60,7 +58,6 @@ class DiscordClient(commands.Bot):
 
         # Read-only attributes
         self._extension_filepaths = extension_filepaths
-        self._handler_filepaths = handler_filepaths
         self._twitch_client: TwitchClient = None
         self._mongo_client: MongoClient = None
 
@@ -77,14 +74,6 @@ class DiscordClient(commands.Bot):
         being set from outside the `Client` class.
         """
         return self._extension_filepaths
-
-    @property
-    def handler_filepaths(self) -> list[str]:
-        """
-        Returns the value of self.handler_filepaths. This stops the value
-        being set from outside the `Client` class.
-        """
-        return self._handler_filepaths
 
     @property
     def mongo_client(self) -> MongoClient:
@@ -136,7 +125,7 @@ class DiscordClient(commands.Bot):
         that are extensions must have a class that inherits from commands.Cog, which must
         be instantiated in a `setup` function.
         """
-        for module in self._extension_filepaths + self._handler_filepaths:
+        for module in self._extension_filepaths:
             await self.load_extension(module)
 
     async def __create_twitch_client(self) -> TwitchClient:

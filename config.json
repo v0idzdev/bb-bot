@@ -1,4 +1,3 @@
 {
-    "extension_filepaths": [],
-    "handler_filepaths": []
+    "extension_filepaths": ["ext.commands.mod"]
 }

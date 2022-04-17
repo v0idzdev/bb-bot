@@ -34,7 +34,6 @@ class DiscordClientFactory:
         self,
         possible_statuses: itertools.cycle,
         extension_filepaths: List[str],
-        handler_filepaths: List[str],
         testing_guild_ids: List[int],
         twitch_client_id: str,
         twitch_client_secret: str,
@@ -61,7 +60,6 @@ class DiscordClientFactory:
         return DiscordClient(
             possible_statuses,
             extension_filepaths,
-            handler_filepaths,
             testing_guild_ids,
             twitch_client_id,
             twitch_client_secret,
