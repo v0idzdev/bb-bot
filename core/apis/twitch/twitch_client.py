@@ -7,10 +7,14 @@ used to interact with the Twitch API to fetch and process data from it.
 import aiohttp
 import datetime
 
-from apis import twitch
-from typing import Any, Optional, Final
+from core.apis import twitch
 from io import BytesIO
 from PIL import Image
+from typing import (
+    Any,
+    Optional,
+    Final
+)
 
 
 class TwitchClient:

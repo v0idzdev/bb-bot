@@ -1,49 +1,54 @@
 """
-Module `client` contains the `Client` class, which is responsible
-for loading extensions, syncing application commands against the
-Discord API, and starting the bot.
+Module `discord_client` contains the `DiscordClient` class, which is
+responsible for loading extensions, syncing application commands against
+the Discord API, and starting the bot.
 """
-import itertools
 import aiohttp
 import discord
-import motor.motor_asyncio
-import apis
+import itertools
+import logging
+import sys
 
+from core.utils.aliases import MongoClient
 from discord.ext import commands
+from core.apis import TwitchClient
+from typing import (
+    List,
+    Dict,
+    Any
+)
 
 
-class Client(commands.Bot):
+class DiscordClient(commands.Bot):
     """
-    Class `Client` creates an instance of BB.Bot that loads
+    Class `DiscordClient` creates an instance of BB.Bot that loads
     extensions, syncs application commands, and starts the bot.
     """
     def __init__(
        self,
        possible_statuses: itertools.cycle,
-       extension_filepaths: list[str],
-       handler_filepaths: list[str],
-       testing_guild_ids: list[int],
+       extension_filepaths: List[str],
+       testing_guild_ids: List[int],
        twitch_client_id: str,
        twitch_client_secret: str,
        mongo_connection_url: str,
-        **kwargs
+        **kwargs: Dict[str, Any]
     ) -> None:
         """
-        Creates an instance of `Client` that is used to interact with
+        Creates an instance of `DiscordClient` that is used to interact with
         Discord, and is responsible for loading & starting the bot, and
         syncing slash commands.
 
         Params:
          - possible_statuses (itertools.Cycle): A list of statuses the bot will cycle through.
-         - extension_filepaths (list[str]): The filepaths of cogs the bot will use.
-         - handler_filepaths (list[str]): The filepaths of handlers the bot will use.
+         - extension_filepaths (list[str]): The filepaths of extensions the bot will use.
          - testing_guild_ids (list[int]): The IDs of testing guilds the bot is in.
          - mongo_connection_url (str): The URL used to connect to a MongoDB database.
          - twitch_client_id (str): The Twitch API application's ID.
          - twitch_client_secret (str): The Twitch API application's secret.
 
         Returns:
-         - A `Client` instance.
+         - A `DiscordClient` instance.
         """
         super().__init__(**kwargs)
 
@@ -52,15 +57,20 @@ class Client(commands.Bot):
 
         # Read-only attributes
         self._extension_filepaths = extension_filepaths
-        self._handler_filepaths = handler_filepaths
-        self._twitch_client: apis.twitch.TwitchClient = None
-        self._mongo_client: motor.motor_asyncio.AsyncIOMotorClient = None
+        self._twitch_client: TwitchClient = None
+        self._mongo_client: MongoClient = None
 
         # Strictly private attributes
         self.__testing_guild_ids = testing_guild_ids
         self.__twitch_client_id = twitch_client_id
         self.__twitch_client_secret = twitch_client_secret
         self.__mongo_connection_url = mongo_connection_url
+
+        logging.basicConfig(
+            handlers=[logging.StreamHandler(sys.stdout)],
+            format="%(levelname)s %(asctime)s - %(message)s", 
+            level=logging.INFO
+        )
 
     @property
     def extension_filepaths(self) -> list[str]:
@@ -71,27 +81,19 @@ class Client(commands.Bot):
         return self._extension_filepaths
 
     @property
-    def handler_filepaths(self) -> list[str]:
-        """
-        Returns the value of self.handler_filepaths. This stops the value
-        being set from outside the `Client` class.
-        """
-        return self._handler_filepaths
-
-    @property
-    def mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
+    def mongo_client(self) -> MongoClient:
         """
         Returns the value of self._mongo_client. This stops the value
         being set from outside the `Client` class. Access databases the
         client has access to by using self.mongo_client["database_name"].
 
         To use this with the module `apis.mongo.collection` (i.e, to edit
-        a table), use apis.mongo.Collection[self.mongo_client["name"], "table"]
+        a table), use apis.mongo.Collection(self.mongo_client["name"], "table")
         """
         return self._mongo_client
 
     @property
-    def twitch_client(self) -> apis.twitch.TwitchClient:
+    def twitch_client(self) -> TwitchClient:
         """
         Returns the value of self._twitch_client. This stops the value
         being set from outside the `Client` class.
@@ -128,17 +130,17 @@ class Client(commands.Bot):
         that are extensions must have a class that inherits from commands.Cog, which must
         be instantiated in a `setup` function.
         """
-        for module in self._extension_filepaths + self._handler_filepaths:
+        for module in self._extension_filepaths:
             await self.load_extension(module)
 
-    async def __create_twitch_client(self) -> apis.twitch.TwitchClient:
+    async def __create_twitch_client(self) -> TwitchClient:
         """
         Internal method that returns an instance of TwitchClient.
         """
-        return apis.twitch.TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
+        return TwitchClient(self.__twitch_client_id, self.__twitch_client_secret)
 
-    async def __create_mongo_client(self) -> motor.motor_asyncio.AsyncIOMotorClient:
+    async def __create_mongo_client(self) -> MongoClient:
         """
         Internal method that returns an instance of AsyncIOMotorClient.
         """
-        return motor.motor_asyncio.AsyncIOMotorClient(self.__mongo_connection_url)
+        return MongoClient(self.__mongo_connection_url)
