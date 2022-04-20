@@ -6,23 +6,24 @@ import asyncio
 import discord
 import datetime
 import core
+import enum
 
-from enum import Enum, auto
+from ext import utils
 from discord.ext import commands
 from discord import app_commands
 from typing import Optional
 
 
-class TimeUnit(Enum):
+class TimeUnit(enum.Enum):
     """
     Used with the `amount` parameter in certain commands to denote
     whether the user wants to ban another user for `amount` seconds,
     minutes, hours, or days.
     """
-    SECONDS = auto()
-    MINUTES = auto()
-    HOURS = auto()
-    DAYS = auto()
+    Seconds = 1
+    Minutes = 2
+    Hours = 3
+    Days = 4
 
 
 class Mod(commands.Cog, app_commands.Group, name="mod"):
@@ -31,6 +32,7 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
     """
     def __init__(self, client: core.DiscordClient) -> None:
         self.client = client
+        super().__init__()
 
     @app_commands.command()
     @app_commands.checks.has_permissions(manage_messages=True)
@@ -39,7 +41,10 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Clears a specified number of messages from a channel. Defaults to 6.
         """
-        await interaction.response.defer()
+        if amount <= 0:
+            error_embed = utils.create_error_embed("You can only clear one or more messages.")
+            await interaction.response.send_message(embed=error_embed, ephemeral=True)
+
         await interaction.channel.purge(limit=amount)
 
         embed = discord.Embed(
@@ -48,7 +53,7 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
             timestamp=datetime.datetime.utcnow()
         )
 
-        await interaction.followup.send(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
     @app_commands.command()
     @app_commands.describe(
@@ -71,14 +76,17 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Mutes a member of a server for a specified amount of time.
         """
-        await interaction.response.defer()
         guild = interaction.guild
-        role = discord.utils.get(guild.roles, "Muted")
-        await member.add_roles(role)
+        muted_role = discord.utils.get(guild.roles, name="Muted")
+
+        if not muted_role:
+            muted_role = await guild.create_role(name="Muted")
+
+        await member.add_roles(muted_role)
 
         for channel in guild.channels:
             await channel.set_permissions(
-                role,
+                muted_role,
                 speak=False,
                 send_messages=False,
                 read_message_history=False,
@@ -87,32 +95,32 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
 
         muted_embed = discord.Embed(
             title="⚙️ Member Muted",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .add_field(name="⏳ Time", value=f"**{amount}** {str(timeunit.name)}.") \
+            .add_field(name="🖊️ Reason", value=reason or "...")
 
-        if reason:
-            muted_embed.add_field(name="🖊️ Reason", value=reason, inline=False)
-
-        muted_embed.add_field(name="⏳ Time", value=f"**{amount}**{str(timeunit)[0]}")
-        await interaction.followup.send(embed=muted_embed)
+        await interaction.response.send_message(embed=muted_embed)
         seconds_muted = amount
 
-        if timeunit == TimeUnit.MINUTES:
+        if timeunit == TimeUnit.Minutes:
             seconds_muted *= 60
-        if timeunit == TimeUnit.HOURS:
+        if timeunit == TimeUnit.Hours:
             seconds_muted *= (60 * 60)
-        if timeunit == TimeUnit.DAYS:
+        if timeunit == TimeUnit.Days:
             seconds_muted *= (60 * 60 * 24)
 
         await asyncio.sleep(seconds_muted)
-        await member.remove_roles(role)
+        await member.remove_roles(muted_role)
 
         unmuted_embed = discord.Embed(
             title="⚙️ Member Unmuted",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
         await interaction.followup.send(embed=unmuted_embed)
 
@@ -150,14 +158,13 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
 
         muted_embed = discord.Embed(
             title="⚙️ Member Muted",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .add_field(name="🖊️ Reason", value=reason or "...")
 
-        if reason:
-            muted_embed.add_field(name="🖊️ Reason", value=reason, inline=False)
-
-        await interaction.followup.send(embed=muted_embed)
+        await interaction.response.send_message(embed=muted_embed)
         await member.add_roles(muted_role, reason=reason)
 
     @app_commands.command()
@@ -168,17 +175,17 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Unmutes a member of a server.
         """
-        await interaction.response.defer()
         muted_role = discord.utils.get(interaction.guild.roles, name="Muted")
         await member.remove_roles(muted_role)
 
         unmuted_embed = discord.Embed(
             title="⚙️ Member Unmuted",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
-        await interaction.followup.send(embed=unmuted_embed)
+        await interaction.response.send_message(embed=unmuted_embed)
 
     @app_commands.command()
     @app_commands.describe(
@@ -197,19 +204,17 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Kicks a member from a server.
         """
-        await interaction.response.defer()
         guild = interaction.guild
 
         kicked_embed = discord.Embed(
             title="⚙️ Member Kicked",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .add_field(name="🖊️ Reason", value=reason or "...") \
 
-        if reason:
-            kicked_embed.add_field(name="🖊️ Reason", value=reason, inline=False)
-
-        await interaction.followup.send(embed=kicked_embed)
+        await interaction.response.send_message(embed=kicked_embed)
         await guild.kick(member)
 
     @app_commands.command()
@@ -233,28 +238,26 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Bans a member of a server for a specified amount of time.
         """
-        await interaction.response.defer()
         guild = interaction.guild
 
         banned_embed = discord.Embed(
             title="⚙️ Member Banned",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .add_field(name="⏳ Time", value=f"**{amount}** {str(timeunit.name)}.") \
+            .add_field(name="🖊️ Reason", value=reason or "...")
 
-        if reason:
-            banned_embed.add_field(name="🖊️ Reason", value=reason, inline=False)
-
-        banned_embed.add_field(name="⏳ Time", value=f"**{amount}**{str(timeunit)[0]}")
-        await interaction.followup.send(embed=banned_embed)
+        await interaction.response.send_message(embed=banned_embed)
         await guild.ban(member, reason=reason)
         seconds_banned = amount
 
-        if timeunit == TimeUnit.MINUTES:
+        if timeunit == TimeUnit.Minutes:
             seconds_banned *= 60
-        if timeunit == TimeUnit.HOURS:
+        if timeunit == TimeUnit.Hours:
             seconds_banned *= (60 * 60)
-        if timeunit == TimeUnit.DAYS:
+        if timeunit == TimeUnit.Days:
             seconds_banned *= (60 * 60 * 24)
 
         await asyncio.sleep(seconds_banned)
@@ -262,9 +265,10 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
 
         unbanned_embed = discord.Embed(
             title="⚙️ Member Unbanned",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
         await interaction.followup.send(embed=unbanned_embed)
 
@@ -285,19 +289,17 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Mutes a member of a server until they are unmuted.
         """
-        await interaction.response.defer()
         guild = interaction.guild
 
         banned_embed = discord.Embed(
             title="⚙️ Member Banned",
-            description=f"💡 Member: **{member.name}**.",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .add_field(name="🖊️ Reason", value=reason or "...")
 
-        if reason:
-            banned_embed.add_field(name="🖊️ Reason", value=reason, inline=False)
-
-        await interaction.followup.send(embed=banned_embed)
+        await interaction.response.send_message(embed=banned_embed)
         await guild.ban(member, reason=reason)
 
     @app_commands.command()
@@ -308,16 +310,16 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         """
         ⚙️ Unbans a member of a server.
         """
-        await interaction.response.defer()
         await interaction.guild.unban(member)
 
         unbanned_embed = discord.Embed(
-            title="⚙️ Member Unmuted",
-            description=f"💡 Member: **{member.name}**.",
+            title="⚙️ Member Unbanned",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow()
-        )
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
-        await interaction.followup.send(embed=unbanned_embed)
+        await interaction.response.send_message(embed=unbanned_embed)
 
 
 async def setup(client: core.DiscordClient) -> None:
@@ -331,7 +333,7 @@ async def setup(client: core.DiscordClient) -> None:
     await client.add_cog(Mod(client))
 
 
-async def setup(client: core.DiscordClient) -> None:
+async def teardown(client: core.DiscordClient) -> None:
     """
     De-registers the command group/cog with the discord client.
     This is not usually needed, but is useful to have.

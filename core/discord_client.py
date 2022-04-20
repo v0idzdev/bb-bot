@@ -6,17 +6,16 @@ the Discord API, and starting the bot.
 import aiohttp
 import discord
 import itertools
-from core.utils.aliases import MongoClient
+import logging
+import sys
 
+from core.utils.aliases import MongoClient
 from discord.ext import commands
+from core.apis import TwitchClient
 from typing import (
     List,
     Dict,
     Any
-)
-
-from core.apis import (
-    TwitchClient
 )
 
 
@@ -67,6 +66,12 @@ class DiscordClient(commands.Bot):
         self.__twitch_client_secret = twitch_client_secret
         self.__mongo_connection_url = mongo_connection_url
 
+        logging.basicConfig(
+            handlers=[logging.StreamHandler(sys.stdout)],
+            format="%(levelname)s %(asctime)s - %(message)s", 
+            level=logging.INFO
+        )
+
     @property
     def extension_filepaths(self) -> list[str]:
         """
@@ -83,7 +88,7 @@ class DiscordClient(commands.Bot):
         client has access to by using self.mongo_client["database_name"].
 
         To use this with the module `apis.mongo.collection` (i.e, to edit
-        a table), use apis.mongo.Collection[self.mongo_client["name"], "table"]
+        a table), use apis.mongo.Collection(self.mongo_client["name"], "table")
         """
         return self._mongo_client
 

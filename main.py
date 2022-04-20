@@ -12,26 +12,7 @@ import os
 import dotenv
 import discord
 
-from core import (
-    DiscordClient,
-    DiscordClientFactory
-)
-
-
-async def start_application(client: DiscordClient):
-    """
-    This function starts the application by calling the relevant
-    methods of a `Client` instance.
-
-    Params:
-     - client (Client): The Discord client to start.
-    """
-    async with client:
-        await client.load()
-        client.loop.create_task(client.sync())
-
-        TOKEN = os.getenv("TOKEN")
-        await client.start(TOKEN)
+from core import DiscordClient
 
 
 def main():
@@ -53,8 +34,7 @@ def main():
     intents = discord.Intents.all()
     status = itertools.cycle(["/"])
 
-    client_factory = DiscordClientFactory()
-    client = client_factory.create_discord_client(
+    client = DiscordClient(
         status,
         extension_filepaths,
         testing_guild_ids,
@@ -62,10 +42,27 @@ def main():
         twitch_client_id,
         twitch_client_secret,
         command_prefix='~',
+        help_command=None,
         intents=intents
     )
 
     asyncio.run(start_application(client))
+
+
+async def start_application(client: DiscordClient):
+    """
+    This function starts the application by calling the relevant
+    methods of a `Client` instance.
+
+    Params:
+     - client (Client): The Discord client to start.
+    """
+    async with client:
+        await client.load()
+        client.loop.create_task(client.sync())
+
+        TOKEN = os.getenv("TOKEN")
+        await client.start(TOKEN)
 
 
 if __name__ == "__main__":
