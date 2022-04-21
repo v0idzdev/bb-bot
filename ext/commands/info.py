@@ -23,8 +23,11 @@ class Info(commands.Cog, app_commands.Group, name="info"):
     @app_commands.describe(member="❓ The member to view the join date of.")
     async def joined(self, interaction: discord.Interaction, *, member: discord.Member) -> None:
         """
-        💡 Shows the time and date when a user joined the server.
+        💡 Shows a member's join date. If no member is specified, it shows yours.
         """
+        if member is None:
+            member = interaction.user
+
         date = member.joined_at.strftime("%d/%m/%Y")
         time = member.joined_at.strftime("%I:%M %p")
 
@@ -75,6 +78,24 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             )
 
         await interaction.response.send_message(embed=perms_embed, ephemeral=True)
+    
+    @app_commands.command()
+    @app_commands.describe(member="❓ The member to view the avatar of.")
+    async def avatar(self, interaction: discord.Interaction, *, member: Optional[discord.Member]=None) -> None:
+        """ 
+        💡 Shows a member's avatar. If no member is specified, it shows yours.
+        """
+        if member is None:
+            member = interaction.user
+
+        avatar_embed = discord.Embed(
+            title="💡 Avatar",
+            description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
+        ) \
+            .set_image(url=member.avatar.url or None)
+        
+        await interaction.response.send_message(embed=avatar_embed, ephemeral=True)
+        
 
 
 async def setup(client: core.DiscordClient) -> None:
