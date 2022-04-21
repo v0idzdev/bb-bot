@@ -95,6 +95,19 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             .set_image(url=member.avatar.url or None)
         
         await interaction.response.send_message(embed=avatar_embed, ephemeral=True)
+    
+    @app_commands.command()
+    async def servericon(self, interaction: discord.Interaction) -> None:
+        """
+        💡 Shows the server's icon.
+        """
+        server_icon_embed = discord.Embed(
+            title="💡 Server Icon",
+            description=f"**`@{interaction.guild.name}`**.",
+        ) \
+            .set_image(url=interaction.guild.icon.url)
+        
+        await interaction.response.send_message(embed=server_icon_embed, ephemeral=True)
         
 
 
