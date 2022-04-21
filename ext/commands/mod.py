@@ -28,7 +28,7 @@ class TimeUnit(enum.Enum):
 
 class Mod(commands.Cog, app_commands.Group, name="mod"):
     """
-    ⚙️ Command group for server moderators and administrators.
+    ⚙️ Lets server admins & mods manage their server.
     """
     def __init__(self, client: core.DiscordClient) -> None:
         self.client = client
