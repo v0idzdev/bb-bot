@@ -21,7 +21,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
 
     @app_commands.command()
     @app_commands.describe(member="❓ The member to view the join date of.")
-    async def joined(self, interaction: discord.Interaction, *, member: discord.Member) -> None:
+    async def joined(self, interaction: discord.Interaction, *, member: Optional[discord.Member]=None) -> None:
         """
         💡 Shows a member's join date. If no member is specified, it shows yours.
         """
@@ -34,8 +34,10 @@ class Info(commands.Cog, app_commands.Group, name="info"):
         joined_embed = discord.Embed(
             title="💡 Join Date",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
+            timestamp=datetime.datetime.utcnow(),
         ) \
-            .add_field(name="⏳ Time", value=f"**{date}** | *{time}*.") \
+            .add_field(name="⏳ Time", value=f"{time}.") \
+            .add_field(name="📅 Date", value=f"{date}.") \
             .set_author(icon_url=member.avatar.url or None, name=member.name)
         
         await interaction.response.send_message(embed=joined_embed, ephemeral=True)
@@ -52,6 +54,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
         top_role_embed = discord.Embed(
             title="💡 Top Role",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
+            timestamp=datetime.datetime.utcnow(),
         ) \
             .add_field(name="🏷️ Role", value=f"*@{member.top_role.name}*") \
             .set_author(icon_url=member.avatar.url or None, name=member.name)
@@ -70,6 +73,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
         perms_embed = discord.Embed(
             title="💡 Permissions",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
+            timestamp=datetime.datetime.utcnow(),
         ) \
             .set_author(icon_url=member.avatar.url or None, name=member.name) \
             .add_field(
@@ -91,6 +95,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
         avatar_embed = discord.Embed(
             title="💡 Avatar",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
+            timestamp=datetime.datetime.utcnow(),
         ) \
             .set_image(url=member.avatar.url or None)
         
@@ -104,12 +109,12 @@ class Info(commands.Cog, app_commands.Group, name="info"):
         server_icon_embed = discord.Embed(
             title="💡 Server Icon",
             description=f"**`@{interaction.guild.name}`**.",
+            timestamp=datetime.datetime.utcnow(),
         ) \
             .set_image(url=interaction.guild.icon.url)
         
         await interaction.response.send_message(embed=server_icon_embed, ephemeral=True)
         
-
 
 async def setup(client: core.DiscordClient) -> None:
     """
