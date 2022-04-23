@@ -17,6 +17,8 @@
 * Click **[here](https://discord.gg/tdFRB8uU)** to join our Discord server.<br>
 * Click **[here](#-self-hosting)** for self-hosting instructions.
 * Click **[here](https://github.com/matthewflegg/bb-bot/blob/master/CONTRIBUTIONS.md)** for information about contributing.
+
+Currently, BB.Bot `2.0.0` is in development. If you're thinking of contributing, please do so on the `release/v2.0.0` branch.
 <br><br>
 
 ## 📢 **Commands List**
