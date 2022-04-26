@@ -11,7 +11,7 @@ from discord import app_commands
 from typing import Optional
 
 
-class Info(commands.Cog, app_commands.Group, name="info"):
+class Info(commands.Cog, name="Information"):
     """
     💡 Provides infomation about servers, members, and more.
     """
@@ -35,6 +35,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             title="💡 Join Date",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .add_field(name="⏳ Time", value=f"{time}.") \
             .add_field(name="📅 Date", value=f"{date}.") \
@@ -55,6 +56,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             title="💡 Top Role",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .add_field(name="🏷️ Role", value=f"*@{member.top_role.name}*") \
             .set_author(icon_url=member.avatar.url or None, name=member.name)
@@ -74,6 +76,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             title="💡 Permissions",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(icon_url=member.avatar.url or None, name=member.name) \
             .add_field(
@@ -96,6 +99,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             title="💡 Avatar",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
             timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_image(url=member.avatar.url or None)
         
@@ -110,6 +114,7 @@ class Info(commands.Cog, app_commands.Group, name="info"):
             title="💡 Server Icon",
             description=f"**`@{interaction.guild.name}`**.",
             timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_image(url=interaction.guild.icon.url)
         
