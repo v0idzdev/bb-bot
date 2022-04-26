@@ -58,7 +58,7 @@ class DiscordClient(commands.Bot):
         self._session: aiohttp.ClientSession = None
         self._extension_filepaths = extension_filepaths
         self._test_guild_ids = test_guild_ids
-        self._twitch_client = mongo_client
+        self._twitch_client = twitch_client
         self._mongo_client = mongo_client
 
     @property

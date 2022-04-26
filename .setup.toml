@@ -10,5 +10,6 @@ guilds = [
 status = "/"
 extensions = [
     "ext.commands.mod",
-    "ext.commands.info"
+    "ext.commands.info",
+    "ext.commands.misc"
 ]
