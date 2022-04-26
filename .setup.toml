@@ -1,0 +1,14 @@
+# This can be public if needed.
+#
+# Loads configuration variables that are used
+# to load extensions and set colors, etc.
+theme = "004AAD"
+guilds = [ 
+    953054451999072276
+]
+
+status = "/"
+extensions = [
+    "ext.commands.mod",
+    "ext.commands.info"
+]

@@ -6,16 +6,18 @@ __author__ = "Matthew Flegg"
 __version__ = "v2.0.0-alpha.1"
 
 import asyncio
-import itertools
-import json
+import twitchio
 import os
 import dotenv
 import discord
+import toml
 
+from core.utils import aliases
 from core import DiscordClient
+from typing import Dict
 
 
-def main():
+async def main():
     """
     This is the main entry point of the application. This is where
     filepaths are loaded, environment variables and retrieved from
@@ -23,47 +25,37 @@ def main():
     """
     dotenv.load_dotenv(".env")
 
-    with open("config.json", "r") as config:
-        extension_filepaths = json.load(config)["extension_filepaths"]
+    with open(".setup.toml", "r") as setup, open(".secrets.toml", "r") as secrets:
+        theme, \
+        guilds, \
+        status, \
+        extensions = toml.load(setup, _dict=dict).values()
+    
+        token, \
+        twitch_id, \
+        twitch_secret,\
+        mongo_url = toml.load(secrets, _dict=dict).values()
 
-    testing_guild_ids = [953054451999072276]
-    twitch_client_id = os.getenv("TWITCH_CLIENT_ID")
-    twitch_client_secret = os.getenv("TWITCH_CLIENT_SECRET")
-    mongo_connection_url = os.getenv("MONGO_CONNECTION_URL")
+    mongo_client = aliases.MongoClient(mongo_url)
+    twitch_client = twitchio.Client.from_client_credentials(twitch_id, twitch_secret)
 
-    intents = discord.Intents.all()
-    status = itertools.cycle(["/"])
+    kwargs = {
+        "command_prefix": '~',
+        "help_command": None,
+        "intents": discord.Intents.all(),
+    }
 
-    client = DiscordClient(
+    await DiscordClient(
         status,
-        extension_filepaths,
-        testing_guild_ids,
-        mongo_connection_url,
-        twitch_client_id,
-        twitch_client_secret,
-        command_prefix='~',
-        help_command=None,
-        intents=intents
-    )
-
-    asyncio.run(start_application(client))
-
-
-async def start_application(client: DiscordClient):
-    """
-    This function starts the application by calling the relevant
-    methods of a `Client` instance.
-
-    Params:
-     - client (Client): The Discord client to start.
-    """
-    async with client:
-        await client.load()
-        client.loop.create_task(client.sync())
-
-        TOKEN = os.getenv("TOKEN")
-        await client.start(TOKEN)
+        theme,
+        extensions,
+        guilds,
+        mongo_client,
+        twitch_client,
+        **kwargs
+    ) \
+        .start_pipeline(token)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

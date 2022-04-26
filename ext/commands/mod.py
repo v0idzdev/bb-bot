@@ -26,10 +26,13 @@ class TimeUnit(enum.Enum):
     Days = 4
 
 
-class Mod(commands.Cog, app_commands.Group, name="mod"):
+class Mod(commands.Cog, name="Moderation"):
     """
     ⚙️ Lets server admins & mods manage their server.
     """
+    mute = app_commands.Group(name="mute", description="❓ Mutes a member of a server.")
+    ban = app_commands.Group(name="ban", description="❓ Bans a member of a server.")
+
     def __init__(self, client: core.DiscordClient) -> None:
         self.client = client
         super().__init__()
@@ -50,12 +53,13 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         embed = discord.Embed(
             title="⚙️ Messages Purged",
             description=f"💡 Number of Messages: **{amount}**.",
-            timestamp=datetime.datetime.utcnow()
-        )
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        )   
 
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command()
+    @mute.command()
     @app_commands.describe(
         member="❓ The member to temporarily mute.",
         timeunit="❓ Whether you want to mute them for a certain number of seconds, minutes, hours, or days.",
@@ -64,7 +68,7 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
     )
     @app_commands.checks.has_permissions(manage_messages=True)
     @app_commands.checks.cooldown(1, 5, key=lambda interaction: interaction.guild.id)
-    async def tempmute(
+    async def temporarily(
         self,
         interaction: discord.Interaction,
         *,
@@ -96,7 +100,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         muted_embed = discord.Embed(
             title="⚙️ Member Muted",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .add_field(name="⏳ Time", value=f"**{amount}** {str(timeunit.name)}.") \
@@ -118,20 +123,21 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         unmuted_embed = discord.Embed(
             title="⚙️ Member Unmuted",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
         await interaction.followup.send(embed=unmuted_embed)
 
-    @app_commands.command()
+    @mute.command()
     @app_commands.describe(
         member="❓ The member to mute.",
         reason="❓ The reason for muting the member."
     )
     @app_commands.checks.has_permissions(manage_messages=True)
     @app_commands.checks.cooldown(1, 5, key=lambda interaction: interaction.guild.id)
-    async def mute(
+    async def permanently(
         self,
         interaction: discord.Interaction,
         *,
@@ -159,7 +165,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         muted_embed = discord.Embed(
             title="⚙️ Member Muted",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .add_field(name="🖊️ Reason", value=reason or "...")
@@ -181,7 +188,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         unmuted_embed = discord.Embed(
             title="⚙️ Member Unmuted",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
@@ -209,7 +217,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         kicked_embed = discord.Embed(
             title="⚙️ Member Kicked",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .add_field(name="🖊️ Reason", value=reason or "...") \
@@ -217,7 +226,7 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         await interaction.response.send_message(embed=kicked_embed)
         await guild.kick(member)
 
-    @app_commands.command()
+    @ban.command()
     @app_commands.describe(
         member="❓ The member to temporarily ban.",
         timeunit="❓ Whether you want to ban them for a certain number of seconds, minutes, hours, or days.",
@@ -226,7 +235,7 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
     )
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.checks.cooldown(1, 5, key=lambda interaction: interaction.guild.id)
-    async def tempban(
+    async def temporarily(
         self,
         interaction: discord.Interaction,
         *,
@@ -243,7 +252,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         banned_embed = discord.Embed(
             title="⚙️ Member Banned",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .add_field(name="⏳ Time", value=f"**{amount}** {str(timeunit.name)}.") \
@@ -266,20 +276,21 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         unbanned_embed = discord.Embed(
             title="⚙️ Member Unbanned",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
         await interaction.followup.send(embed=unbanned_embed)
 
-    @app_commands.command()
+    @ban.command()
     @app_commands.describe(
         member="❓ The member to ban.",
         reason="❓ The reason for banning the member."
     )
     @app_commands.checks.has_permissions(ban_members=True)
     @app_commands.checks.cooldown(1, 5, key=lambda interaction: interaction.guild.id)
-    async def ban(
+    async def permanently(
         self,
         interaction: discord.Interaction,
         *,
@@ -294,7 +305,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         banned_embed = discord.Embed(
             title="⚙️ Member Banned",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .add_field(name="🖊️ Reason", value=reason or "...")
@@ -315,7 +327,8 @@ class Mod(commands.Cog, app_commands.Group, name="mod"):
         unbanned_embed = discord.Embed(
             title="⚙️ Member Unbanned",
             description=f"**`@{member.name}`** | **`{member.discriminator}`**.",
-            timestamp=datetime.datetime.utcnow()
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
         ) \
             .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
