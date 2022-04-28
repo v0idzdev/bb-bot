@@ -11,5 +11,6 @@ status = "/"
 extensions = [
     "ext.commands.mod",
     "ext.commands.info",
-    "ext.commands.misc"
+    "ext.commands.misc",
+    "ext.handlers.events"
 ]
