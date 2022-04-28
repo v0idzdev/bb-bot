@@ -1,3 +1,7 @@
+"""
+Module `misc` contains the `misc` cog/group, which implements
+information commands for BB.Bot.
+"""
 import datetime
 import discord
 import humanize
@@ -13,7 +17,6 @@ class Misc(commands.Cog, name="Miscellaneous"):
     """
     🎲 Contains miscellaneous commands.
     """
-
     def __init__(self, client: core.DiscordClient):
         self.client = client
         super().__init__()
@@ -25,13 +28,14 @@ class Misc(commands.Cog, name="Miscellaneous"):
         🎲 Shows information about a Twitch stream.
         """
         streams = await self.client.twitch_client.fetch_streams(user_logins=[broadcaster])
-        stream: twitchio.Stream = streams[0] or None
 
-        if not stream:
+        if not streams:
             error_embed = utils.create_error_embed(f"The streamer **`{broadcaster}`** is not currently live.")
             return await interaction.response.send_message(embed=error_embed)
 
+        stream: twitchio.Stream = streams[0]
         current_time = datetime.datetime.utcnow()
+
         stream_time = humanize.precisedelta(
             current_time-stream.started_at.replace(tzinfo=None),
             format="%0.0f"
@@ -51,6 +55,44 @@ class Misc(commands.Cog, name="Miscellaneous"):
             .add_field(name="❓ Category", value=stream.game_name, inline=False)
 
         await interaction.response.send_message(embed=stream_embed)
+    
+    @app_commands.command()
+    async def meme(self, interaction: discord.Interaction):
+        """
+        🎲 Sends a random meme from Reddit.
+        """
+        response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
+        data = await response.json()
+
+        meme_embed = discord.Embed(
+            title="🎲 Found a Meme",
+            description=f"**`{data['title']}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,    
+        ) \
+            .set_image(url=f"{data['url']}") \
+            .set_footer(text="❓ Try again? Use /meme.")
+
+        await interaction.response.send_message(embed=meme_embed)
+    
+    @app_commands.command()
+    @app_commands.describe(question="❓ The yes/no question to ask for the poll.")
+    async def poll(self, interaction: discord.Interaction, *, question: str):
+        """
+        🎲 Creates a simple yes or no poll for users to vote on.
+        """
+        poll_embed = discord.Embed(
+            title="🎲 Poll",
+            description=f"**`{question}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .set_author(name=interaction.user.name, url=interaction.user.avatar.url) \
+            .set_footer(text="Vote ✔️ Yes or ❌ No.")
+
+        message = await interaction.channel.send(embed=poll_embed)
+        await message.add_reaction("✔️")
+        await message.add_reaction("❌")
 
 
 
