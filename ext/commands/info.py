@@ -41,7 +41,7 @@ class Info(commands.Cog, name="Information"):
             .add_field(name="📅 Date", value=f"{date}.") \
             .set_author(icon_url=member.avatar.url or None, name=member.name)
         
-        await interaction.response.send_message(embed=joined_embed, ephemeral=True)
+        await interaction.response.send_message(embed=joined_embed)
 
     @app_commands.command()
     @app_commands.describe(member="❓ The member to view the top role of.")
@@ -61,7 +61,7 @@ class Info(commands.Cog, name="Information"):
             .add_field(name="🏷️ Role", value=f"*@{member.top_role.name}*") \
             .set_author(icon_url=member.avatar.url or None, name=member.name)
         
-        await interaction.response.send_message(embed=top_role_embed, ephemeral=True)
+        await interaction.response.send_message(embed=top_role_embed)
     
     @app_commands.command()
     @app_commands.describe(member="❓ The member to view the permissions of.")
@@ -84,7 +84,7 @@ class Info(commands.Cog, name="Information"):
                 value="\u200b".join(f"`{perm}` " for perm, value in member.guild_permissions if value) or "..."
             )
 
-        await interaction.response.send_message(embed=perms_embed, ephemeral=True)
+        await interaction.response.send_message(embed=perms_embed)
     
     @app_commands.command()
     @app_commands.describe(member="❓ The member to view the avatar of.")
@@ -103,7 +103,7 @@ class Info(commands.Cog, name="Information"):
         ) \
             .set_image(url=member.avatar.url or None)
         
-        await interaction.response.send_message(embed=avatar_embed, ephemeral=True)
+        await interaction.response.send_message(embed=avatar_embed)
     
     @app_commands.command()
     async def servericon(self, interaction: discord.Interaction) -> None:
@@ -118,7 +118,7 @@ class Info(commands.Cog, name="Information"):
         ) \
             .set_image(url=interaction.guild.icon.url)
         
-        await interaction.response.send_message(embed=server_icon_embed, ephemeral=True)
+        await interaction.response.send_message(embed=server_icon_embed)
         
 
 async def setup(client: core.DiscordClient) -> None:

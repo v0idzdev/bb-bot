@@ -3,6 +3,7 @@ Module `misc` contains the `misc` cog/group, which implements
 information commands for BB.Bot.
 """
 import datetime
+import random
 import discord
 import humanize
 import twitchio
@@ -11,6 +12,8 @@ import core
 from ext import utils
 from discord import app_commands
 from discord.ext import commands
+
+from ext.views.youtube_view import YoutubeView
 
 
 class Misc(commands.Cog, name="Miscellaneous"):
@@ -31,7 +34,7 @@ class Misc(commands.Cog, name="Miscellaneous"):
 
         if not streams:
             error_embed = utils.create_error_embed(f"The streamer **`{broadcaster}`** is not currently live.")
-            return await interaction.response.send_message(embed=error_embed)
+            return await interaction.response.send_message(embed=error_embed, ephemeral=True)
 
         stream: twitchio.Stream = streams[0]
         current_time = datetime.datetime.utcnow()
@@ -55,6 +58,30 @@ class Misc(commands.Cog, name="Miscellaneous"):
             .add_field(name="❓ Category", value=stream.game_name, inline=False)
 
         await interaction.response.send_message(embed=stream_embed)
+
+    @app_commands.command()
+    @app_commands.describe(choices="❓ The choices to choose from, separated by commas.")
+    async def choose(self, interaction: discord.Interaction, *, choices: str):
+        """
+        🎲 Chooses a random option from a list of choices.
+        """
+        choices = [x.strip() for x in choices.split(",")]
+
+        if len(choices) <= 1:
+            error_embed = utils.create_error_embed("You need to give me at least 2 choices.")
+            return await interaction.response.send_message(embed=error_embed, ephemeral=True)
+
+        numbered_choices = [f"**`{i + 1}`** — {x}" for i, x in enumerate(choices)]
+        
+        choice_embed = discord.Embed(
+            title="🎲 My Choice",
+            description=f"**`{random.choice(choices)}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .add_field(name="❗ Options Given", value="\n".join(numbered_choices))
+
+        await interaction.response.send_message(embed=choice_embed)
     
     @app_commands.command()
     async def meme(self, interaction: discord.Interaction):
@@ -63,14 +90,15 @@ class Misc(commands.Cog, name="Miscellaneous"):
         """
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
         data = await response.json()
+        url = data['url']
 
         meme_embed = discord.Embed(
             title="🎲 Found a Meme",
-            description=f"**`{data['title']}`**",
+            description=f"**[{data['title']}]({url})**",
             timestamp=datetime.datetime.utcnow(),
-            color=self.client.theme,    
+            color=self.client.theme,
         ) \
-            .set_image(url=f"{data['url']}") \
+            .set_image(url=f"{url}") \
             .set_footer(text="❓ Try again? Use /meme.")
 
         await interaction.response.send_message(embed=meme_embed)
@@ -81,19 +109,93 @@ class Misc(commands.Cog, name="Miscellaneous"):
         """
         🎲 Creates a simple yes or no poll for users to vote on.
         """
+        if message is None:
+            error_embed = utils.create_error_embed("You need to ask a question.")
+            return await interaction.response.send_message(embed=error_embed)
+
         poll_embed = discord.Embed(
             title="🎲 Poll",
             description=f"**`{question}`**",
             timestamp=datetime.datetime.utcnow(),
             color=self.client.theme,
         ) \
-            .set_author(name=interaction.user.name, url=interaction.user.avatar.url) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .set_footer(text="Vote ✔️ Yes or ❌ No.")
 
         message = await interaction.channel.send(embed=poll_embed)
         await message.add_reaction("✔️")
         await message.add_reaction("❌")
+    
+    @app_commands.command()
+    @app_commands.describe(message="❓ The phrase you want the bot to repeat.")
+    async def echo(self, interaction: discord.Interaction, *, message: str):
+        """
+        🎲 Repeats what you say.
+        """
+        if message is None:
+            error_embed = utils.create_error_embed("You need to tell me what to say.")
+            return await interaction.response.send_message(embed=error_embed)
+        
+        echo_embed = discord.Embed(
+            title=f"🎲 Message",
+            description=f"**`{message}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
+        await interaction.response.send_message(embed=echo_embed)
+    
+    @app_commands.command()
+    async def ping(self, interaction: discord.Interaction):
+        """
+        🎲 Shows the bot's current websocket latency.
+        """
+        await interaction.response.defer()
+
+        embed = discord.Embed(
+            title="🏓 Pong!",
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms.",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        )
+
+        await interaction.followup.send(embed=embed)
+    
+    @app_commands.command()
+    @app_commands.describe(search="❓ The YouTube video to search for.")
+    async def youtube(self, interaction: discord.Interaction, *, search: str):
+        """
+        🎲 Searches for a video on youtube and sends the link.
+        """
+        if search is None:
+            error_embed = utils.create_error_embed("You need to specify a search term.")
+            return await interaction.response.send_message(embed=error_embed)
+
+        url = await utils.youtube_search_to_url(search)
+        title = await utils.youtube_url_to_title(url)
+        thumbnail = await utils.youtube_url_to_thumbnail(url)
+
+        embed = discord.Embed(
+            title="🎲 Found a Video",
+            description=f"🔗 [{title}]({url})",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .set_thumbnail(url=thumbnail) \
+            .set_footer(text=f"❓ Follow the link above to view the video.")
+
+        await interaction.response.send_message(embed=embed)
+
+        embed = discord.Embed(
+            title="🎲 View in Discord?",
+            description="❓ Click View In Discord to view the video in this text channel.",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        )
+
+        view = YoutubeView(url, interaction)
+        view.message = await interaction.followup.send(embed=embed, view=view)
 
 
 async def setup(client: core.DiscordClient) -> None:
