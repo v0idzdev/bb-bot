@@ -107,6 +107,10 @@ class Misc(commands.Cog, name="Miscellaneous"):
         """
         🎲 Creates a simple yes or no poll for users to vote on.
         """
+        if message is None:
+            error_embed = utils.create_error_embed("You need to ask a question.")
+            return await interaction.response.send_message(embed=error_embed)
+
         poll_embed = discord.Embed(
             title="🎲 Poll",
             description=f"**`{question}`**",
@@ -119,6 +123,26 @@ class Misc(commands.Cog, name="Miscellaneous"):
         message = await interaction.channel.send(embed=poll_embed)
         await message.add_reaction("✔️")
         await message.add_reaction("❌")
+    
+    @app_commands.command()
+    @app_commands.describe(message="❓ The phrase you want the bot to repeat.")
+    async def echo(self, interaction: discord.Interaction, *, message: str):
+        """
+        🎲 Repeats what you say.
+        """
+        if message is None:
+            error_embed = utils.create_error_embed("You need to tell me what to say.")
+            return await interaction.response.send_message(embed=error_embed)
+        
+        echo_embed = discord.Embed(
+            title=f"🎲 Message",
+            description=f"**`{message}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+
+        await interaction.response.send_message(embed=echo_embed)
 
 
 
