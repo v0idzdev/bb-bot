@@ -3,6 +3,7 @@ Module `misc` contains the `misc` cog/group, which implements
 information commands for BB.Bot.
 """
 import datetime
+import random
 import discord
 import humanize
 import twitchio
@@ -31,7 +32,7 @@ class Misc(commands.Cog, name="Miscellaneous"):
 
         if not streams:
             error_embed = utils.create_error_embed(f"The streamer **`{broadcaster}`** is not currently live.")
-            return await interaction.response.send_message(embed=error_embed)
+            return await interaction.response.send_message(embed=error_embed, ephemeral=True)
 
         stream: twitchio.Stream = streams[0]
         current_time = datetime.datetime.utcnow()
@@ -55,6 +56,30 @@ class Misc(commands.Cog, name="Miscellaneous"):
             .add_field(name="❓ Category", value=stream.game_name, inline=False)
 
         await interaction.response.send_message(embed=stream_embed)
+
+    @app_commands.command()
+    @app_commands.describe(choices="❓ The choices to choose from, separated by commas.")
+    async def choose(self, interaction: discord.Interaction, *, choices: str):
+        """
+        🎲 Chooses a random option from a list of choices.
+        """
+        choices = [x.strip() for x in choices.split(",")]
+
+        if len(choices) <= 1:
+            error_embed = utils.create_error_embed("You need to give me at least 2 choices.")
+            return await interaction.response.send_message(embed=error_embed, ephemeral=True)
+
+        numbered_choices = [f"**`{i + 1}`** — {x}" for i, x in enumerate(choices)]
+        
+        choice_embed = discord.Embed(
+            title="🎲 My Choice",
+            description=f"**`{random.choice(choices)}`**",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .add_field(name="❗ Options Given", value="\n".join(numbered_choices))
+
+        await interaction.response.send_message(embed=choice_embed)
     
     @app_commands.command()
     async def meme(self, interaction: discord.Interaction):
@@ -69,7 +94,7 @@ class Misc(commands.Cog, name="Miscellaneous"):
             title="🎲 Found a Meme",
             description=f"**[{data['title']}]({url})**",
             timestamp=datetime.datetime.utcnow(),
-            color=self.client.theme,    
+            color=self.client.theme,
         ) \
             .set_image(url=f"{url}") \
             .set_footer(text="❓ Try again? Use /meme.")
