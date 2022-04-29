@@ -63,14 +63,15 @@ class Misc(commands.Cog, name="Miscellaneous"):
         """
         response = await self.client.session.get("https://meme-api.herokuapp.com/gimme")
         data = await response.json()
+        url = data['url']
 
         meme_embed = discord.Embed(
             title="🎲 Found a Meme",
-            description=f"**`{data['title']}`**",
+            description=f"**[{data['title']}]({url})**",
             timestamp=datetime.datetime.utcnow(),
             color=self.client.theme,    
         ) \
-            .set_image(url=f"{data['url']}") \
+            .set_image(url=f"{url}") \
             .set_footer(text="❓ Try again? Use /meme.")
 
         await interaction.response.send_message(embed=meme_embed)
@@ -87,7 +88,7 @@ class Misc(commands.Cog, name="Miscellaneous"):
             timestamp=datetime.datetime.utcnow(),
             color=self.client.theme,
         ) \
-            .set_author(name=interaction.user.name, url=interaction.user.avatar.url) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
             .set_footer(text="Vote ✔️ Yes or ❌ No.")
 
         message = await interaction.channel.send(embed=poll_embed)
