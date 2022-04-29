@@ -40,7 +40,7 @@ class DiscordClient(commands.Bot):
         Discord, and is responsible for loading & starting the bot, and
         syncing slash commands.
 
-        Params:return 
+        Params:
          - possible_statuses (itertools.Cycle): A list of statuses the bot will cycle through.
          - extension_filepaths (list[str]): The filepaths of extensions the bot will use.
          - testing_guild_ids (list[int]): The IDs of testing guilds the bot is in.
