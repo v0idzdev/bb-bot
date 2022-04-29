@@ -13,6 +13,8 @@ from ext import utils
 from discord import app_commands
 from discord.ext import commands
 
+from ext.views.youtube_view import YoutubeView
+
 
 class Misc(commands.Cog, name="Miscellaneous"):
     """
@@ -140,10 +142,60 @@ class Misc(commands.Cog, name="Miscellaneous"):
             timestamp=datetime.datetime.utcnow(),
             color=self.client.theme,
         ) \
-            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url) \
+            .set_author(name=interaction.user.name, icon_url=interaction.user.avatar.url)
 
         await interaction.response.send_message(embed=echo_embed)
+    
+    @app_commands.command()
+    async def ping(self, interaction: discord.Interaction):
+        """
+        🎲 Shows the bot's current websocket latency.
+        """
+        await interaction.response.defer()
 
+        embed = discord.Embed(
+            title="🏓 Pong!",
+            description=f"⌛ Your ping is **{round(self.client.latency * 1000)}**ms.",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        )
+
+        await interaction.followup.send(embed=embed)
+    
+    @app_commands.command()
+    @app_commands.describe(search="❓ The YouTube video to search for.")
+    async def youtube(self, interaction: discord.Interaction, *, search: str):
+        """
+        🎲 Searches for a video on youtube and sends the link.
+        """
+        if search is None:
+            error_embed = utils.create_error_embed("You need to specify a search term.")
+            return await interaction.response.send_message(embed=error_embed)
+
+        url = await utils.youtube_search_to_url(search)
+        title = await utils.youtube_url_to_title(url)
+        thumbnail = await utils.youtube_url_to_thumbnail(url)
+
+        embed = discord.Embed(
+            title="🎲 Found a Video",
+            description=f"🔗 [{title}]({url})",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        ) \
+            .set_thumbnail(url=thumbnail) \
+            .set_footer(text=f"❓ Follow the link above to view the video.")
+
+        await interaction.response.send_message(embed=embed)
+
+        embed = discord.Embed(
+            title="🎲 View in Discord?",
+            description="❓ Click View In Discord to view the video in this text channel.",
+            timestamp=datetime.datetime.utcnow(),
+            color=self.client.theme,
+        )
+
+        view = YoutubeView(url, interaction)
+        view.message = await interaction.followup.send(embed=embed, view=view)
 
 
 async def setup(client: core.DiscordClient) -> None:
