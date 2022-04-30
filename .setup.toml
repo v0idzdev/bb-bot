@@ -12,5 +12,6 @@ extensions = [
     "ext.commands.mod",
     "ext.commands.info",
     "ext.commands.misc",
-    "ext.handlers.events"
+    "ext.handlers.events",
+    "ext.commands.music"
 ]

@@ -32,7 +32,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
     @classmethod
     async def create_source(
         cls,
-        ctx: commands.Context,
+        interaction: discord.Interaction,
         search: str,
         *,
         loop: asyncio.AbstractEventLoop,
@@ -53,18 +53,18 @@ class YTDLSource(discord.PCMVolumeTransformer):
             title=f"🎧 Song Added to the Queue", description=f'🎹 {data["title"]}'
         )
 
-        await ctx.send(embed=embed)
+        await interaction.response.send_message(embed=embed)
 
         if download:
             source = ytdl.prepare_filename(data)
         else:
             return {
                 "webpage_url": data["webpage_url"],
-                "requester": ctx.author,
+                "requester": interaction.user,
                 "title": data["title"],
             }
 
-        return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
+        return cls(discord.FFmpegPCMAudio(source), data=data, requester=interaction.user)
 
     @classmethod
     async def regather_stream(cls, data: dict, *, loop: asyncio.AbstractEventLoop):

@@ -52,7 +52,7 @@ class Mod(commands.Cog, name="Moderation"):
 
         embed = discord.Embed(
             title="⚙️ Messages Purged",
-            description=f"💡 Number of Messages: **{amount}**.",
+            description=f"**Number of Messages: {amount}**.",
             timestamp=datetime.datetime.utcnow(),
             color=self.client.theme,
         )   
