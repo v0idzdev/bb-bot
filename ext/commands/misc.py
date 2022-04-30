@@ -9,10 +9,9 @@ import humanize
 import twitchio
 import core
 
-from ext import utils
 from discord import app_commands
 from discord.ext import commands
-
+from ext import utils
 from ext.views.youtube_view import YoutubeView
 
 
@@ -172,9 +171,9 @@ class Misc(commands.Cog, name="Miscellaneous"):
             error_embed = utils.create_error_embed("You need to specify a search term.")
             return await interaction.response.send_message(embed=error_embed)
 
-        url = await utils.youtube_search_to_url(search)
-        title = await utils.youtube_url_to_title(url)
-        thumbnail = await utils.youtube_url_to_thumbnail(url)
+        url = await utils.search_to_url(search)
+        title = await utils.url_to_title(url)
+        thumbnail = await utils.url_to_thumbnail(url)
 
         embed = discord.Embed(
             title="🎲 Found a Video",

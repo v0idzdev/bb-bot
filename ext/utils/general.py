@@ -1,9 +1,9 @@
 """
-Module `functions` contains standalone utility functions to be
-used in BB.Bot extensions. 
+Module `general` contains standalone utility functions to be
+used in BB.Bot extensions. These utilities are used in many
+extensions, hence, 'general'.
 """
 import functools
-from typing import Any, Callable, List
 import discord
 import datetime
 import requests
@@ -14,6 +14,8 @@ from urllib import (
     parse,
     request
 )
+
+from typing import Any, Callable, List
 
 
 def create_error_embed(message: str) -> discord.Embed:

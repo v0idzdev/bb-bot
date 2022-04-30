@@ -6,11 +6,7 @@ import discord
 
 from ext import utils
 from typing import Any
-
-from discord import (
-    ui,
-    app_commands
-)
+from discord import ui
 
 
 class BaseView(ui.View):
