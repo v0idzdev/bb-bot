@@ -11,7 +11,7 @@
 </p>
 <br>
 
-**On May 20, 2022, BB.Bot will not be publicly hosted. As of May 4, 2022, maintenance and further development has ceased.**
+**As of May 4, 2022, the development, maintenance, and support for BB.Bot has come to an end.**
 
 **BB.Bot** is a Discord bot powered by **Python** and **GCP's Compute Engine**. Featuring 24/7 uptime, HQ music streaming, admin commands, and more, BB.Bot will bring your server to life. **Available for free**, our bot comes with **no additional costs** and **long-term support**.
 
